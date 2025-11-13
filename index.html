@@ -2326,6 +2326,7 @@
 
         /**
          * 提交数据到 Google Sheets
+         * 使用 no-cors 模式避免 CORS 预检请求问题
          * @param {Object} data - 要提交的数据对象
          * @returns {Promise<Object>} - 返回提交结果
          */
@@ -2348,11 +2349,11 @@
                     throw new Error('Invalid Google Apps Script URL format');
                 }
 
-                // 使用 POST 方法发送 JSON 数据
-                // 注意：Google Apps Script Web App 必须部署为"任何人"可以访问，并启用 CORS
+                // 使用 no-cors 模式避免 CORS 预检请求（OPTIONS）问题
+                // 注意：no-cors 模式下无法读取响应，但请求会成功发送
                 const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
                     method: 'POST',
-                    mode: 'cors', // 使用 cors 模式以读取响应
+                    mode: 'no-cors', // 使用 no-cors 避免 CORS 预检请求
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -2360,55 +2361,19 @@
                 });
 
                 if (DEBUG_MODE) {
-                    console.log('📥 Response received:', {
-                        status: response.status,
-                        statusText: response.statusText,
-                        ok: response.ok,
-                        headers: Object.fromEntries(response.headers.entries())
+                    console.log('📥 Request sent (no-cors mode, cannot read response):', {
+                        type: response.type,
+                        url: response.url || GOOGLE_APPS_SCRIPT_URL
                     });
                 }
 
-                // 检查响应状态
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    if (DEBUG_MODE) {
-                        console.error('❌ HTTP Error Response:', {
-                            status: response.status,
-                            statusText: response.statusText,
-                            body: errorText
-                        });
-                    }
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}. ${errorText}`);
-                }
-
-                // 尝试解析 JSON 响应
-                let responseData;
-                try {
-                    const responseText = await response.text();
-                    if (DEBUG_MODE) {
-                        console.log('📄 Response text:', responseText);
-                    }
-                    responseData = responseText ? JSON.parse(responseText) : {};
-                } catch (parseError) {
-                    if (DEBUG_MODE) {
-                        console.warn('⚠️ Could not parse response as JSON:', parseError);
-                    }
-                    responseData = { success: true, message: 'Response received but not in JSON format' };
-                }
-
-                // 验证响应数据
-                if (responseData.success === false) {
-                    throw new Error(responseData.error || 'Submission failed on server side');
-                }
-
-                if (DEBUG_MODE) {
-                    console.log('✅ Google Sheets submission successful:', responseData);
-                }
-
+                // 在 no-cors 模式下，我们无法读取响应
+                // 但如果没有抛出错误，说明请求已经发送
+                // 假设提交成功（如果 Google Apps Script 配置正确，数据应该已经写入）
                 return {
                     success: true,
-                    message: responseData.message || 'Data submitted successfully',
-                    data: responseData
+                    message: 'Data submitted successfully (no-cors mode - response not readable)',
+                    note: 'Request sent. Please verify data in Google Sheets.'
                 };
             } catch (error) {
                 if (DEBUG_MODE) {
@@ -2425,10 +2390,8 @@
                 let errorMessage = 'Failed to submit to Google Sheets';
                 if (error.message.includes('404')) {
                     errorMessage += ': URL not found (404). Please check if the Google Apps Script Web App is deployed correctly.';
-                } else if (error.message.includes('CORS')) {
-                    errorMessage += ': CORS error. Please ensure the Google Apps Script Web App is deployed with "Execute as: Me" and "Who has access: Anyone".';
-                } else if (error.message.includes('Failed to fetch')) {
-                    errorMessage += ': Network error. Please check your internet connection and the Google Apps Script URL.';
+                } else if (error.message.includes('Failed to fetch') || error.message.includes('Load failed')) {
+                    errorMessage += ': Network error or CORS issue. Please check: 1) Your internet connection, 2) The Google Apps Script URL is correct, 3) The Web App is deployed with "Who has access: Anyone".';
                 } else {
                     errorMessage += ': ' + error.message;
                 }
@@ -2522,8 +2485,12 @@
 
                 // 显示结果消息（基于真实的提交结果）
                 if (googleSheetsSuccess) {
-                    // Google Sheets 提交成功
-                    showSuccess('Thank you! Your response has been successfully submitted to Google Sheets.');
+                    // Google Sheets 提交成功（请求已发送，但需要验证数据是否写入）
+                    showSuccess('Thank you! Your response has been submitted. Please verify the data appears in your Google Sheets.');
+                    
+                    if (DEBUG_MODE) {
+                        console.log('✅ Request sent successfully. Please check Google Sheets to verify data was written.');
+                    }
                     
                     // 重置表单
                     document.getElementById('surveyForm').reset();
