@@ -2337,16 +2337,22 @@
             if (DEBUG_MODE) {
                 console.log('📤 Submitting to Google Sheets:', {
                     url: GOOGLE_APPS_SCRIPT_URL,
-                    data: data
+                    data: data,
+                    timestamp: new Date().toISOString()
                 });
             }
 
             try {
-                // Google Apps Script 需要特殊的跨域处理
+                // 验证 URL 格式
+                if (!GOOGLE_APPS_SCRIPT_URL.startsWith('https://script.google.com/')) {
+                    throw new Error('Invalid Google Apps Script URL format');
+                }
+
                 // 使用 POST 方法发送 JSON 数据
+                // 注意：Google Apps Script Web App 必须部署为"任何人"可以访问，并启用 CORS
                 const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
                     method: 'POST',
-                    mode: 'no-cors', // Google Apps Script 需要 no-cors 模式以避免 CORS 问题
+                    mode: 'cors', // 使用 cors 模式以读取响应
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -2354,16 +2360,55 @@
                 });
 
                 if (DEBUG_MODE) {
-                    console.log('📥 Response received:', response);
+                    console.log('📥 Response received:', {
+                        status: response.status,
+                        statusText: response.statusText,
+                        ok: response.ok,
+                        headers: Object.fromEntries(response.headers.entries())
+                    });
                 }
 
-                // 注意：由于使用了 no-cors 模式，我们无法直接读取响应
-                // 但请求应该已经成功发送
-                // 如果 Google Apps Script 配置正确，数据应该已经写入
-                return { 
-                    success: true, 
-                    message: 'Data submitted successfully',
-                    note: 'Response cannot be read due to CORS, but request was sent'
+                // 检查响应状态
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    if (DEBUG_MODE) {
+                        console.error('❌ HTTP Error Response:', {
+                            status: response.status,
+                            statusText: response.statusText,
+                            body: errorText
+                        });
+                    }
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}. ${errorText}`);
+                }
+
+                // 尝试解析 JSON 响应
+                let responseData;
+                try {
+                    const responseText = await response.text();
+                    if (DEBUG_MODE) {
+                        console.log('📄 Response text:', responseText);
+                    }
+                    responseData = responseText ? JSON.parse(responseText) : {};
+                } catch (parseError) {
+                    if (DEBUG_MODE) {
+                        console.warn('⚠️ Could not parse response as JSON:', parseError);
+                    }
+                    responseData = { success: true, message: 'Response received but not in JSON format' };
+                }
+
+                // 验证响应数据
+                if (responseData.success === false) {
+                    throw new Error(responseData.error || 'Submission failed on server side');
+                }
+
+                if (DEBUG_MODE) {
+                    console.log('✅ Google Sheets submission successful:', responseData);
+                }
+
+                return {
+                    success: true,
+                    message: responseData.message || 'Data submitted successfully',
+                    data: responseData
                 };
             } catch (error) {
                 if (DEBUG_MODE) {
@@ -2371,10 +2416,24 @@
                     console.error('Error details:', {
                         name: error.name,
                         message: error.message,
-                        stack: error.stack
+                        stack: error.stack,
+                        url: GOOGLE_APPS_SCRIPT_URL
                     });
                 }
-                throw new Error('Failed to submit to Google Sheets: ' + error.message);
+
+                // 提供更详细的错误信息
+                let errorMessage = 'Failed to submit to Google Sheets';
+                if (error.message.includes('404')) {
+                    errorMessage += ': URL not found (404). Please check if the Google Apps Script Web App is deployed correctly.';
+                } else if (error.message.includes('CORS')) {
+                    errorMessage += ': CORS error. Please ensure the Google Apps Script Web App is deployed with "Execute as: Me" and "Who has access: Anyone".';
+                } else if (error.message.includes('Failed to fetch')) {
+                    errorMessage += ': Network error. Please check your internet connection and the Google Apps Script URL.';
+                } else {
+                    errorMessage += ': ' + error.message;
+                }
+
+                throw new Error(errorMessage);
             }
         }
 
@@ -2419,19 +2478,27 @@
                     try {
                         if (DEBUG_MODE) {
                             console.log('🔄 Attempting to submit to Google Sheets...');
+                            console.log('📍 URL:', GOOGLE_APPS_SCRIPT_URL);
                         }
-                        await submitToGoogleSheets(submitData);
-                        googleSheetsSuccess = true;
+                        const result = await submitToGoogleSheets(submitData);
+                        // 只有真正成功时才设置为 true
+                        googleSheetsSuccess = result && result.success === true;
                         if (DEBUG_MODE) {
-                            console.log('✅ Successfully submitted to Google Sheets');
+                            if (googleSheetsSuccess) {
+                                console.log('✅ Successfully submitted to Google Sheets:', result);
+                            } else {
+                                console.warn('⚠️ Google Sheets submission returned unsuccessful result:', result);
+                            }
                         }
                     } catch (error) {
                         googleSheetsError = error;
+                        googleSheetsSuccess = false;
                         if (DEBUG_MODE) {
                             console.error('❌ Google Sheets submission failed:', error);
                             console.error('Error details:', {
                                 message: error.message,
-                                name: error.name
+                                name: error.name,
+                                stack: error.stack
                             });
                         }
                         // 即使 Google Sheets 失败，也继续保存到 localStorage
@@ -2453,20 +2520,10 @@
                     }
                 }
 
-                // 显示成功消息
-                if (googleSheetsSuccess || localStorageSuccess) {
-                    let successMessage = 'Thank you! Your response has been saved successfully.';
-                    if (ENABLE_GOOGLE_SHEETS) {
-                        if (googleSheetsSuccess) {
-                            successMessage += ' (Submitted to Google Sheets)';
-                        } else {
-                            successMessage += ' (Saved locally - Google Sheets submission may have failed. Please check your Google Sheets.)';
-                            if (DEBUG_MODE && googleSheetsError) {
-                                console.warn('⚠️ Google Sheets error:', googleSheetsError.message);
-                            }
-                        }
-                    }
-                    showSuccess(successMessage);
+                // 显示结果消息（基于真实的提交结果）
+                if (googleSheetsSuccess) {
+                    // Google Sheets 提交成功
+                    showSuccess('Thank you! Your response has been successfully submitted to Google Sheets.');
                     
                     // 重置表单
                     document.getElementById('surveyForm').reset();
@@ -2479,8 +2536,28 @@
                     selectRandomImage();
                     showHideConditional();
                     calculateProgress();
+                } else if (localStorageSuccess) {
+                    // 只有 localStorage 成功（Google Sheets 失败）
+                    let errorMessage = 'Your response has been saved locally, but failed to submit to Google Sheets. ';
+                    if (googleSheetsError) {
+                        errorMessage += 'Error: ' + googleSheetsError.message;
+                    } else {
+                        errorMessage += 'Please check your Google Apps Script configuration.';
+                    }
+                    showError(errorMessage);
+                    
+                    if (DEBUG_MODE) {
+                        console.warn('⚠️ Data saved locally but Google Sheets submission failed');
+                        if (googleSheetsError) {
+                            console.warn('⚠️ Google Sheets error:', googleSheetsError.message);
+                        }
+                    }
                 } else {
-                    showError('Failed to save response. Please try again.');
+                    // 完全失败
+                    showError('Failed to save response. Please check the console for details and try again.');
+                    if (DEBUG_MODE) {
+                        console.error('❌ Both Google Sheets and localStorage save failed');
+                    }
                 }
             } catch (error) {
                 if (DEBUG_MODE) {
