@@ -990,17 +990,45 @@
         let selectedImageVersion = null;
 
         function selectRandomImage() {
-            const random = Math.random();
-            // 50/50 概率选择
-            selectedImageVersion = random < 0.5 ? 'comfort-zone-v1' : 'comfort-zone-v2';
-            const imagePath = `images/${selectedImageVersion}.jpg`;
-            document.getElementById('renderingImage').src = imagePath;
-            
-            // 如果图片加载失败，显示占位符
-            document.getElementById('renderingImage').onerror = function() {
-                this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iI2YwZjhmOCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IiMwMDhCOEIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5QbGVhc2UgcGxhY2UgY29tZm9ydC16b25lIHJlbmRlcmluZyBpbWFnZSBob3JlPC90ZXh0Pjwvc3Zn+';
-                this.alt = 'Placeholder: Please add ' + selectedImageVersion + '.jpg to the images folder';
-            };
+            try {
+                const imageElement = document.getElementById('renderingImage');
+                if (!imageElement) {
+                    if (DEBUG_MODE) {
+                        console.error('❌ Image element not found!');
+                    }
+                    return;
+                }
+                
+                const random = Math.random();
+                // 50/50 概率选择
+                selectedImageVersion = random < 0.5 ? 'comfort-zone-v1' : 'comfort-zone-v2';
+                
+                // 使用相对路径（适用于 GitHub Pages）
+                const imagePath = `./images/${selectedImageVersion}.jpg`;
+                
+                if (DEBUG_MODE) {
+                    console.log('🖼️ Loading image:', imagePath);
+                }
+                
+                imageElement.src = imagePath;
+                
+                // 如果图片加载失败，显示占位符
+                imageElement.onerror = function() {
+                    if (DEBUG_MODE) {
+                        console.warn('⚠️ Image failed to load:', imagePath);
+                    }
+                    this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iI2YwZjhmOCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IiMwMDhCOEIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5QbGVhc2UgcGxhY2UgY29tZm9ydC16b25lIHJlbmRlcmluZyBpbWFnZSBob3JlPC90ZXh0Pjwvc3Zn+';
+                    this.alt = 'Placeholder: Please add ' + selectedImageVersion + '.jpg to the images folder';
+                };
+                
+                imageElement.onload = function() {
+                    if (DEBUG_MODE) {
+                        console.log('✅ Image loaded successfully:', imagePath);
+                    }
+                };
+            } catch (error) {
+                console.error('❌ Error in selectRandomImage:', error);
+            }
         }
 
         /**
@@ -1107,97 +1135,141 @@
         };
 
         /**
-         * 渲染单选按钮组
+         * 渲染单选按钮组（带错误处理）
          */
         function renderRadioGroup(groupId, options) {
-            const container = document.getElementById(groupId);
-            container.innerHTML = '';
-
-            options.forEach((option, index) => {
-                const radioDiv = document.createElement('div');
-                radioDiv.className = 'radio-option';
-
-                const radio = document.createElement('input');
-                radio.type = 'radio';
-                radio.id = `${groupId}_${index}`;
-                radio.name = groupId.replace('_group', '');
-                radio.value = option;
-
-                const label = document.createElement('label');
-                label.htmlFor = `${groupId}_${index}`;
-                label.textContent = option;
-
-                radioDiv.appendChild(radio);
-                radioDiv.appendChild(label);
-
-                // 处理 "Other" 或 "self-describe" 选项
-                if (option === 'Other' || option.includes('Other') || option.includes('self-describe')) {
-                    const otherInput = document.createElement('input');
-                    otherInput.type = 'text';
-                    otherInput.id = `${groupId}_other`;
-                    otherInput.name = `${groupId.replace('_group', '')}_other`;
-                    otherInput.className = 'other-input';
-                    otherInput.placeholder = 'Please specify...';
-                    otherInput.style.display = 'none';
-                    radioDiv.appendChild(otherInput);
-
-                    radio.addEventListener('change', function() {
-                        otherInput.style.display = this.checked ? 'block' : 'none';
-                    });
+            try {
+                const container = document.getElementById(groupId);
+                if (!container) {
+                    if (DEBUG_MODE) {
+                        console.error('❌ Container not found:', groupId);
+                    }
+                    return;
                 }
+                
+                if (!options || !Array.isArray(options) || options.length === 0) {
+                    if (DEBUG_MODE) {
+                        console.warn('⚠️ No options provided for:', groupId);
+                    }
+                    return;
+                }
+                
+                container.innerHTML = '';
 
-                container.appendChild(radioDiv);
-            });
+                options.forEach((option, index) => {
+                    const radioDiv = document.createElement('div');
+                    radioDiv.className = 'radio-option';
+
+                    const radio = document.createElement('input');
+                    radio.type = 'radio';
+                    radio.id = `${groupId}_${index}`;
+                    radio.name = groupId.replace('_group', '');
+                    radio.value = option;
+
+                    const label = document.createElement('label');
+                    label.htmlFor = `${groupId}_${index}`;
+                    label.textContent = option;
+
+                    radioDiv.appendChild(radio);
+                    radioDiv.appendChild(label);
+
+                    // 处理 "Other" 或 "self-describe" 选项
+                    if (option === 'Other' || option.includes('Other') || option.includes('self-describe')) {
+                        const otherInput = document.createElement('input');
+                        otherInput.type = 'text';
+                        otherInput.id = `${groupId}_other`;
+                        otherInput.name = `${groupId.replace('_group', '')}_other`;
+                        otherInput.className = 'other-input';
+                        otherInput.placeholder = 'Please specify...';
+                        otherInput.style.display = 'none';
+                        radioDiv.appendChild(otherInput);
+
+                        radio.addEventListener('change', function() {
+                            otherInput.style.display = this.checked ? 'block' : 'none';
+                        });
+                    }
+
+                    container.appendChild(radioDiv);
+                });
+                
+                if (DEBUG_MODE) {
+                    console.log('✅ Rendered radio group:', groupId, 'with', options.length, 'options');
+                }
+            } catch (error) {
+                console.error('❌ Error rendering radio group:', groupId, error);
+            }
         }
 
         /**
-         * 渲染复选框组（带限制）
+         * 渲染复选框组（带限制，带错误处理）
          */
         function renderCheckboxGroup(groupId, options, maxSelections) {
-            const container = document.getElementById(groupId);
-            container.innerHTML = '';
+            try {
+                const container = document.getElementById(groupId);
+                if (!container) {
+                    if (DEBUG_MODE) {
+                        console.error('❌ Container not found:', groupId);
+                    }
+                    return;
+                }
+                
+                if (!options || !Array.isArray(options) || options.length === 0) {
+                    if (DEBUG_MODE) {
+                        console.warn('⚠️ No options provided for:', groupId);
+                    }
+                    return;
+                }
+                
+                container.innerHTML = '';
 
-            options.forEach((option, index) => {
-                const checkboxDiv = document.createElement('div');
-                checkboxDiv.className = 'checkbox-option';
-                checkboxDiv.setAttribute('data-value', option);
+                options.forEach((option, index) => {
+                    const checkboxDiv = document.createElement('div');
+                    checkboxDiv.className = 'checkbox-option';
+                    checkboxDiv.setAttribute('data-value', option);
 
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.id = `${groupId}_${index}`;
-                checkbox.name = groupId.replace('_group', '');
-                checkbox.value = option;
-                checkbox.addEventListener('change', function() {
-                    enforceCheckboxLimit(groupId, maxSelections);
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = `${groupId}_${index}`;
+                    checkbox.name = groupId.replace('_group', '');
+                    checkbox.value = option;
+                    checkbox.addEventListener('change', function() {
+                        enforceCheckboxLimit(groupId, maxSelections);
+                    });
+
+                    const label = document.createElement('label');
+                    label.htmlFor = `${groupId}_${index}`;
+                    label.textContent = option;
+
+                    checkboxDiv.appendChild(checkbox);
+                    checkboxDiv.appendChild(label);
+
+                    // 处理 "Other" 选项
+                    if (option === 'Other' || option.includes('Other')) {
+                        const otherInput = document.createElement('input');
+                        otherInput.type = 'text';
+                        otherInput.id = `${groupId}_other`;
+                        otherInput.name = `${groupId.replace('_group', '')}_other`;
+                        otherInput.className = 'other-input';
+                        otherInput.placeholder = 'Please specify...';
+                        otherInput.style.display = 'none';
+                        checkboxDiv.appendChild(otherInput);
+
+                        checkbox.addEventListener('change', function() {
+                            otherInput.style.display = this.checked ? 'block' : 'none';
+                        });
+                    }
+
+                    container.appendChild(checkboxDiv);
                 });
 
-                const label = document.createElement('label');
-                label.htmlFor = `${groupId}_${index}`;
-                label.textContent = option;
-
-                checkboxDiv.appendChild(checkbox);
-                checkboxDiv.appendChild(label);
-
-                // 处理 "Other" 选项
-                if (option === 'Other' || option.includes('Other')) {
-                    const otherInput = document.createElement('input');
-                    otherInput.type = 'text';
-                    otherInput.id = `${groupId}_other`;
-                    otherInput.name = `${groupId.replace('_group', '')}_other`;
-                    otherInput.className = 'other-input';
-                    otherInput.placeholder = 'Please specify...';
-                    otherInput.style.display = 'none';
-                    checkboxDiv.appendChild(otherInput);
-
-                    checkbox.addEventListener('change', function() {
-                        otherInput.style.display = this.checked ? 'block' : 'none';
-                    });
+                updateChoiceLimit(groupId.replace('_group', '_limit'), groupId, maxSelections);
+                
+                if (DEBUG_MODE) {
+                    console.log('✅ Rendered checkbox group:', groupId, 'with', options.length, 'options');
                 }
-
-                container.appendChild(checkboxDiv);
-            });
-
-            updateChoiceLimit(groupId.replace('_group', '_limit'), groupId, maxSelections);
+            } catch (error) {
+                console.error('❌ Error rendering checkbox group:', groupId, error);
+            }
         }
 
         /**
@@ -1389,53 +1461,75 @@
         let draggedElement = null;
 
         /**
-         * 渲染排名复选框组
+         * 渲染排名复选框组（带错误处理）
          */
         function renderRankingCheckboxGroup(groupId, options, maxSelections) {
-            const container = document.getElementById(groupId);
-            container.innerHTML = '';
+            try {
+                const container = document.getElementById(groupId);
+                if (!container) {
+                    if (DEBUG_MODE) {
+                        console.error('❌ Container not found:', groupId);
+                    }
+                    return;
+                }
+                
+                if (!options || !Array.isArray(options) || options.length === 0) {
+                    if (DEBUG_MODE) {
+                        console.warn('⚠️ No options provided for:', groupId);
+                    }
+                    return;
+                }
+                
+                container.innerHTML = '';
 
-            options.forEach((option, index) => {
-                const checkboxDiv = document.createElement('div');
-                checkboxDiv.className = 'checkbox-option';
-                checkboxDiv.setAttribute('data-value', option);
+                options.forEach((option, index) => {
+                    const checkboxDiv = document.createElement('div');
+                    checkboxDiv.className = 'checkbox-option';
+                    checkboxDiv.setAttribute('data-value', option);
 
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.id = `${groupId}_${index}`;
-                checkbox.name = 'ranked_factors';
-                checkbox.value = option;
-                checkbox.addEventListener('change', function() {
-                    handleRankingChange(option, this.checked);
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = `${groupId}_${index}`;
+                    checkbox.name = 'ranked_factors';
+                    checkbox.value = option;
+                    checkbox.addEventListener('change', function() {
+                        handleRankingChange(option, this.checked);
+                    });
+
+                    const label = document.createElement('label');
+                    label.htmlFor = `${groupId}_${index}`;
+                    label.textContent = option;
+
+                    checkboxDiv.appendChild(checkbox);
+                    checkboxDiv.appendChild(label);
+
+                    // 处理 "Other" 选项
+                    if (option === 'Other' || option.includes('Other')) {
+                        const otherInput = document.createElement('input');
+                        otherInput.type = 'text';
+                        otherInput.id = `${groupId}_other`;
+                        otherInput.name = 'ranked_factors_other';
+                        otherInput.className = 'other-input';
+                        otherInput.placeholder = 'Please specify...';
+                        otherInput.style.display = 'none';
+                        checkboxDiv.appendChild(otherInput);
+
+                        checkbox.addEventListener('change', function() {
+                            otherInput.style.display = this.checked ? 'block' : 'none';
+                        });
+                    }
+
+                    container.appendChild(checkboxDiv);
                 });
 
-                const label = document.createElement('label');
-                label.htmlFor = `${groupId}_${index}`;
-                label.textContent = option;
-
-                checkboxDiv.appendChild(checkbox);
-                checkboxDiv.appendChild(label);
-
-                // 处理 "Other" 选项
-                if (option === 'Other' || option.includes('Other')) {
-                    const otherInput = document.createElement('input');
-                    otherInput.type = 'text';
-                    otherInput.id = `${groupId}_other`;
-                    otherInput.name = 'ranked_factors_other';
-                    otherInput.className = 'other-input';
-                    otherInput.placeholder = 'Please specify...';
-                    otherInput.style.display = 'none';
-                    checkboxDiv.appendChild(otherInput);
-
-                    checkbox.addEventListener('change', function() {
-                        otherInput.style.display = this.checked ? 'block' : 'none';
-                    });
+                updateRankedList();
+                
+                if (DEBUG_MODE) {
+                    console.log('✅ Rendered ranking checkbox group:', groupId, 'with', options.length, 'options');
                 }
-
-                container.appendChild(checkboxDiv);
-            });
-
-            updateRankedList();
+            } catch (error) {
+                console.error('❌ Error rendering ranking checkbox group:', groupId, error);
+            }
         }
 
         /**
@@ -1662,53 +1756,75 @@
         }
 
         /**
-         * 渲染舒适区设施排名复选框组
+         * 渲染舒适区设施排名复选框组（带错误处理）
          */
         function renderComfortZoneRankingCheckboxGroup(groupId, options, maxSelections, listId, containerId) {
-            const container = document.getElementById(groupId);
-            container.innerHTML = '';
+            try {
+                const container = document.getElementById(groupId);
+                if (!container) {
+                    if (DEBUG_MODE) {
+                        console.error('❌ Container not found:', groupId);
+                    }
+                    return;
+                }
+                
+                if (!options || !Array.isArray(options) || options.length === 0) {
+                    if (DEBUG_MODE) {
+                        console.warn('⚠️ No options provided for:', groupId);
+                    }
+                    return;
+                }
+                
+                container.innerHTML = '';
 
-            options.forEach((option, index) => {
-                const checkboxDiv = document.createElement('div');
-                checkboxDiv.className = 'checkbox-option';
-                checkboxDiv.setAttribute('data-value', option);
+                options.forEach((option, index) => {
+                    const checkboxDiv = document.createElement('div');
+                    checkboxDiv.className = 'checkbox-option';
+                    checkboxDiv.setAttribute('data-value', option);
 
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.id = `${groupId}_${index}`;
-                checkbox.name = 'comfort_zone_amenities_ranked';
-                checkbox.value = option;
-                checkbox.addEventListener('change', function() {
-                    handleComfortZoneRankingChange(option, this.checked, listId, containerId);
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = `${groupId}_${index}`;
+                    checkbox.name = 'comfort_zone_amenities_ranked';
+                    checkbox.value = option;
+                    checkbox.addEventListener('change', function() {
+                        handleComfortZoneRankingChange(option, this.checked, listId, containerId);
+                    });
+
+                    const label = document.createElement('label');
+                    label.htmlFor = `${groupId}_${index}`;
+                    label.textContent = option;
+
+                    checkboxDiv.appendChild(checkbox);
+                    checkboxDiv.appendChild(label);
+
+                    // 处理 "Other" 选项
+                    if (option === 'Other' || option.includes('Other')) {
+                        const otherInput = document.createElement('input');
+                        otherInput.type = 'text';
+                        otherInput.id = `${groupId}_other`;
+                        otherInput.name = 'comfort_zone_amenities_ranked_other';
+                        otherInput.className = 'other-input';
+                        otherInput.placeholder = 'Please specify...';
+                        otherInput.style.display = 'none';
+                        checkboxDiv.appendChild(otherInput);
+
+                        checkbox.addEventListener('change', function() {
+                            otherInput.style.display = this.checked ? 'block' : 'none';
+                        });
+                    }
+
+                    container.appendChild(checkboxDiv);
                 });
 
-                const label = document.createElement('label');
-                label.htmlFor = `${groupId}_${index}`;
-                label.textContent = option;
-
-                checkboxDiv.appendChild(checkbox);
-                checkboxDiv.appendChild(label);
-
-                // 处理 "Other" 选项
-                if (option === 'Other' || option.includes('Other')) {
-                    const otherInput = document.createElement('input');
-                    otherInput.type = 'text';
-                    otherInput.id = `${groupId}_other`;
-                    otherInput.name = 'comfort_zone_amenities_ranked_other';
-                    otherInput.className = 'other-input';
-                    otherInput.placeholder = 'Please specify...';
-                    otherInput.style.display = 'none';
-                    checkboxDiv.appendChild(otherInput);
-
-                    checkbox.addEventListener('change', function() {
-                        otherInput.style.display = this.checked ? 'block' : 'none';
-                    });
+                updateComfortZoneRankedList(listId);
+                
+                if (DEBUG_MODE) {
+                    console.log('✅ Rendered comfort zone ranking checkbox group:', groupId, 'with', options.length, 'options');
                 }
-
-                container.appendChild(checkboxDiv);
-            });
-
-            updateComfortZoneRankedList(listId);
+            } catch (error) {
+                console.error('❌ Error rendering comfort zone ranking checkbox group:', groupId, error);
+            }
         }
 
         /**
@@ -2617,16 +2733,40 @@
             try {
                 if (DEBUG_MODE) {
                     console.log('🚀 Initializing application...');
+                    console.log('📍 Document ready state:', document.readyState);
+                    console.log('📍 User agent:', navigator.userAgent);
+                }
+                
+                // 检查必要的元素是否存在
+                const form = document.getElementById('surveyForm');
+                if (!form) {
+                    console.error('❌ Form element not found!');
+                    return;
                 }
                 
                 // 选择随机图片
+                if (DEBUG_MODE) {
+                    console.log('🖼️ Selecting random image...');
+                }
                 selectRandomImage();
                 
                 // 渲染所有问题
                 if (DEBUG_MODE) {
                     console.log('📝 Rendering questions...');
+                    console.log('📍 Survey config available:', typeof surveyConfig !== 'undefined');
                 }
                 renderAllQuestions();
+                
+                // 验证渲染结果
+                if (DEBUG_MODE) {
+                    const firstRadioGroup = document.getElementById('overall_satisfaction_group');
+                    if (firstRadioGroup) {
+                        const options = firstRadioGroup.querySelectorAll('.radio-option');
+                        console.log('✅ First radio group rendered with', options.length, 'options');
+                    } else {
+                        console.error('❌ First radio group not found after rendering!');
+                    }
+                }
                 
                 // 设置滚动动画
                 setupScrollAnimation();
@@ -2643,9 +2783,11 @@
                 });
 
                 // 绑定表单提交事件
-                const form = document.getElementById('surveyForm');
                 if (form) {
                     form.addEventListener('submit', submitForm);
+                    if (DEBUG_MODE) {
+                        console.log('✅ Form submit event listener attached');
+                    }
                 } else {
                     console.error('❌ Form element not found!');
                 }
@@ -2666,7 +2808,7 @@
                         section.classList.add('visible');
                     });
                     if (DEBUG_MODE) {
-                        console.log('✅ All sections made visible');
+                        console.log('✅ All sections made visible (backup)');
                     }
                 }, 1000);
                 
@@ -2675,6 +2817,7 @@
                 }
             } catch (error) {
                 console.error('❌ Initialization error:', error);
+                console.error('Error stack:', error.stack);
                 // 即使出错，也尝试显示内容
                 const sections = document.querySelectorAll('.section');
                 sections.forEach(section => {
