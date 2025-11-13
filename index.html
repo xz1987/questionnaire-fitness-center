@@ -967,6 +967,7 @@
         </div>
         <div id="debugContent" style="background: rgba(0,0,0,0.3); padding: 8px; border-radius: 4px; font-family: monospace; line-height: 1.6;">
             <div>⏳ 正在加载调试信息...</div>
+            <div style="margin-top: 5px; color: yellow;">如果这里一直显示"正在加载"，说明 JavaScript 执行有问题</div>
         </div>
     </div>
     
@@ -2979,25 +2980,24 @@
         }
 
         /**
-         * 显示调试信息
+         * 显示调试信息（兼容 Android 7.0）
          */
         function showDebugInfo() {
+            var debugInfo, debugContent, errorMsg = '';
+            
             try {
-                const debugInfo = document.getElementById('debugInfo');
-                const debugContent = document.getElementById('debugContent');
+                debugInfo = document.getElementById('debugInfo');
+                debugContent = document.getElementById('debugContent');
                 
                 if (!debugInfo) {
-                    console.error('❌ Debug info element not found!');
-                    // 如果元素不存在，创建一个
-                    const newDebugInfo = document.createElement('div');
-                    newDebugInfo.id = 'debugInfo';
-                    newDebugInfo.style.cssText = 'position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; background: #ff0000 !important; color: white !important; padding: 10px !important; font-size: 14px !important; z-index: 99999 !important; border-bottom: 3px solid #000 !important; max-height: 300px !important; overflow-y: auto !important; display: block !important;';
-                    document.body.insertBefore(newDebugInfo, document.body.firstChild);
+                    errorMsg = 'Debug info element not found';
+                    console.error('❌ ' + errorMsg);
                     return;
                 }
                 
                 if (!debugContent) {
-                    console.error('❌ Debug content element not found!');
+                    errorMsg = 'Debug content element not found';
+                    console.error('❌ ' + errorMsg);
                     return;
                 }
                 
@@ -3007,71 +3007,136 @@
                 debugInfo.style.opacity = '1';
                 debugInfo.style.zIndex = '99999';
                 
-                const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-                const screenWidth = window.screen.width || window.innerWidth;
-                const screenHeight = window.screen.height || window.innerHeight;
-                const viewportWidth = window.innerWidth;
-                const viewportHeight = window.innerHeight;
-                const userAgent = navigator.userAgent;
-                const platform = navigator.platform;
+                // 获取基本信息（使用兼容性更好的方法）
+                var isTouchDevice = false;
+                try {
+                    isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+                } catch (e) {
+                    isTouchDevice = false;
+                }
                 
-                // 检测浏览器
-                let browser = 'Unknown';
-                if (userAgent.indexOf('Chrome') > -1) browser = 'Chrome';
-                else if (userAgent.indexOf('Safari') > -1) browser = 'Safari';
-                else if (userAgent.indexOf('Firefox') > -1) browser = 'Firefox';
-                else if (userAgent.indexOf('Edge') > -1) browser = 'Edge';
+                var screenWidth = window.screen.width || window.innerWidth || 0;
+                var screenHeight = window.screen.height || window.innerHeight || 0;
+                var viewportWidth = window.innerWidth || 0;
+                var viewportHeight = window.innerHeight || 0;
+                var userAgent = navigator.userAgent || 'Unknown';
+                var platform = navigator.platform || 'Unknown';
+                
+                // 检测浏览器（兼容旧版 Android）
+                var browser = 'Unknown';
+                if (userAgent.indexOf('Chrome') > -1) {
+                    browser = 'Chrome';
+                } else if (userAgent.indexOf('Safari') > -1) {
+                    browser = 'Safari';
+                } else if (userAgent.indexOf('Firefox') > -1) {
+                    browser = 'Firefox';
+                } else if (userAgent.indexOf('Edge') > -1) {
+                    browser = 'Edge';
+                }
                 
                 // 检测设备类型
-                let deviceType = 'Desktop';
-                if (isTouchDevice && screenWidth < 768) deviceType = 'Mobile';
-                else if (isTouchDevice && screenWidth >= 768) deviceType = 'Tablet';
+                var deviceType = 'Desktop';
+                if (isTouchDevice) {
+                    if (screenWidth < 768) {
+                        deviceType = 'Mobile';
+                    } else {
+                        deviceType = 'Tablet';
+                    }
+                }
                 
-                // 检查关键元素
-                const overallSatisfactionGroup = document.getElementById('overall_satisfaction_group');
-                const rankedFactorsGroup = document.getElementById('ranked_factors_group');
-                const radioCount = document.querySelectorAll('input[type="radio"]').length;
-                const checkboxCount = document.querySelectorAll('input[type="checkbox"]').length;
-                const radioGroups = document.querySelectorAll('.radio-group');
-                const checkboxGroups = document.querySelectorAll('.checkbox-group');
+                // 检查关键元素（使用兼容性更好的方法）
+                var overallSatisfactionGroup = null;
+                var rankedFactorsGroup = null;
+                var radioCount = 0;
+                var checkboxCount = 0;
+                var radioGroups = [];
+                var checkboxGroups = [];
+                
+                try {
+                    overallSatisfactionGroup = document.getElementById('overall_satisfaction_group');
+                    rankedFactorsGroup = document.getElementById('ranked_factors_group');
+                    radioCount = document.querySelectorAll('input[type="radio"]').length;
+                    checkboxCount = document.querySelectorAll('input[type="checkbox"]').length;
+                    radioGroups = document.querySelectorAll('.radio-group');
+                    checkboxGroups = document.querySelectorAll('.checkbox-group');
+                } catch (e) {
+                    errorMsg = 'Error querying elements: ' + e.message;
+                    console.error('❌ ' + errorMsg);
+                }
                 
                 // 检查容器状态
-                let overallStatus = 'NOT FOUND';
-                let rankedStatus = 'NOT FOUND';
+                var overallStatus = 'NOT FOUND';
+                var rankedStatus = 'NOT FOUND';
+                
                 if (overallSatisfactionGroup) {
-                    const computedStyle = window.getComputedStyle(overallSatisfactionGroup);
-                    overallStatus = `Found | Display: ${computedStyle.display} | Visibility: ${computedStyle.visibility} | Opacity: ${computedStyle.opacity} | Children: ${overallSatisfactionGroup.children.length}`;
+                    try {
+                        var computedStyle = window.getComputedStyle(overallSatisfactionGroup);
+                        var childrenCount = overallSatisfactionGroup.children ? overallSatisfactionGroup.children.length : 0;
+                        overallStatus = 'Found | Display: ' + computedStyle.display + ' | Visibility: ' + computedStyle.visibility + ' | Opacity: ' + computedStyle.opacity + ' | Children: ' + childrenCount;
+                    } catch (e) {
+                        overallStatus = 'Found but error reading style: ' + e.message;
+                    }
                 }
+                
                 if (rankedFactorsGroup) {
-                    const computedStyle = window.getComputedStyle(rankedFactorsGroup);
-                    rankedStatus = `Found | Display: ${computedStyle.display} | Visibility: ${computedStyle.visibility} | Opacity: ${computedStyle.opacity} | Children: ${rankedFactorsGroup.children.length}`;
+                    try {
+                        var computedStyle2 = window.getComputedStyle(rankedFactorsGroup);
+                        var childrenCount2 = rankedFactorsGroup.children ? rankedFactorsGroup.children.length : 0;
+                        rankedStatus = 'Found | Display: ' + computedStyle2.display + ' | Visibility: ' + computedStyle2.visibility + ' | Opacity: ' + computedStyle2.opacity + ' | Children: ' + childrenCount2;
+                    } catch (e) {
+                        rankedStatus = 'Found but error reading style: ' + e.message;
+                    }
                 }
                 
-                debugContent.innerHTML = `
-                    <div style="margin-bottom: 8px;"><strong>🌐 浏览器:</strong> ${browser}</div>
-                    <div style="margin-bottom: 8px;"><strong>💻 平台:</strong> ${platform}</div>
-                    <div style="margin-bottom: 8px;"><strong>📱 设备类型:</strong> ${deviceType}</div>
-                    <div style="margin-bottom: 8px;"><strong>👆 触摸设备:</strong> ${isTouchDevice ? '✅ 是' : '❌ 否'}</div>
-                    <div style="margin-bottom: 8px;"><strong>📐 屏幕尺寸:</strong> ${screenWidth} x ${screenHeight}px</div>
-                    <div style="margin-bottom: 8px;"><strong>👁️ 视口尺寸:</strong> ${viewportWidth} x ${viewportHeight}px</div>
-                    <div style="margin-bottom: 8px;"><strong>🔍 设备像素比:</strong> ${window.devicePixelRatio || 1}</div>
-                    <div style="margin-bottom: 8px; padding: 5px; background: ${radioCount > 0 ? '#0f0' : '#f00'}; border-radius: 3px;"><strong>📊 表单元素数量:</strong> Radio: ${radioCount}, Checkbox: ${checkboxCount}</div>
-                    <div style="margin-bottom: 8px;"><strong>📦 选项容器:</strong> Radio Groups: ${radioGroups.length}, Checkbox Groups: ${checkboxGroups.length}</div>
-                    <div style="margin-bottom: 8px; padding: 5px; background: ${overallSatisfactionGroup && overallSatisfactionGroup.children.length > 0 ? '#0f0' : '#f00'}; border-radius: 3px;"><strong>❓ 问题1容器:</strong> ${overallStatus}</div>
-                    <div style="margin-bottom: 8px; padding: 5px; background: ${rankedFactorsGroup && rankedFactorsGroup.children.length > 0 ? '#0f0' : '#f00'}; border-radius: 3px;"><strong>❓ 问题2容器:</strong> ${rankedStatus}</div>
-                    <div style="margin-bottom: 8px; padding: 5px; background: ${typeof surveyConfig !== 'undefined' ? '#0f0' : '#f00'}; border-radius: 3px;"><strong>⚙️ Survey Config:</strong> ${typeof surveyConfig !== 'undefined' ? '✅ Loaded' : '❌ NOT LOADED'}</div>
-                `;
+                // 检查 surveyConfig
+                var configLoaded = false;
+                try {
+                    configLoaded = (typeof surveyConfig !== 'undefined');
+                } catch (e) {
+                    configLoaded = false;
+                }
                 
-                // 始终显示调试信息
-                debugInfo.style.display = 'block';
-                debugInfo.style.visibility = 'visible';
-                debugInfo.style.opacity = '1';
+                // 构建 HTML 内容（使用字符串拼接，避免模板字符串兼容性问题）
+                var html = '';
+                html += '<div style="margin-bottom: 8px;"><strong>🌐 浏览器:</strong> ' + browser + '</div>';
+                html += '<div style="margin-bottom: 8px;"><strong>💻 平台:</strong> ' + platform + '</div>';
+                html += '<div style="margin-bottom: 8px;"><strong>📱 设备类型:</strong> ' + deviceType + '</div>';
+                html += '<div style="margin-bottom: 8px;"><strong>👆 触摸设备:</strong> ' + (isTouchDevice ? '✅ 是' : '❌ 否') + '</div>';
+                html += '<div style="margin-bottom: 8px;"><strong>📐 屏幕尺寸:</strong> ' + screenWidth + ' x ' + screenHeight + 'px</div>';
+                html += '<div style="margin-bottom: 8px;"><strong>👁️ 视口尺寸:</strong> ' + viewportWidth + ' x ' + viewportHeight + 'px</div>';
+                
+                var pixelRatio = 1;
+                try {
+                    pixelRatio = window.devicePixelRatio || 1;
+                } catch (e) {
+                    pixelRatio = 1;
+                }
+                html += '<div style="margin-bottom: 8px;"><strong>🔍 设备像素比:</strong> ' + pixelRatio + '</div>';
+                
+                var radioBg = radioCount > 0 ? '#0f0' : '#f00';
+                html += '<div style="margin-bottom: 8px; padding: 5px; background: ' + radioBg + '; border-radius: 3px;"><strong>📊 表单元素数量:</strong> Radio: ' + radioCount + ', Checkbox: ' + checkboxCount + '</div>';
+                html += '<div style="margin-bottom: 8px;"><strong>📦 选项容器:</strong> Radio Groups: ' + radioGroups.length + ', Checkbox Groups: ' + checkboxGroups.length + '</div>';
+                
+                var overallBg = (overallSatisfactionGroup && overallSatisfactionGroup.children && overallSatisfactionGroup.children.length > 0) ? '#0f0' : '#f00';
+                html += '<div style="margin-bottom: 8px; padding: 5px; background: ' + overallBg + '; border-radius: 3px;"><strong>❓ 问题1容器:</strong> ' + overallStatus + '</div>';
+                
+                var rankedBg = (rankedFactorsGroup && rankedFactorsGroup.children && rankedFactorsGroup.children.length > 0) ? '#0f0' : '#f00';
+                html += '<div style="margin-bottom: 8px; padding: 5px; background: ' + rankedBg + '; border-radius: 3px;"><strong>❓ 问题2容器:</strong> ' + rankedStatus + '</div>';
+                
+                var configBg = configLoaded ? '#0f0' : '#f00';
+                html += '<div style="margin-bottom: 8px; padding: 5px; background: ' + configBg + '; border-radius: 3px;"><strong>⚙️ Survey Config:</strong> ' + (configLoaded ? '✅ Loaded' : '❌ NOT LOADED') + '</div>';
+                
+                if (errorMsg) {
+                    html += '<div style="margin-top: 10px; padding: 5px; background: #f00; border-radius: 3px; color: yellow;"><strong>⚠️ 错误:</strong> ' + errorMsg + '</div>';
+                }
+                
+                debugContent.innerHTML = html;
                 
                 console.log('✅ Debug info displayed');
             } catch (error) {
                 console.error('Error showing debug info:', error);
                 if (debugContent) {
-                    debugContent.innerHTML = 'Error: ' + error.message;
+                    debugContent.innerHTML = '<div style="color: yellow; padding: 10px; background: #f00; border-radius: 3px;"><strong>❌ 错误:</strong> ' + error.message + '</div>';
                 }
             }
         }
