@@ -230,9 +230,12 @@
 
         /* Radio Groups */
         .radio-group {
-            display: flex;
+            display: flex !important;
             flex-direction: column;
             gap: 12px;
+            visibility: visible !important;
+            opacity: 1 !important;
+            min-height: 50px; /* 确保容器有高度 */
         }
 
         .radio-option {
@@ -293,9 +296,12 @@
 
         /* Checkbox Groups */
         .checkbox-group {
-            display: flex;
+            display: flex !important;
             flex-direction: column;
             gap: 12px;
+            visibility: visible !important;
+            opacity: 1 !important;
+            min-height: 50px; /* 确保容器有高度 */
         }
 
         .checkbox-option {
@@ -953,12 +959,28 @@
     </style>
 </head>
 <body>
-    <!-- 调试信息框（移动端显示） -->
-    <div id="debugInfo" style="display: none; position: fixed; top: 0; left: 0; right: 0; background: #f0f0f0; padding: 10px; font-size: 12px; z-index: 10000; border-bottom: 2px solid #008B8B; max-height: 200px; overflow-y: auto;">
-        <strong>调试信息:</strong><br>
-        <span id="debugContent"></span>
-        <button onclick="document.getElementById('debugInfo').style.display='none'" style="margin-top: 5px; padding: 5px 10px; background: #008B8B; color: white; border: none; border-radius: 4px; cursor: pointer;">关闭</button>
+    <!-- 调试信息框（始终显示） -->
+    <div id="debugInfo" style="position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; background: #ff0000 !important; color: white !important; padding: 10px !important; font-size: 14px !important; z-index: 99999 !important; border-bottom: 3px solid #000 !important; max-height: 300px !important; overflow-y: auto !important; display: block !important; visibility: visible !important; opacity: 1 !important;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+            <strong style="font-size: 16px;">🔍 调试信息（点击关闭）</strong>
+            <button onclick="document.getElementById('debugInfo').style.display='none'" style="padding: 5px 15px; background: #000; color: white; border: 2px solid white; border-radius: 4px; cursor: pointer; font-weight: bold;">✕ 关闭</button>
+        </div>
+        <div id="debugContent" style="background: rgba(0,0,0,0.3); padding: 8px; border-radius: 4px; font-family: monospace; line-height: 1.6;">
+            <div>⏳ 正在加载调试信息...</div>
+        </div>
     </div>
+    
+    <!-- 添加顶部间距，避免内容被调试框遮挡 -->
+    <style>
+        body {
+            padding-top: 150px !important;
+        }
+        @media (max-width: 768px) {
+            body {
+                padding-top: 200px !important;
+            }
+        }
+    </style>
 
     <!-- Progress Bar -->
     <div class="progress-container">
@@ -1324,20 +1346,23 @@
             try {
                 const container = document.getElementById(groupId);
                 if (!container) {
-                    if (DEBUG_MODE) {
-                        console.error('❌ Container not found:', groupId);
-                    }
+                    console.error('❌ Container not found:', groupId);
                     return;
                 }
                 
                 if (!options || !Array.isArray(options) || options.length === 0) {
-                    if (DEBUG_MODE) {
-                        console.warn('⚠️ No options provided for:', groupId);
-                    }
+                    console.warn('⚠️ No options provided for:', groupId);
                     return;
                 }
                 
+                // 强制显示容器
+                container.style.display = 'flex';
+                container.style.visibility = 'visible';
+                container.style.opacity = '1';
+                
                 container.innerHTML = '';
+                
+                console.log('📝 Rendering radio group:', groupId, 'with', options.length, 'options');
 
                 options.forEach((option, index) => {
                     const radioDiv = document.createElement('div');
@@ -1399,20 +1424,23 @@
             try {
                 const container = document.getElementById(groupId);
                 if (!container) {
-                    if (DEBUG_MODE) {
-                        console.error('❌ Container not found:', groupId);
-                    }
+                    console.error('❌ Container not found:', groupId);
                     return;
                 }
                 
                 if (!options || !Array.isArray(options) || options.length === 0) {
-                    if (DEBUG_MODE) {
-                        console.warn('⚠️ No options provided for:', groupId);
-                    }
+                    console.warn('⚠️ No options provided for:', groupId);
                     return;
                 }
                 
+                // 强制显示容器
+                container.style.display = 'flex';
+                container.style.visibility = 'visible';
+                container.style.opacity = '1';
+                
                 container.innerHTML = '';
+                
+                console.log('📝 Rendering checkbox group:', groupId, 'with', options.length, 'options');
 
                 options.forEach((option, index) => {
                     const checkboxDiv = document.createElement('div');
@@ -1668,20 +1696,23 @@
             try {
                 const container = document.getElementById(groupId);
                 if (!container) {
-                    if (DEBUG_MODE) {
-                        console.error('❌ Container not found:', groupId);
-                    }
+                    console.error('❌ Container not found:', groupId);
                     return;
                 }
                 
                 if (!options || !Array.isArray(options) || options.length === 0) {
-                    if (DEBUG_MODE) {
-                        console.warn('⚠️ No options provided for:', groupId);
-                    }
+                    console.warn('⚠️ No options provided for:', groupId);
                     return;
                 }
                 
+                // 强制显示容器
+                container.style.display = 'flex';
+                container.style.visibility = 'visible';
+                container.style.opacity = '1';
+                
                 container.innerHTML = '';
+                
+                console.log('📝 Rendering ranking checkbox group:', groupId, 'with', options.length, 'options');
 
                 options.forEach((option, index) => {
                     const checkboxDiv = document.createElement('div');
@@ -2955,7 +2986,26 @@
                 const debugInfo = document.getElementById('debugInfo');
                 const debugContent = document.getElementById('debugContent');
                 
-                if (!debugInfo || !debugContent) return;
+                if (!debugInfo) {
+                    console.error('❌ Debug info element not found!');
+                    // 如果元素不存在，创建一个
+                    const newDebugInfo = document.createElement('div');
+                    newDebugInfo.id = 'debugInfo';
+                    newDebugInfo.style.cssText = 'position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; background: #ff0000 !important; color: white !important; padding: 10px !important; font-size: 14px !important; z-index: 99999 !important; border-bottom: 3px solid #000 !important; max-height: 300px !important; overflow-y: auto !important; display: block !important;';
+                    document.body.insertBefore(newDebugInfo, document.body.firstChild);
+                    return;
+                }
+                
+                if (!debugContent) {
+                    console.error('❌ Debug content element not found!');
+                    return;
+                }
+                
+                // 强制显示调试信息框
+                debugInfo.style.display = 'block';
+                debugInfo.style.visibility = 'visible';
+                debugInfo.style.opacity = '1';
+                debugInfo.style.zIndex = '99999';
                 
                 const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
                 const screenWidth = window.screen.width || window.innerWidth;
@@ -2977,25 +3027,52 @@
                 if (isTouchDevice && screenWidth < 768) deviceType = 'Mobile';
                 else if (isTouchDevice && screenWidth >= 768) deviceType = 'Tablet';
                 
+                // 检查关键元素
+                const overallSatisfactionGroup = document.getElementById('overall_satisfaction_group');
+                const rankedFactorsGroup = document.getElementById('ranked_factors_group');
+                const radioCount = document.querySelectorAll('input[type="radio"]').length;
+                const checkboxCount = document.querySelectorAll('input[type="checkbox"]').length;
+                const radioGroups = document.querySelectorAll('.radio-group');
+                const checkboxGroups = document.querySelectorAll('.checkbox-group');
+                
+                // 检查容器状态
+                let overallStatus = 'NOT FOUND';
+                let rankedStatus = 'NOT FOUND';
+                if (overallSatisfactionGroup) {
+                    const computedStyle = window.getComputedStyle(overallSatisfactionGroup);
+                    overallStatus = `Found | Display: ${computedStyle.display} | Visibility: ${computedStyle.visibility} | Opacity: ${computedStyle.opacity} | Children: ${overallSatisfactionGroup.children.length}`;
+                }
+                if (rankedFactorsGroup) {
+                    const computedStyle = window.getComputedStyle(rankedFactorsGroup);
+                    rankedStatus = `Found | Display: ${computedStyle.display} | Visibility: ${computedStyle.visibility} | Opacity: ${computedStyle.opacity} | Children: ${rankedFactorsGroup.children.length}`;
+                }
+                
                 debugContent.innerHTML = `
-                    <strong>浏览器:</strong> ${browser}<br>
-                    <strong>平台:</strong> ${platform}<br>
-                    <strong>设备类型:</strong> ${deviceType}<br>
-                    <strong>触摸设备:</strong> ${isTouchDevice ? '是' : '否'}<br>
-                    <strong>屏幕尺寸:</strong> ${screenWidth} x ${screenHeight}px<br>
-                    <strong>视口尺寸:</strong> ${viewportWidth} x ${viewportHeight}px<br>
-                    <strong>设备像素比:</strong> ${window.devicePixelRatio || 1}<br>
-                    <strong>表单元素数量:</strong> Radio: ${document.querySelectorAll('input[type="radio"]').length}, 
-                    Checkbox: ${document.querySelectorAll('input[type="checkbox"]').length}<br>
-                    <strong>选项容器:</strong> ${document.querySelectorAll('.radio-group, .checkbox-group').length} 个
+                    <div style="margin-bottom: 8px;"><strong>🌐 浏览器:</strong> ${browser}</div>
+                    <div style="margin-bottom: 8px;"><strong>💻 平台:</strong> ${platform}</div>
+                    <div style="margin-bottom: 8px;"><strong>📱 设备类型:</strong> ${deviceType}</div>
+                    <div style="margin-bottom: 8px;"><strong>👆 触摸设备:</strong> ${isTouchDevice ? '✅ 是' : '❌ 否'}</div>
+                    <div style="margin-bottom: 8px;"><strong>📐 屏幕尺寸:</strong> ${screenWidth} x ${screenHeight}px</div>
+                    <div style="margin-bottom: 8px;"><strong>👁️ 视口尺寸:</strong> ${viewportWidth} x ${viewportHeight}px</div>
+                    <div style="margin-bottom: 8px;"><strong>🔍 设备像素比:</strong> ${window.devicePixelRatio || 1}</div>
+                    <div style="margin-bottom: 8px; padding: 5px; background: ${radioCount > 0 ? '#0f0' : '#f00'}; border-radius: 3px;"><strong>📊 表单元素数量:</strong> Radio: ${radioCount}, Checkbox: ${checkboxCount}</div>
+                    <div style="margin-bottom: 8px;"><strong>📦 选项容器:</strong> Radio Groups: ${radioGroups.length}, Checkbox Groups: ${checkboxGroups.length}</div>
+                    <div style="margin-bottom: 8px; padding: 5px; background: ${overallSatisfactionGroup && overallSatisfactionGroup.children.length > 0 ? '#0f0' : '#f00'}; border-radius: 3px;"><strong>❓ 问题1容器:</strong> ${overallStatus}</div>
+                    <div style="margin-bottom: 8px; padding: 5px; background: ${rankedFactorsGroup && rankedFactorsGroup.children.length > 0 ? '#0f0' : '#f00'}; border-radius: 3px;"><strong>❓ 问题2容器:</strong> ${rankedStatus}</div>
+                    <div style="margin-bottom: 8px; padding: 5px; background: ${typeof surveyConfig !== 'undefined' ? '#0f0' : '#f00'}; border-radius: 3px;"><strong>⚙️ Survey Config:</strong> ${typeof surveyConfig !== 'undefined' ? '✅ Loaded' : '❌ NOT LOADED'}</div>
                 `;
                 
-                // 在移动设备上自动显示调试信息
-                if (isTouchDevice) {
-                    debugInfo.style.display = 'block';
-                }
+                // 始终显示调试信息
+                debugInfo.style.display = 'block';
+                debugInfo.style.visibility = 'visible';
+                debugInfo.style.opacity = '1';
+                
+                console.log('✅ Debug info displayed');
             } catch (error) {
                 console.error('Error showing debug info:', error);
+                if (debugContent) {
+                    debugContent.innerHTML = 'Error: ' + error.message;
+                }
             }
         }
 
@@ -3025,22 +3102,55 @@
                 selectRandomImage();
                 
                 // 渲染所有问题
-                if (DEBUG_MODE) {
-                    console.log('📝 Rendering questions...');
-                    console.log('📍 Survey config available:', typeof surveyConfig !== 'undefined');
+                console.log('📝 Rendering questions...');
+                console.log('📍 Survey config available:', typeof surveyConfig !== 'undefined');
+                
+                if (typeof surveyConfig === 'undefined') {
+                    console.error('❌ Survey config is not defined!');
+                    alert('Error: Survey configuration not loaded. Please refresh the page.');
+                    return;
                 }
+                
                 renderAllQuestions();
                 
                 // 验证渲染结果
-                if (DEBUG_MODE) {
+                setTimeout(() => {
                     const firstRadioGroup = document.getElementById('overall_satisfaction_group');
+                    const firstCheckboxGroup = document.getElementById('ranked_factors_group');
+                    
                     if (firstRadioGroup) {
                         const options = firstRadioGroup.querySelectorAll('.radio-option');
                         console.log('✅ First radio group rendered with', options.length, 'options');
+                        if (options.length === 0) {
+                            console.error('❌ Radio group is empty!');
+                            // 强制显示容器
+                            firstRadioGroup.style.display = 'flex';
+                            firstRadioGroup.style.visibility = 'visible';
+                            firstRadioGroup.style.opacity = '1';
+                            firstRadioGroup.style.border = '2px solid red'; // 调试用
+                        }
                     } else {
                         console.error('❌ First radio group not found after rendering!');
                     }
-                }
+                    
+                    if (firstCheckboxGroup) {
+                        const options = firstCheckboxGroup.querySelectorAll('.checkbox-option');
+                        console.log('✅ First checkbox group rendered with', options.length, 'options');
+                        if (options.length === 0) {
+                            console.error('❌ Checkbox group is empty!');
+                            // 强制显示容器
+                            firstCheckboxGroup.style.display = 'flex';
+                            firstCheckboxGroup.style.visibility = 'visible';
+                            firstCheckboxGroup.style.opacity = '1';
+                            firstCheckboxGroup.style.border = '2px solid red'; // 调试用
+                        }
+                    } else {
+                        console.error('❌ First checkbox group not found after rendering!');
+                    }
+                    
+                    // 更新调试信息
+                    showDebugInfo();
+                }, 500);
                 
                 // 设置滚动动画
                 setupScrollAnimation();
@@ -3100,12 +3210,37 @@
             }
         }
 
+        // 立即显示调试信息（不等待页面加载）
+        (function() {
+            try {
+                // 等待 DOM 元素存在
+                function tryShowDebug() {
+                    const debugInfo = document.getElementById('debugInfo');
+                    if (debugInfo) {
+                        showDebugInfo();
+                        // 每2秒更新一次调试信息
+                        setInterval(showDebugInfo, 2000);
+                    } else {
+                        // 如果元素还不存在，100ms 后再试
+                        setTimeout(tryShowDebug, 100);
+                    }
+                }
+                tryShowDebug();
+            } catch (e) {
+                console.error('Error in immediate debug info:', e);
+            }
+        })();
+
         // 使用多种方式确保初始化
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializeApp);
+            document.addEventListener('DOMContentLoaded', function() {
+                initializeApp();
+                showDebugInfo();
+            });
         } else {
             // DOM 已经加载完成
             initializeApp();
+            showDebugInfo();
         }
         
         // 额外的保险：如果上面的都没执行，在 window.onload 时再试一次
@@ -3119,6 +3254,7 @@
                     section.classList.add('visible');
                 });
             }
+            showDebugInfo();
         });
     </script>
 </body>
