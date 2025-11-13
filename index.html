@@ -1271,18 +1271,18 @@
          * ============================================
          * Google Apps Script Web App URL
          */
-        const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyJoQ3FQE-XzU3X-Lp3-XEBuyfj6E5GljvP_j3-geymMcxzTfTKIuLOQ-daGrQ_ub9rlw/exec';
+        var GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyJoQ3FQE-XzU3X-Lp3-XEBuyfj6E5GljvP_j3-geymMcxzTfTKIuLOQ-daGrQ_ub9rlw/exec';
         
         /**
          * 是否启用 Google Sheets 提交
          * 如果设置为 false，数据只会保存到 localStorage
          */
-        const ENABLE_GOOGLE_SHEETS = GOOGLE_APPS_SCRIPT_URL.length > 0;
+        var ENABLE_GOOGLE_SHEETS = GOOGLE_APPS_SCRIPT_URL.length > 0;
         
         /**
          * 调试模式：在控制台输出详细信息
          */
-        const DEBUG_MODE = true;
+        var DEBUG_MODE = true;
 
         /**
          * ============================================
@@ -1290,7 +1290,7 @@
          * 50/50 概率选择 comfort-zone-v1.jpg 或 comfort-zone-v2.jpg
          * ============================================
          */
-        let selectedImageVersion = null;
+        var selectedImageVersion = null;
 
         function selectRandomImage() {
             try {
@@ -1307,7 +1307,7 @@
                 selectedImageVersion = random < 0.5 ? 'comfort-zone-v1' : 'comfort-zone-v2';
                 
                 // 使用相对路径（适用于 GitHub Pages）
-                const imagePath = `./images/${selectedImageVersion}.jpg`;
+                var imagePath = './images/' + selectedImageVersion + '.jpg';
                 
                 if (DEBUG_MODE) {
                     console.log('🖼️ Loading image:', imagePath);
@@ -1468,13 +1468,13 @@
 
                     const radio = document.createElement('input');
                     radio.type = 'radio';
-                    radio.id = `${groupId}_${index}`;
+                    radio.id = groupId + '_' + index;
                     radio.name = groupId.replace('_group', '');
                     radio.value = option;
                     radio.setAttribute('aria-label', option); // 无障碍支持
 
                     const label = document.createElement('label');
-                    label.htmlFor = `${groupId}_${index}`;
+                    label.htmlFor = groupId + '_' + index;
                     label.textContent = option;
                     label.setAttribute('aria-label', option);
 
@@ -1492,8 +1492,8 @@
                     if (option === 'Other' || option.includes('Other') || option.includes('self-describe')) {
                         const otherInput = document.createElement('input');
                         otherInput.type = 'text';
-                        otherInput.id = `${groupId}_other`;
-                        otherInput.name = `${groupId.replace('_group', '')}_other`;
+                        otherInput.id = groupId + '_other';
+                        otherInput.name = groupId.replace('_group', '') + '_other';
                         otherInput.className = 'other-input';
                         otherInput.placeholder = 'Please specify...';
                         otherInput.style.display = 'none';
@@ -1547,7 +1547,7 @@
 
                     const checkbox = document.createElement('input');
                     checkbox.type = 'checkbox';
-                    checkbox.id = `${groupId}_${index}`;
+                    checkbox.id = groupId + '_' + index;
                     checkbox.name = groupId.replace('_group', '');
                     checkbox.value = option;
                     checkbox.setAttribute('aria-label', option); // 无障碍支持
@@ -1556,7 +1556,7 @@
                     });
 
                     const label = document.createElement('label');
-                    label.htmlFor = `${groupId}_${index}`;
+                    label.htmlFor = groupId + '_' + index;
                     label.textContent = option;
                     label.setAttribute('aria-label', option);
 
@@ -1574,8 +1574,8 @@
                     if (option === 'Other' || option.includes('Other')) {
                         const otherInput = document.createElement('input');
                         otherInput.type = 'text';
-                        otherInput.id = `${groupId}_other`;
-                        otherInput.name = `${groupId.replace('_group', '')}_other`;
+                        otherInput.id = groupId + '_other';
+                        otherInput.name = groupId.replace('_group', '') + '_other';
                         otherInput.className = 'other-input';
                         otherInput.placeholder = 'Please specify...';
                         otherInput.style.display = 'none';
@@ -1603,8 +1603,8 @@
          * 强制执行复选框限制
          */
         function enforceCheckboxLimit(groupId, maxSelections) {
-            const checkboxes = document.querySelectorAll(`#${groupId} input[type="checkbox"]:checked`);
-            const allCheckboxes = document.querySelectorAll(`#${groupId} input[type="checkbox"]`);
+            var checkboxes = document.querySelectorAll('#' + groupId + ' input[type="checkbox"]:checked');
+            var allCheckboxes = document.querySelectorAll('#' + groupId + ' input[type="checkbox"]');
 
             if (checkboxes.length >= maxSelections) {
                 allCheckboxes.forEach(cb => {
@@ -1626,13 +1626,13 @@
          */
         function updateChoiceLimit(limitId, groupId, maxSelections) {
             const limitElement = document.getElementById(limitId);
-            const checkedCount = document.querySelectorAll(`#${groupId} input[type="checkbox"]:checked`).length;
+            var checkedCount = document.querySelectorAll('#' + groupId + ' input[type="checkbox"]:checked').length;
 
             if (checkedCount > 0) {
-                limitElement.textContent = `${checkedCount}/${maxSelections} selected`;
+                limitElement.textContent = checkedCount + '/' + maxSelections + ' selected';
                 if (checkedCount > maxSelections) {
                     limitElement.classList.add('error');
-                    limitElement.textContent = `Please select only up to ${maxSelections} options`;
+                    limitElement.textContent = 'Please select only up to ' + maxSelections + ' options';
                 } else {
                     limitElement.classList.remove('error');
                 }
@@ -1666,13 +1666,13 @@
 
                     const radio = document.createElement('input');
                     radio.type = 'radio';
-                    radio.id = `amenity_${amenityIndex}_${i}`;
-                    radio.name = `amenity_${amenityIndex}`;
+                    radio.id = 'amenity_' + amenityIndex + '_' + i;
+                    radio.name = 'amenity_' + amenityIndex;
                     radio.value = i;
                     radio.required = true;
 
                     const label = document.createElement('label');
-                    label.htmlFor = `amenity_${amenityIndex}_${i}`;
+                    label.htmlFor = 'amenity_' + amenityIndex + '_' + i;
                     label.textContent = i;
 
                     scaleItem.appendChild(radio);
@@ -1721,12 +1721,12 @@
 
                 const radio = document.createElement('input');
                 radio.type = 'radio';
-                radio.id = `${statementId}_${index}`;
+                radio.id = statementId + '_' + index;
                 radio.name = statementId;
                 radio.value = value;
 
                 const label = document.createElement('label');
-                label.htmlFor = `${statementId}_${index}`;
+                label.htmlFor = statementId + '_' + index;
                 label.textContent = value;
 
                 optionDiv.appendChild(radio);
@@ -1819,7 +1819,7 @@
 
                     const checkbox = document.createElement('input');
                     checkbox.type = 'checkbox';
-                    checkbox.id = `${groupId}_${index}`;
+                    checkbox.id = groupId + '_' + index;
                     checkbox.name = 'ranked_factors';
                     checkbox.value = option;
                     checkbox.setAttribute('aria-label', option);
@@ -1828,7 +1828,7 @@
                     });
 
                     const label = document.createElement('label');
-                    label.htmlFor = `${groupId}_${index}`;
+                    label.htmlFor = groupId + '_' + index;
                     label.textContent = option;
                     label.setAttribute('aria-label', option);
 
@@ -1846,7 +1846,7 @@
                     if (option === 'Other' || option.includes('Other')) {
                         const otherInput = document.createElement('input');
                         otherInput.type = 'text';
-                        otherInput.id = `${groupId}_other`;
+                        otherInput.id = groupId + '_other';
                         otherInput.name = 'ranked_factors_other';
                         otherInput.className = 'other-input';
                         otherInput.placeholder = 'Please specify...';
@@ -2123,7 +2123,7 @@
 
                     const checkbox = document.createElement('input');
                     checkbox.type = 'checkbox';
-                    checkbox.id = `${groupId}_${index}`;
+                    checkbox.id = groupId + '_' + index;
                     checkbox.name = 'comfort_zone_amenities_ranked';
                     checkbox.value = option;
                     checkbox.setAttribute('aria-label', option);
@@ -2132,7 +2132,7 @@
                     });
 
                     const label = document.createElement('label');
-                    label.htmlFor = `${groupId}_${index}`;
+                    label.htmlFor = groupId + '_' + index;
                     label.textContent = option;
                     label.setAttribute('aria-label', option);
 
@@ -2150,7 +2150,7 @@
                     if (option === 'Other' || option.includes('Other')) {
                         const otherInput = document.createElement('input');
                         otherInput.type = 'text';
-                        otherInput.id = `${groupId}_other`;
+                        otherInput.id = groupId + '_other';
                         otherInput.name = 'comfort_zone_amenities_ranked_other';
                         otherInput.className = 'other-input';
                         otherInput.placeholder = 'Please specify...';
@@ -2247,7 +2247,7 @@
                     if (e.preventDefault) e.preventDefault();
                     e.dataTransfer.dropEffect = 'move';
                     if (this !== draggedElement) {
-                        const allItems = Array.from(document.querySelectorAll(`#${listId} .ranked-item`));
+                        var allItems = Array.from(document.querySelectorAll('#' + listId + ' .ranked-item'));
                         const draggedIndex = allItems.indexOf(draggedElement);
                         const targetIndex = allItems.indexOf(this);
                         if (draggedIndex < targetIndex) {
@@ -2266,7 +2266,7 @@
 
                 rankedItem.addEventListener('dragend', function(e) {
                     this.classList.remove('dragging');
-                    const rankedItems = Array.from(document.querySelectorAll(`#${listId} .ranked-item`));
+                    var rankedItems = Array.from(document.querySelectorAll('#' + listId + ' .ranked-item'));
                     rankedComfortZoneAmenities = rankedItems.map(item => item.dataset.amenity);
                     updateComfortZoneRankNumbers(listId);
                 });
@@ -2287,7 +2287,7 @@
                     e.preventDefault();
                     
                     const touchY = e.touches[0].clientY;
-                    const allItems = Array.from(document.querySelectorAll(`#${listId} .ranked-item`));
+                    var allItems = Array.from(document.querySelectorAll('#' + listId + ' .ranked-item'));
                     const currentIndex = allItems.indexOf(this);
                     
                     // 找到触摸点下方的元素
@@ -2317,7 +2317,7 @@
                         touchStartElement.classList.remove('dragging');
                         
                         // 更新排名数组
-                        const rankedItems = Array.from(document.querySelectorAll(`#${listId} .ranked-item`));
+                        var rankedItems = Array.from(document.querySelectorAll('#' + listId + ' .ranked-item'));
                         rankedComfortZoneAmenities = rankedItems.map(item => item.dataset.amenity);
                         updateComfortZoneRankNumbers(listId);
                         
@@ -2335,7 +2335,7 @@
          * 更新舒适区设施排名数字
          */
         function updateComfortZoneRankNumbers(listId) {
-            const rankedItems = document.querySelectorAll(`#${listId} .ranked-item`);
+            var rankedItems = document.querySelectorAll('#' + listId + ' .ranked-item');
             rankedItems.forEach((item, index) => {
                 const rankNumber = item.querySelector('.rank-number');
                 if (rankNumber) {
@@ -2396,7 +2396,7 @@
 
                 // Section 4
                 surveyConfig.wellnessStatements.forEach((statement, index) => {
-                    renderLikertScale(`wellness_q${index + 1}`, statement);
+                    renderLikertScale('wellness_q' + (index + 1), statement);
                 });
 
                 // Section 5 (重复，可能是错误，但保留以保持兼容性)
@@ -2554,10 +2554,10 @@
                     // 验证排名：必须正好有3个排名设施
                     isFieldValid = rankedComfortZoneAmenities.length === 3;
                 } else if (questionId.startsWith('wellness_')) {
-                    const checked = questionDiv.querySelector(`input[name="${questionId}"]:checked`);
+                    var checked = questionDiv.querySelector('input[name="' + questionId + '"]:checked');
                     isFieldValid = checked !== null;
                 } else {
-                    const checked = questionDiv.querySelector(`input[name="${questionId}"]:checked`);
+                    var checked = questionDiv.querySelector('input[name="' + questionId + '"]:checked');
                     isFieldValid = checked !== null;
                 }
 
@@ -2623,8 +2623,8 @@
 
             // Section 4: Wellness
             surveyConfig.wellnessStatements.forEach((_, index) => {
-                const checked = document.querySelector(`input[name="wellness_q${index + 1}"]:checked`);
-                responses[`wellness_q${index + 1}`] = checked ? checked.value : '';
+                var checked = document.querySelector('input[name="wellness_q' + (index + 1) + '"]:checked');
+                responses['wellness_q' + (index + 1)] = checked ? checked.value : '';
             });
 
             // Section 5: Demographics
@@ -2779,7 +2779,7 @@
                     case 'Wellness_Q5':
                     case 'Wellness_Q6':
                         const wellnessNum = column.match(/\d+/)[0];
-                        value = responses[`wellness_q${wellnessNum}`] || '';
+                        value = responses['wellness_q' + wellnessNum] || '';
                         break;
                     case 'Age_Group':
                         value = responses.age_group || '';
@@ -2849,7 +2849,8 @@
                 const link = document.createElement('a');
                 const url = URL.createObjectURL(blob);
                 link.setAttribute('href', url);
-                link.setAttribute('download', `survey_responses_${new Date().toISOString().split('T')[0]}.csv`);
+                var dateStr = new Date().toISOString().split('T')[0];
+                link.setAttribute('download', 'survey_responses_' + dateStr + '.csv');
                 link.style.visibility = 'hidden';
                 document.body.appendChild(link);
                 link.click();
