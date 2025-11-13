@@ -1,0 +1,26 @@
+{
+  "name": "local-survey-webpage",
+  "version": "1.0.0",
+  "description": "本地调查问卷网页应用，将响应保存到CSV文件",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon --watch server.js --watch public server.js"
+  },
+  "devDependencies": {
+    "connect-livereload": "^0.6.1",
+    "livereload": "^0.10.3",
+    "nodemon": "^3.0.0"
+  },
+  "keywords": [
+    "survey",
+    "csv",
+    "express"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2"
+  }
+}

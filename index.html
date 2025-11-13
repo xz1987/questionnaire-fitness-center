@@ -1,0 +1,2522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finger Lakes Fitness Center Renovation Survey</title>
+    <style>
+        /* ============================================
+           颜色方案：Teal (#008B8B) 和 Orange (#FF6B6B)
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            padding: 0;
+            padding-bottom: 100px;
+        }
+
+        /* 进度条 */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            z-index: 1000;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #008B8B 0%, #FF6B6B 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Header Section */
+        .header {
+            background: white;
+            text-align: center;
+            padding: 40px 20px;
+            border-bottom: 3px solid #008B8B;
+        }
+
+        .header h1 {
+            color: #008B8B;
+            font-size: 2.5em;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            color: #008B8B;
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .header .tagline {
+            color: #FF6B6B;
+            font-size: 1em;
+            font-style: italic;
+        }
+
+        /* Consent Statement */
+        .consent {
+            background: #f0f8f8;
+            border-left: 4px solid #008B8B;
+            padding: 25px;
+            margin: 30px auto;
+            max-width: 900px;
+            border-radius: 4px;
+        }
+
+        .consent h2 {
+            color: #008B8B;
+            font-size: 1.2em;
+            margin-bottom: 12px;
+        }
+
+        .consent p {
+            color: #555;
+            font-size: 0.95em;
+            line-height: 1.8;
+        }
+
+        /* Section Styling */
+        .section {
+            background: white;
+            margin: 30px auto;
+            max-width: 900px;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section:nth-child(even) {
+            background: #fafafa;
+        }
+
+        .section-title {
+            color: #008B8B;
+            font-size: 1.8em;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .framing-text {
+            color: #555;
+            font-size: 1em;
+            margin-bottom: 25px;
+            line-height: 1.8;
+            font-style: italic;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        .question-label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .required-marker {
+            color: #FF6B6B;
+            margin-left: 4px;
+        }
+
+        /* Radio Groups */
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .radio-option:hover {
+            border-color: #008B8B;
+            background-color: #f0f8f8;
+        }
+
+        .radio-option input[type="radio"] {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #008B8B;
+        }
+
+        /* Checkbox Groups */
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-option:hover {
+            border-color: #008B8B;
+            background-color: #f0f8f8;
+        }
+
+        .checkbox-option.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .checkbox-option input[type="checkbox"] {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #008B8B;
+        }
+
+        .choice-limit {
+            color: #FF6B6B;
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .choice-limit.error {
+            color: #FF6B6B;
+        }
+
+        /* Satisfaction Grid */
+        .satisfaction-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .satisfaction-row {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 15px;
+            align-items: center;
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+        }
+
+        .satisfaction-label {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .satisfaction-scale {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .satisfaction-scale-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 50px;
+        }
+
+        .satisfaction-scale-item:hover {
+            border-color: #008B8B;
+            background-color: #f0f8f8;
+        }
+
+        .satisfaction-scale-item input[type="radio"] {
+            margin-bottom: 5px;
+            accent-color: #008B8B;
+        }
+
+        .satisfaction-scale-item label {
+            font-size: 0.85em;
+            color: #666;
+            cursor: pointer;
+        }
+
+        /* Likert Scale */
+        .likert-scale {
+            margin-top: 15px;
+        }
+
+        .likert-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .likert-options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .likert-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 60px;
+        }
+
+        .likert-option:hover {
+            border-color: #008B8B;
+            background-color: #f0f8f8;
+        }
+
+        .likert-option input[type="radio"] {
+            margin-bottom: 5px;
+            accent-color: #008B8B;
+        }
+
+        .likert-option label {
+            font-size: 0.9em;
+            color: #666;
+            cursor: pointer;
+        }
+
+        /* Image Display */
+        .image-section {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: #fafafa;
+            border-radius: 8px;
+        }
+
+        .rendering-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            margin-bottom: 10px;
+        }
+
+        .image-caption {
+            color: #008B8B;
+            font-weight: 600;
+            margin-top: 10px;
+            font-size: 1em;
+        }
+
+        .image-subcaption {
+            color: #666;
+            font-size: 0.85em;
+            font-style: italic;
+            margin-top: 5px;
+        }
+
+        /* Text Inputs */
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #008B8B;
+        }
+
+        .other-input {
+            margin-top: 10px;
+        }
+
+        /* Conditional Sections */
+        .conditional-section {
+            margin-top: 20px;
+            padding-left: 20px;
+            border-left: 3px solid #008B8B;
+            display: none;
+        }
+
+        .conditional-section.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Error Messages */
+        .error-message {
+            color: #FF6B6B;
+            font-size: 0.9em;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .question-container.error .checkbox-option,
+        .question-container.error .radio-option,
+        .question-container.error input,
+        .question-container.error textarea {
+            border-color: #FF6B6B;
+        }
+
+        /* Submit Button - Sticky */
+        .submit-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #008B8B 0%, #006666 100%);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            font-size: 1.2em;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            display: block;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 139, 139, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            position: relative;
+        }
+
+        /* 加载动画 */
+        .submit-btn.loading::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            top: 50%;
+            left: 50%;
+            margin-left: -8px;
+            margin-top: -8px;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .submit-btn.loading {
+            color: transparent;
+        }
+
+        /* Messages */
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            display: none;
+            text-align: center;
+            border: 1px solid #c3e6cb;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        .error-message-box {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            display: none;
+            text-align: center;
+            border: 1px solid #f5c6cb;
+        }
+
+        .error-message-box.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Ranking System */
+        .ranking-container {
+            margin-top: 20px;
+        }
+
+        .ranked-selections {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 2px dashed #008B8B;
+            min-height: 150px;
+        }
+
+        .ranking-instructions {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        .ranked-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .ranked-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border: 2px solid #008B8B;
+            border-radius: 6px;
+            cursor: move;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .ranked-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 139, 139, 0.2);
+            transform: translateX(5px);
+        }
+
+        .ranked-item.dragging {
+            opacity: 0.6;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 139, 139, 0.4);
+        }
+        
+        /* 触摸反馈 */
+        .ranked-item:active {
+            transform: scale(0.98);
+        }
+        
+        @media (hover: none) and (pointer: coarse) {
+            /* 触摸设备样式优化 */
+            .ranked-item {
+                -webkit-tap-highlight-color: rgba(0, 139, 139, 0.2);
+            }
+            
+            .radio-option:active,
+            .checkbox-option:active {
+                background-color: #e0f0f0;
+            }
+        }
+
+        .rank-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            background: #008B8B;
+            color: white;
+            border-radius: 50%;
+            font-weight: 600;
+            font-size: 1.1em;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .ranked-item-text {
+            flex: 1;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .rank-remove-btn {
+            background: #FF6B6B;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .rank-remove-btn:hover {
+            background: #e55555;
+            transform: scale(1.1);
+        }
+
+        .ranked-placeholder {
+            text-align: center;
+            color: #999;
+            padding: 30px;
+            font-style: italic;
+        }
+
+        /* Responsive Design */
+        
+        /* Tablet Styles (768px - 1024px) */
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .section {
+                padding: 30px;
+                margin: 25px auto;
+                max-width: 95%;
+            }
+
+            .header {
+                padding: 35px 20px;
+            }
+
+            .header h1 {
+                font-size: 2.2em;
+            }
+
+            .question-label {
+                font-size: 1.15em;
+            }
+
+            /* Larger touch targets for tablets */
+            .radio-option,
+            .checkbox-option {
+                padding: 16px;
+                min-height: 56px; /* Minimum touch target size */
+            }
+
+            .radio-option input[type="radio"],
+            .checkbox-option input[type="checkbox"] {
+                width: 24px;
+                height: 24px;
+            }
+
+            .ranked-item {
+                padding: 16px;
+                min-height: 56px;
+            }
+
+            .rank-remove-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 24px;
+            }
+
+            .submit-btn {
+                padding: 18px 40px;
+                font-size: 1.2em;
+                min-height: 56px;
+            }
+
+            .rendering-image {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .satisfaction-scale-item {
+                min-width: 60px;
+                padding: 12px;
+            }
+
+            .likert-option {
+                min-width: 60px;
+                padding: 12px;
+            }
+        }
+
+        /* Mobile Styles (max-width: 768px) */
+        @media (max-width: 768px) {
+            .section {
+                padding: 20px;
+                margin: 20px 10px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .satisfaction-row {
+                grid-template-columns: 1fr;
+            }
+
+            .likert-options {
+                justify-content: center;
+            }
+
+            .satisfaction-scale {
+                justify-content: center;
+            }
+
+            /* Larger touch targets for mobile */
+            .radio-option,
+            .checkbox-option {
+                padding: 16px;
+                min-height: 48px;
+            }
+
+            .radio-option input[type="radio"],
+            .checkbox-option input[type="checkbox"] {
+                width: 22px;
+                height: 22px;
+            }
+
+            .ranked-item {
+                padding: 14px;
+                min-height: 48px;
+            }
+
+            .submit-btn {
+                padding: 16px 30px;
+                min-height: 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+        <h1>FINGER LAKES FITNESS CENTER</h1>
+        <div class="subtitle">RENOVATION SURVEY</div>
+        <div class="tagline">We appreciate your help!</div>
+    </div>
+
+    <!-- Consent Statement -->
+    <div class="consent">
+        <h2>Consent & Clarification Statement</h2>
+        <p>
+            This survey is to better understand your wellness needs. Your feedback will help us enhance our facilities 
+            and explore future development. By completing this survey, you confirm you've read and understood this information. 
+            Participation is <strong>anonymous</strong> and <strong>voluntary</strong>; the survey takes about <strong>3-4 minutes</strong>.
+        </p>
+    </div>
+
+    <form id="surveyForm">
+        <!-- Section 1: Current Satisfaction Assessment -->
+        <div class="section" id="section1">
+            <h2 class="section-title">Section 1: Current Satisfaction Assessment</h2>
+            <p class="framing-text">Understanding Your Current Experience<br>Help us understand how well we're meeting your needs today.</p>
+            
+            <div class="form-group question-container" data-question-id="overall_satisfaction">
+                <label class="question-label">
+                    How satisfied are you with Finger Lakes Fitness Center overall?
+                    <span class="required-marker">*</span>
+                </label>
+                <div class="radio-group" id="overall_satisfaction_group"></div>
+                <div class="error-message">Please select an option</div>
+            </div>
+
+            <div class="form-group question-container" data-question-id="ranked_factors">
+                <label class="question-label">
+                    Please select and rank your top 3 valued factors when choosing a fitness center
+                    <span class="required-marker">*</span>
+                </label>
+                <p class="section-subtitle" style="margin-top: -10px; margin-bottom: 15px;">
+                    Drag or touch to reorder your selections (top 3 will be ranked)
+                </p>
+                <div class="ranking-container" id="ranked_factors_container">
+                    <div class="checkbox-group" id="ranked_factors_group"></div>
+                    <div class="ranked-selections" id="ranked_selections">
+                        <p class="ranking-instructions">Select up to 3 factors, then drag to rank them:</p>
+                        <div class="ranked-list" id="ranked_list"></div>
+                    </div>
+                </div>
+                <div class="error-message">Please select and rank at least 3 factors</div>
+            </div>
+        </div>
+
+        <!-- Section 3: Comfort Zone Concept -->
+        <div class="section" id="section3">
+            <h2 class="section-title">Section 2: Comfort Zone Concept</h2>
+            <p class="framing-text">
+                We're Refreshing the Fitness Center<br>
+                We're exploring adding a dedicated comfort zone—a place to restore and recharge between workouts. 
+                This space would provide a comfortable environment to relax, transition between activities, and prepare mentally for your next set.
+            </p>
+            
+            <div class="image-section">
+                <img id="renderingImage" class="rendering-image" alt="Comfort Zone Rendering" />
+                <div class="image-caption">View How It Looks in Space →</div>
+                <div class="image-subcaption">Renderings are conceptual — shown for inspiration, not final design.</div>
+            </div>
+
+            <div class="form-group question-container" data-question-id="comfort_zone_amenities_ranked">
+                <label class="question-label">
+                    Please select and rank your top 3 elements that would be most valuable in this comfort zone
+                    <span class="required-marker">*</span>
+                </label>
+                <p class="section-subtitle" style="margin-top: -10px; margin-bottom: 15px;">
+                    Drag or touch to reorder your selections (top 3 will be ranked)
+                </p>
+                <div class="ranking-container" id="comfort_zone_amenities_ranked_container">
+                    <div class="checkbox-group" id="comfort_zone_amenities_ranked_group"></div>
+                    <div class="ranked-selections" id="comfort_zone_amenities_ranked_selections">
+                        <p class="ranking-instructions">Select up to 3 elements, then drag to rank them:</p>
+                        <div class="ranked-list" id="comfort_zone_amenities_ranked_list"></div>
+                    </div>
+                </div>
+                <div class="error-message">Please select and rank at least 3 elements</div>
+            </div>
+
+            <div class="form-group question-container" data-question-id="usage_frequency">
+                <label class="question-label">
+                    If this comfort zone were available with your valued elements, how often would you use this space?
+                    <span class="required-marker">*</span>
+                </label>
+                <div class="radio-group" id="usage_frequency_group"></div>
+                <div class="error-message">Please select an option</div>
+            </div>
+
+            <div class="form-group question-container" data-question-id="membership_type">
+                <label class="question-label">
+                    Your Membership Type:
+                    <span class="required-marker">*</span>
+                </label>
+                <div class="radio-group" id="membership_type_group"></div>
+                <div class="error-message">Please select an option</div>
+            </div>
+
+            <div class="conditional-section" id="membership_duration_section">
+                <div class="form-group question-container" data-question-id="membership_duration">
+                    <label class="question-label">
+                        (If you are a member) For how long have you been a member?
+                        <span class="required-marker">*</span>
+                    </label>
+                    <div class="radio-group" id="membership_duration_group"></div>
+                    <div class="error-message">Please select an option</div>
+                </div>
+            </div>
+
+            <!-- Version A: For Current Members -->
+            <div class="conditional-section" id="membership_impact_renewal_section">
+                <div class="form-group question-container" data-question-id="membership_impact_renewal">
+                    <label class="question-label">
+                        How would adding this comfort zone affect your likelihood to <strong>renew</strong> your membership?
+                        <span class="required-marker">*</span>
+                    </label>
+                    <div class="radio-group" id="membership_impact_renewal_group"></div>
+                    <div class="error-message">Please select an option</div>
+                </div>
+            </div>
+
+            <!-- Version B: For Non-Members -->
+            <div class="conditional-section" id="membership_impact_join_section">
+                <div class="form-group question-container" data-question-id="membership_impact_join">
+                    <label class="question-label">
+                        How would this comfort zone affect your likelihood to <strong>join</strong> with a new membership?
+                        <span class="required-marker">*</span>
+                    </label>
+                    <div class="radio-group" id="membership_impact_join_group"></div>
+                    <div class="error-message">Please select an option</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Wellness & Balance Assessment -->
+        <div class="section" id="section4">
+            <h2 class="section-title">Section 3: Wellness & Balance Assessment</h2>
+            <p class="framing-text">Think about how each statement fits you<br>Please check the option that feels most true right now.</p>
+            
+            <div id="wellness_statements"></div>
+        </div>
+
+        <!-- Section 7: Demographics -->
+        <div class="section" id="section7">
+            <h2 class="section-title">Section 4: Demographics</h2>
+            
+            <div class="form-group question-container" data-question-id="age_group">
+                <label class="question-label">
+                    Age Group
+                    <span class="required-marker">*</span>
+                </label>
+                <div class="radio-group" id="age_group_group"></div>
+                <div class="error-message">Please select an option</div>
+            </div>
+
+            <div class="form-group question-container" data-question-id="gender">
+                <label class="question-label">
+                    Gender
+                    <span class="required-marker">*</span>
+                </label>
+                <div class="radio-group" id="gender_group"></div>
+                <div class="error-message">Please select an option</div>
+            </div>
+        </div>
+
+        <!-- Submit Container -->
+        <div class="submit-container">
+            <button type="submit" class="submit-btn" id="submitBtn">Submit Survey</button>
+            <div class="success-message" id="successMessage"></div>
+            <div class="error-message-box" id="errorMessageBox"></div>
+            <!-- 管理员导出按钮（可选，可以通过 URL 参数 ?admin=1 显示） -->
+            <button type="button" class="submit-btn" id="exportBtn" style="display: none; margin-top: 10px; background: linear-gradient(135deg, #FF6B6B 0%, #e55555 100%);" onclick="exportToCSV()">Export Responses to CSV</button>
+        </div>
+    </form>
+
+    <script>
+        /**
+         * ============================================
+         * Google Sheets 配置
+         * ============================================
+         * Google Apps Script Web App URL
+         */
+        const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyJoQ3FQE-XzU3X-Lp3-XEBuyfj6E5GljvP_j3-geymMcxzTfTKIuLOQ-daGrQ_ub9rlw/exec';
+        
+        /**
+         * 是否启用 Google Sheets 提交
+         * 如果设置为 false，数据只会保存到 localStorage
+         */
+        const ENABLE_GOOGLE_SHEETS = GOOGLE_APPS_SCRIPT_URL.length > 0;
+        
+        /**
+         * 调试模式：在控制台输出详细信息
+         */
+        const DEBUG_MODE = true;
+
+        /**
+         * ============================================
+         * 随机图片选择功能
+         * 50/50 概率选择 comfort-zone-v1.jpg 或 comfort-zone-v2.jpg
+         * ============================================
+         */
+        let selectedImageVersion = null;
+
+        function selectRandomImage() {
+            const random = Math.random();
+            // 50/50 概率选择
+            selectedImageVersion = random < 0.5 ? 'comfort-zone-v1' : 'comfort-zone-v2';
+            const imagePath = `images/${selectedImageVersion}.jpg`;
+            document.getElementById('renderingImage').src = imagePath;
+            
+            // 如果图片加载失败，显示占位符
+            document.getElementById('renderingImage').onerror = function() {
+                this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgZmlsbD0iI2YwZjhmOCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IiMwMDhCOEIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIj5QbGVhc2UgcGxhY2UgY29tZm9ydC16b25lIHJlbmRlcmluZyBpbWFnZSBob3JlPC90ZXh0Pjwvc3Zn+';
+                this.alt = 'Placeholder: Please add ' + selectedImageVersion + '.jpg to the images folder';
+            };
+        }
+
+        /**
+         * ============================================
+         * 调查问题配置
+         * ============================================
+         */
+        const surveyConfig = {
+            overallSatisfaction: [
+                'Very Dissatisfied',
+                'Dissatisfied',
+                'Neutral',
+                'Satisfied',
+                'Very Satisfied'
+            ],
+            amenities: [
+                'Equipment quality and variety',
+                'Cleanliness and maintenance',
+                'Locker rooms and shower facilities',
+                'Class offerings and personal training',
+                'Social spaces and common areas',
+                'Staff and trainers',
+                'Overall atmosphere and environment'
+            ],
+            topValuedFactors: [
+                'Availability of personal trainers or classes',
+                'Ventilation, lighting, and air conditioning',
+                'Locker rooms and shower facilities',
+                'Variety and quality of equipment',
+                'Availability of seating area',
+                'Cleanliness and maintenance',
+                'Commuting convenience',
+                'Other'
+            ],
+            comfortZoneAmenities: [
+                'Comfortable seating (e.g., couches and lounge chairs)',
+                'Vending machine',
+                'Information / achievement board',
+                'Interaction & networking opportunities',
+                'Books / magazines',
+                'Charging ports',
+                'Plants and natural elements',
+                'Places to hang coats and change shoes',
+                'Other'
+            ],
+            usageFrequency: [
+                'Rarely (once a month or less)',
+                'Sometimes (2-3 times per month)',
+                'Often (1-2 times per week)'
+            ],
+            wellnessStatements: [
+                'I have balanced exercise, nutrition, and rest patterns',
+                'I maintain regular practices that help me stay centered and connected',
+                'I actively engage in learning to keep my mind focused and alert',
+                'I have consistent, genuine connections with others that make me feel supported',
+                'I am aware of my feelings and reflect on my emotions as part of staying balanced',
+                'My current work environment aligns with my skills and values'
+            ],
+            membershipTypes: [
+                "I'm not a member yet",
+                'Pay-per-use / Day rate',
+                'Monthly',
+                '6 Month',
+                'Annual',
+                'Other (Please specify)'
+            ],
+            membershipDurations: [
+                'Less than 6 months',
+                '6 Months to 1 Year',
+                '1-3 Years',
+                '3-5 Years',
+                '5+ Years'
+            ],
+            membershipImpactRenewal: [
+                'Much less likely to renew',
+                'Somewhat less likely to renew',
+                'No impact on my decision',
+                'Somewhat more likely to renew',
+                'Much more likely to renew'
+            ],
+            membershipImpactJoin: [
+                'Much less likely to join',
+                'Somewhat less likely to join',
+                'No impact on my decision',
+                'Somewhat more likely to join',
+                'Much more likely to join'
+            ],
+            ageGroups: [
+                '18-24',
+                '25-34',
+                '35-45',
+                '45-54',
+                '55-64',
+                '65-74',
+                '75+'
+            ],
+            genderOptions: [
+                'M',
+                'F',
+                'Transgender',
+                'Prefer not to respond',
+                'Prefer to self-describe'
+            ]
+        };
+
+        /**
+         * 渲染单选按钮组
+         */
+        function renderRadioGroup(groupId, options) {
+            const container = document.getElementById(groupId);
+            container.innerHTML = '';
+
+            options.forEach((option, index) => {
+                const radioDiv = document.createElement('div');
+                radioDiv.className = 'radio-option';
+
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.id = `${groupId}_${index}`;
+                radio.name = groupId.replace('_group', '');
+                radio.value = option;
+
+                const label = document.createElement('label');
+                label.htmlFor = `${groupId}_${index}`;
+                label.textContent = option;
+
+                radioDiv.appendChild(radio);
+                radioDiv.appendChild(label);
+
+                // 处理 "Other" 或 "self-describe" 选项
+                if (option === 'Other' || option.includes('Other') || option.includes('self-describe')) {
+                    const otherInput = document.createElement('input');
+                    otherInput.type = 'text';
+                    otherInput.id = `${groupId}_other`;
+                    otherInput.name = `${groupId.replace('_group', '')}_other`;
+                    otherInput.className = 'other-input';
+                    otherInput.placeholder = 'Please specify...';
+                    otherInput.style.display = 'none';
+                    radioDiv.appendChild(otherInput);
+
+                    radio.addEventListener('change', function() {
+                        otherInput.style.display = this.checked ? 'block' : 'none';
+                    });
+                }
+
+                container.appendChild(radioDiv);
+            });
+        }
+
+        /**
+         * 渲染复选框组（带限制）
+         */
+        function renderCheckboxGroup(groupId, options, maxSelections) {
+            const container = document.getElementById(groupId);
+            container.innerHTML = '';
+
+            options.forEach((option, index) => {
+                const checkboxDiv = document.createElement('div');
+                checkboxDiv.className = 'checkbox-option';
+                checkboxDiv.setAttribute('data-value', option);
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = `${groupId}_${index}`;
+                checkbox.name = groupId.replace('_group', '');
+                checkbox.value = option;
+                checkbox.addEventListener('change', function() {
+                    enforceCheckboxLimit(groupId, maxSelections);
+                });
+
+                const label = document.createElement('label');
+                label.htmlFor = `${groupId}_${index}`;
+                label.textContent = option;
+
+                checkboxDiv.appendChild(checkbox);
+                checkboxDiv.appendChild(label);
+
+                // 处理 "Other" 选项
+                if (option === 'Other' || option.includes('Other')) {
+                    const otherInput = document.createElement('input');
+                    otherInput.type = 'text';
+                    otherInput.id = `${groupId}_other`;
+                    otherInput.name = `${groupId.replace('_group', '')}_other`;
+                    otherInput.className = 'other-input';
+                    otherInput.placeholder = 'Please specify...';
+                    otherInput.style.display = 'none';
+                    checkboxDiv.appendChild(otherInput);
+
+                    checkbox.addEventListener('change', function() {
+                        otherInput.style.display = this.checked ? 'block' : 'none';
+                    });
+                }
+
+                container.appendChild(checkboxDiv);
+            });
+
+            updateChoiceLimit(groupId.replace('_group', '_limit'), groupId, maxSelections);
+        }
+
+        /**
+         * 强制执行复选框限制
+         */
+        function enforceCheckboxLimit(groupId, maxSelections) {
+            const checkboxes = document.querySelectorAll(`#${groupId} input[type="checkbox"]:checked`);
+            const allCheckboxes = document.querySelectorAll(`#${groupId} input[type="checkbox"]`);
+
+            if (checkboxes.length >= maxSelections) {
+                allCheckboxes.forEach(cb => {
+                    if (!cb.checked) {
+                        cb.closest('.checkbox-option').classList.add('disabled');
+                    }
+                });
+            } else {
+                allCheckboxes.forEach(cb => {
+                    cb.closest('.checkbox-option').classList.remove('disabled');
+                });
+            }
+
+            updateChoiceLimit(groupId.replace('_group', '_limit'), groupId, maxSelections);
+        }
+
+        /**
+         * 更新选择限制提示
+         */
+        function updateChoiceLimit(limitId, groupId, maxSelections) {
+            const limitElement = document.getElementById(limitId);
+            const checkedCount = document.querySelectorAll(`#${groupId} input[type="checkbox"]:checked`).length;
+
+            if (checkedCount > 0) {
+                limitElement.textContent = `${checkedCount}/${maxSelections} selected`;
+                if (checkedCount > maxSelections) {
+                    limitElement.classList.add('error');
+                    limitElement.textContent = `Please select only up to ${maxSelections} options`;
+                } else {
+                    limitElement.classList.remove('error');
+                }
+            } else {
+                limitElement.textContent = '';
+            }
+        }
+
+        /**
+         * 渲染满意度评分网格
+         */
+        function renderSatisfactionGrid() {
+            const container = document.getElementById('amenity_satisfaction_grid');
+            container.innerHTML = '';
+
+            surveyConfig.amenities.forEach((amenity, amenityIndex) => {
+                const row = document.createElement('div');
+                row.className = 'satisfaction-row';
+
+                const label = document.createElement('div');
+                label.className = 'satisfaction-label';
+                label.textContent = amenity;
+                row.appendChild(label);
+
+                const scaleContainer = document.createElement('div');
+                scaleContainer.className = 'satisfaction-scale';
+
+                for (let i = 1; i <= 5; i++) {
+                    const scaleItem = document.createElement('div');
+                    scaleItem.className = 'satisfaction-scale-item';
+
+                    const radio = document.createElement('input');
+                    radio.type = 'radio';
+                    radio.id = `amenity_${amenityIndex}_${i}`;
+                    radio.name = `amenity_${amenityIndex}`;
+                    radio.value = i;
+                    radio.required = true;
+
+                    const label = document.createElement('label');
+                    label.htmlFor = `amenity_${amenityIndex}_${i}`;
+                    label.textContent = i;
+
+                    scaleItem.appendChild(radio);
+                    scaleItem.appendChild(label);
+                    scaleContainer.appendChild(scaleItem);
+                }
+
+                row.appendChild(scaleContainer);
+                container.appendChild(row);
+            });
+        }
+
+        /**
+         * 渲染Likert量表
+         */
+        function renderLikertScale(statementId, statementText) {
+            const container = document.getElementById('wellness_statements');
+            const statementDiv = document.createElement('div');
+            statementDiv.className = 'form-group question-container';
+            statementDiv.setAttribute('data-question-id', statementId);
+
+            const label = document.createElement('label');
+            label.className = 'question-label';
+            label.textContent = statementText;
+            const requiredMarker = document.createElement('span');
+            requiredMarker.className = 'required-marker';
+            requiredMarker.textContent = '*';
+            label.appendChild(requiredMarker);
+            statementDiv.appendChild(label);
+
+            const likertContainer = document.createElement('div');
+            likertContainer.className = 'likert-scale';
+
+            const labelsDiv = document.createElement('div');
+            labelsDiv.className = 'likert-labels';
+            labelsDiv.innerHTML = '<span>Disagree</span><span>Agree</span>';
+            likertContainer.appendChild(labelsDiv);
+
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'likert-options';
+
+            const scaleLabels = ['1', '2', '3', '4', '5'];
+            scaleLabels.forEach((value, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'likert-option';
+
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.id = `${statementId}_${index}`;
+                radio.name = statementId;
+                radio.value = value;
+
+                const label = document.createElement('label');
+                label.htmlFor = `${statementId}_${index}`;
+                label.textContent = value;
+
+                optionDiv.appendChild(radio);
+                optionDiv.appendChild(label);
+                optionsDiv.appendChild(optionDiv);
+            });
+
+            likertContainer.appendChild(optionsDiv);
+            statementDiv.appendChild(likertContainer);
+
+            const errorMsg = document.createElement('div');
+            errorMsg.className = 'error-message';
+            errorMsg.textContent = 'Please select an option';
+            statementDiv.appendChild(errorMsg);
+
+            container.appendChild(statementDiv);
+        }
+
+        /**
+         * 显示/隐藏条件性问题
+         */
+        function showHideConditional() {
+            // Q5.2: Membership Duration - 只在非会员时显示
+            const membershipType = document.querySelector('input[name="membership_type"]:checked');
+            const membershipDurationSection = document.getElementById('membership_duration_section');
+            
+            if (membershipType && membershipType.value !== "I'm not a member yet") {
+                membershipDurationSection.classList.add('show');
+            } else {
+                membershipDurationSection.classList.remove('show');
+                document.querySelectorAll('input[name="membership_duration"]').forEach(r => r.checked = false);
+            }
+
+            // Section 6: 根据会员类型显示不同版本
+            const membershipImpactRenewalSection = document.getElementById('membership_impact_renewal_section');
+            const membershipImpactJoinSection = document.getElementById('membership_impact_join_section');
+            
+            if (membershipType) {
+                if (membershipType.value === "I'm not a member yet") {
+                    membershipImpactJoinSection.classList.add('show');
+                    membershipImpactRenewalSection.classList.remove('show');
+                    document.querySelectorAll('input[name="membership_impact_renewal"]').forEach(r => r.checked = false);
+                } else {
+                    membershipImpactRenewalSection.classList.add('show');
+                    membershipImpactJoinSection.classList.remove('show');
+                    document.querySelectorAll('input[name="membership_impact_join"]').forEach(r => r.checked = false);
+                }
+            } else {
+                membershipImpactRenewalSection.classList.remove('show');
+                membershipImpactJoinSection.classList.remove('show');
+            }
+        }
+
+        /**
+         * 排名功能全局变量
+         */
+        let rankedFactors = [];
+        let rankedComfortZoneAmenities = [];
+        let draggedElement = null;
+
+        /**
+         * 渲染排名复选框组
+         */
+        function renderRankingCheckboxGroup(groupId, options, maxSelections) {
+            const container = document.getElementById(groupId);
+            container.innerHTML = '';
+
+            options.forEach((option, index) => {
+                const checkboxDiv = document.createElement('div');
+                checkboxDiv.className = 'checkbox-option';
+                checkboxDiv.setAttribute('data-value', option);
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = `${groupId}_${index}`;
+                checkbox.name = 'ranked_factors';
+                checkbox.value = option;
+                checkbox.addEventListener('change', function() {
+                    handleRankingChange(option, this.checked);
+                });
+
+                const label = document.createElement('label');
+                label.htmlFor = `${groupId}_${index}`;
+                label.textContent = option;
+
+                checkboxDiv.appendChild(checkbox);
+                checkboxDiv.appendChild(label);
+
+                // 处理 "Other" 选项
+                if (option === 'Other' || option.includes('Other')) {
+                    const otherInput = document.createElement('input');
+                    otherInput.type = 'text';
+                    otherInput.id = `${groupId}_other`;
+                    otherInput.name = 'ranked_factors_other';
+                    otherInput.className = 'other-input';
+                    otherInput.placeholder = 'Please specify...';
+                    otherInput.style.display = 'none';
+                    checkboxDiv.appendChild(otherInput);
+
+                    checkbox.addEventListener('change', function() {
+                        otherInput.style.display = this.checked ? 'block' : 'none';
+                    });
+                }
+
+                container.appendChild(checkboxDiv);
+            });
+
+            updateRankedList();
+        }
+
+        /**
+         * 处理排名变化
+         */
+        function handleRankingChange(factor, isChecked) {
+            if (isChecked) {
+                if (rankedFactors.length >= 3) {
+                    // 如果已经有3个，移除最后一个
+                    const lastFactor = rankedFactors.pop();
+                    const checkbox = Array.from(document.querySelectorAll('input[name="ranked_factors"]'))
+                        .find(cb => cb.value === lastFactor);
+                    if (checkbox) checkbox.checked = false;
+                }
+                rankedFactors.push(factor);
+            } else {
+                rankedFactors = rankedFactors.filter(f => f !== factor);
+            }
+            updateRankedList();
+            enforceRankingLimits();
+        }
+
+        /**
+         * 更新排名列表显示
+         */
+        function updateRankedList() {
+            const rankedList = document.getElementById('ranked_list');
+            rankedList.innerHTML = '';
+
+            if (rankedFactors.length === 0) {
+                rankedList.innerHTML = '<div class="ranked-placeholder">Select factors above to rank them</div>';
+                return;
+            }
+
+            rankedFactors.forEach((factor, index) => {
+                const rankedItem = document.createElement('div');
+                rankedItem.className = 'ranked-item';
+                rankedItem.draggable = true;
+                rankedItem.dataset.factor = factor;
+                rankedItem.dataset.index = index;
+
+                const rankNumber = document.createElement('div');
+                rankNumber.className = 'rank-number';
+                rankNumber.textContent = index + 1;
+
+                const itemText = document.createElement('div');
+                itemText.className = 'ranked-item-text';
+                itemText.textContent = factor;
+
+                const removeBtn = document.createElement('button');
+                removeBtn.type = 'button';
+                removeBtn.className = 'rank-remove-btn';
+                removeBtn.innerHTML = '×';
+                removeBtn.addEventListener('click', () => {
+                    removeFromRanking(factor);
+                });
+
+                rankedItem.appendChild(rankNumber);
+                rankedItem.appendChild(itemText);
+                rankedItem.appendChild(removeBtn);
+
+                // 拖拽事件（支持鼠标和触摸）
+                rankedItem.addEventListener('dragstart', handleDragStart);
+                rankedItem.addEventListener('dragover', handleDragOver);
+                rankedItem.addEventListener('drop', handleDrop);
+                rankedItem.addEventListener('dragend', handleDragEnd);
+                
+                // 触摸事件支持（平板和移动设备）
+                let touchStartY = 0;
+                let touchStartElement = null;
+                
+                rankedItem.addEventListener('touchstart', function(e) {
+                    touchStartY = e.touches[0].clientY;
+                    touchStartElement = this;
+                    this.classList.add('dragging');
+                    e.preventDefault();
+                }, { passive: false });
+                
+                rankedItem.addEventListener('touchmove', function(e) {
+                    if (!touchStartElement) return;
+                    e.preventDefault();
+                    
+                    const touchY = e.touches[0].clientY;
+                    const allItems = Array.from(document.querySelectorAll('.ranked-item'));
+                    const currentIndex = allItems.indexOf(this);
+                    
+                    // 找到触摸点下方的元素
+                    let targetElement = null;
+                    for (let item of allItems) {
+                        const rect = item.getBoundingClientRect();
+                        if (touchY >= rect.top && touchY <= rect.bottom && item !== this) {
+                            targetElement = item;
+                            break;
+                        }
+                    }
+                    
+                    if (targetElement && targetElement !== touchStartElement) {
+                        const targetIndex = allItems.indexOf(targetElement);
+                        const startIndex = allItems.indexOf(touchStartElement);
+                        
+                        if (startIndex < targetIndex) {
+                            targetElement.parentNode.insertBefore(touchStartElement, targetElement.nextSibling);
+                        } else {
+                            targetElement.parentNode.insertBefore(touchStartElement, targetElement);
+                        }
+                    }
+                }, { passive: false });
+                
+                rankedItem.addEventListener('touchend', function(e) {
+                    if (touchStartElement) {
+                        touchStartElement.classList.remove('dragging');
+                        
+                        // 更新排名数组
+                        const rankedItems = Array.from(document.querySelectorAll('.ranked-item'));
+                        rankedFactors = rankedItems.map(item => item.dataset.factor);
+                        updateRankNumbers();
+                        
+                        touchStartElement = null;
+                    }
+                });
+
+                rankedList.appendChild(rankedItem);
+            });
+
+            // 更新排名数字
+            updateRankNumbers();
+        }
+
+        /**
+         * 拖拽开始
+         */
+        function handleDragStart(e) {
+            draggedElement = this;
+            this.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/html', this.innerHTML);
+        }
+
+        /**
+         * 拖拽悬停
+         */
+        function handleDragOver(e) {
+            if (e.preventDefault) {
+                e.preventDefault();
+            }
+            e.dataTransfer.dropEffect = 'move';
+            if (this !== draggedElement) {
+                const allItems = Array.from(document.querySelectorAll('.ranked-item'));
+                const draggedIndex = allItems.indexOf(draggedElement);
+                const targetIndex = allItems.indexOf(this);
+
+                if (draggedIndex < targetIndex) {
+                    this.parentNode.insertBefore(draggedElement, this.nextSibling);
+                } else {
+                    this.parentNode.insertBefore(draggedElement, this);
+                }
+            }
+            return false;
+        }
+
+        /**
+         * 拖拽放置
+         */
+        function handleDrop(e) {
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            }
+            return false;
+        }
+
+        /**
+         * 拖拽结束
+         */
+        function handleDragEnd(e) {
+            this.classList.remove('dragging');
+            
+            // 更新排名数组
+            const rankedItems = Array.from(document.querySelectorAll('.ranked-item'));
+            rankedFactors = rankedItems.map(item => item.dataset.factor);
+            
+            updateRankNumbers();
+        }
+
+        /**
+         * 更新排名数字
+         */
+        function updateRankNumbers() {
+            const rankedItems = document.querySelectorAll('.ranked-item');
+            rankedItems.forEach((item, index) => {
+                const rankNumber = item.querySelector('.rank-number');
+                if (rankNumber) {
+                    rankNumber.textContent = index + 1;
+                }
+            });
+        }
+
+        /**
+         * 从排名中移除
+         */
+        function removeFromRanking(factor) {
+            rankedFactors = rankedFactors.filter(f => f !== factor);
+            const checkbox = Array.from(document.querySelectorAll('input[name="ranked_factors"]'))
+                .find(cb => cb.value === factor);
+            if (checkbox) checkbox.checked = false;
+            updateRankedList();
+            enforceRankingLimits();
+        }
+
+        /**
+         * 强制执行排名限制
+         */
+        function enforceRankingLimits() {
+            const checkboxes = document.querySelectorAll('input[name="ranked_factors"]');
+            const checkedCount = rankedFactors.length;
+
+            checkboxes.forEach(cb => {
+                const optionDiv = cb.closest('.checkbox-option');
+                if (checkedCount >= 3 && !cb.checked) {
+                    optionDiv.classList.add('disabled');
+                } else {
+                    optionDiv.classList.remove('disabled');
+                }
+            });
+        }
+
+        /**
+         * 渲染舒适区设施排名复选框组
+         */
+        function renderComfortZoneRankingCheckboxGroup(groupId, options, maxSelections, listId, containerId) {
+            const container = document.getElementById(groupId);
+            container.innerHTML = '';
+
+            options.forEach((option, index) => {
+                const checkboxDiv = document.createElement('div');
+                checkboxDiv.className = 'checkbox-option';
+                checkboxDiv.setAttribute('data-value', option);
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = `${groupId}_${index}`;
+                checkbox.name = 'comfort_zone_amenities_ranked';
+                checkbox.value = option;
+                checkbox.addEventListener('change', function() {
+                    handleComfortZoneRankingChange(option, this.checked, listId, containerId);
+                });
+
+                const label = document.createElement('label');
+                label.htmlFor = `${groupId}_${index}`;
+                label.textContent = option;
+
+                checkboxDiv.appendChild(checkbox);
+                checkboxDiv.appendChild(label);
+
+                // 处理 "Other" 选项
+                if (option === 'Other' || option.includes('Other')) {
+                    const otherInput = document.createElement('input');
+                    otherInput.type = 'text';
+                    otherInput.id = `${groupId}_other`;
+                    otherInput.name = 'comfort_zone_amenities_ranked_other';
+                    otherInput.className = 'other-input';
+                    otherInput.placeholder = 'Please specify...';
+                    otherInput.style.display = 'none';
+                    checkboxDiv.appendChild(otherInput);
+
+                    checkbox.addEventListener('change', function() {
+                        otherInput.style.display = this.checked ? 'block' : 'none';
+                    });
+                }
+
+                container.appendChild(checkboxDiv);
+            });
+
+            updateComfortZoneRankedList(listId);
+        }
+
+        /**
+         * 处理舒适区设施排名变化
+         */
+        function handleComfortZoneRankingChange(amenity, isChecked, listId, containerId) {
+            if (isChecked) {
+                if (rankedComfortZoneAmenities.length >= 3) {
+                    const lastAmenity = rankedComfortZoneAmenities.pop();
+                    const checkbox = Array.from(document.querySelectorAll('input[name="comfort_zone_amenities_ranked"]'))
+                        .find(cb => cb.value === lastAmenity);
+                    if (checkbox) checkbox.checked = false;
+                }
+                rankedComfortZoneAmenities.push(amenity);
+            } else {
+                rankedComfortZoneAmenities = rankedComfortZoneAmenities.filter(a => a !== amenity);
+            }
+            updateComfortZoneRankedList(listId);
+            enforceComfortZoneRankingLimits(containerId);
+        }
+
+        /**
+         * 更新舒适区设施排名列表显示
+         */
+        function updateComfortZoneRankedList(listId) {
+            const rankedList = document.getElementById(listId);
+            if (!rankedList) return;
+            
+            rankedList.innerHTML = '';
+
+            if (rankedComfortZoneAmenities.length === 0) {
+                rankedList.innerHTML = '<div class="ranked-placeholder">Select elements above to rank them</div>';
+                return;
+            }
+
+            rankedComfortZoneAmenities.forEach((amenity, index) => {
+                const rankedItem = document.createElement('div');
+                rankedItem.className = 'ranked-item';
+                rankedItem.draggable = true;
+                rankedItem.dataset.amenity = amenity;
+                rankedItem.dataset.index = index;
+
+                const rankNumber = document.createElement('div');
+                rankNumber.className = 'rank-number';
+                rankNumber.textContent = index + 1;
+
+                const itemText = document.createElement('div');
+                itemText.className = 'ranked-item-text';
+                itemText.textContent = amenity;
+
+                const removeBtn = document.createElement('button');
+                removeBtn.type = 'button';
+                removeBtn.className = 'rank-remove-btn';
+                removeBtn.innerHTML = '×';
+                removeBtn.addEventListener('click', () => {
+                    removeFromComfortZoneRanking(amenity, listId);
+                });
+
+                rankedItem.appendChild(rankNumber);
+                rankedItem.appendChild(itemText);
+                rankedItem.appendChild(removeBtn);
+
+                // 拖拽事件（支持鼠标和触摸）
+                rankedItem.addEventListener('dragstart', function(e) {
+                    draggedElement = this;
+                    this.classList.add('dragging');
+                    e.dataTransfer.effectAllowed = 'move';
+                    e.dataTransfer.setData('text/html', this.innerHTML);
+                });
+
+                rankedItem.addEventListener('dragover', function(e) {
+                    if (e.preventDefault) e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                    if (this !== draggedElement) {
+                        const allItems = Array.from(document.querySelectorAll(`#${listId} .ranked-item`));
+                        const draggedIndex = allItems.indexOf(draggedElement);
+                        const targetIndex = allItems.indexOf(this);
+                        if (draggedIndex < targetIndex) {
+                            this.parentNode.insertBefore(draggedElement, this.nextSibling);
+                        } else {
+                            this.parentNode.insertBefore(draggedElement, this);
+                        }
+                    }
+                    return false;
+                });
+
+                rankedItem.addEventListener('drop', function(e) {
+                    if (e.stopPropagation) e.stopPropagation();
+                    return false;
+                });
+
+                rankedItem.addEventListener('dragend', function(e) {
+                    this.classList.remove('dragging');
+                    const rankedItems = Array.from(document.querySelectorAll(`#${listId} .ranked-item`));
+                    rankedComfortZoneAmenities = rankedItems.map(item => item.dataset.amenity);
+                    updateComfortZoneRankNumbers(listId);
+                });
+                
+                // 触摸事件支持（平板和移动设备）
+                let touchStartY = 0;
+                let touchStartElement = null;
+                
+                rankedItem.addEventListener('touchstart', function(e) {
+                    touchStartY = e.touches[0].clientY;
+                    touchStartElement = this;
+                    this.classList.add('dragging');
+                    e.preventDefault();
+                }, { passive: false });
+                
+                rankedItem.addEventListener('touchmove', function(e) {
+                    if (!touchStartElement) return;
+                    e.preventDefault();
+                    
+                    const touchY = e.touches[0].clientY;
+                    const allItems = Array.from(document.querySelectorAll(`#${listId} .ranked-item`));
+                    const currentIndex = allItems.indexOf(this);
+                    
+                    // 找到触摸点下方的元素
+                    let targetElement = null;
+                    for (let item of allItems) {
+                        const rect = item.getBoundingClientRect();
+                        if (touchY >= rect.top && touchY <= rect.bottom && item !== this) {
+                            targetElement = item;
+                            break;
+                        }
+                    }
+                    
+                    if (targetElement && targetElement !== touchStartElement) {
+                        const targetIndex = allItems.indexOf(targetElement);
+                        const startIndex = allItems.indexOf(touchStartElement);
+                        
+                        if (startIndex < targetIndex) {
+                            targetElement.parentNode.insertBefore(touchStartElement, targetElement.nextSibling);
+                        } else {
+                            targetElement.parentNode.insertBefore(touchStartElement, targetElement);
+                        }
+                    }
+                }, { passive: false });
+                
+                rankedItem.addEventListener('touchend', function(e) {
+                    if (touchStartElement) {
+                        touchStartElement.classList.remove('dragging');
+                        
+                        // 更新排名数组
+                        const rankedItems = Array.from(document.querySelectorAll(`#${listId} .ranked-item`));
+                        rankedComfortZoneAmenities = rankedItems.map(item => item.dataset.amenity);
+                        updateComfortZoneRankNumbers(listId);
+                        
+                        touchStartElement = null;
+                    }
+                });
+
+                rankedList.appendChild(rankedItem);
+            });
+
+            updateComfortZoneRankNumbers(listId);
+        }
+
+        /**
+         * 更新舒适区设施排名数字
+         */
+        function updateComfortZoneRankNumbers(listId) {
+            const rankedItems = document.querySelectorAll(`#${listId} .ranked-item`);
+            rankedItems.forEach((item, index) => {
+                const rankNumber = item.querySelector('.rank-number');
+                if (rankNumber) {
+                    rankNumber.textContent = index + 1;
+                }
+            });
+        }
+
+        /**
+         * 从舒适区设施排名中移除
+         */
+        function removeFromComfortZoneRanking(amenity, listId) {
+            rankedComfortZoneAmenities = rankedComfortZoneAmenities.filter(a => a !== amenity);
+            const checkbox = Array.from(document.querySelectorAll('input[name="comfort_zone_amenities_ranked"]'))
+                .find(cb => cb.value === amenity);
+            if (checkbox) checkbox.checked = false;
+            updateComfortZoneRankedList(listId);
+            enforceComfortZoneRankingLimits(listId.replace('_list', '_container'));
+        }
+
+        /**
+         * 强制执行舒适区设施排名限制
+         */
+        function enforceComfortZoneRankingLimits(containerId) {
+            const checkboxes = document.querySelectorAll('input[name="comfort_zone_amenities_ranked"]');
+            const checkedCount = rankedComfortZoneAmenities.length;
+
+            checkboxes.forEach(cb => {
+                const optionDiv = cb.closest('.checkbox-option');
+                if (checkedCount >= 3 && !cb.checked) {
+                    optionDiv.classList.add('disabled');
+                } else {
+                    optionDiv.classList.remove('disabled');
+                }
+            });
+        }
+
+        /**
+         * 渲染所有问题
+         */
+        function renderAllQuestions() {
+            // Section 1
+            renderRadioGroup('overall_satisfaction_group', surveyConfig.overallSatisfaction);
+            renderRankingCheckboxGroup('ranked_factors_group', surveyConfig.topValuedFactors, 3);
+
+            // Section 3
+            renderComfortZoneRankingCheckboxGroup('comfort_zone_amenities_ranked_group', surveyConfig.comfortZoneAmenities, 3, 'comfort_zone_amenities_ranked_list', 'comfort_zone_amenities_ranked_container');
+            renderRadioGroup('usage_frequency_group', surveyConfig.usageFrequency);
+            renderRadioGroup('membership_type_group', surveyConfig.membershipTypes);
+            renderRadioGroup('membership_duration_group', surveyConfig.membershipDurations);
+            renderRadioGroup('membership_impact_renewal_group', surveyConfig.membershipImpactRenewal);
+            renderRadioGroup('membership_impact_join_group', surveyConfig.membershipImpactJoin);
+
+            // Section 4
+            surveyConfig.wellnessStatements.forEach((statement, index) => {
+                renderLikertScale(`wellness_q${index + 1}`, statement);
+            });
+
+            // Section 5
+            renderRadioGroup('membership_type_group', surveyConfig.membershipTypes);
+            renderRadioGroup('membership_duration_group', surveyConfig.membershipDurations);
+
+            // Section 6
+            renderRadioGroup('membership_impact_renewal_group', surveyConfig.membershipImpactRenewal);
+            renderRadioGroup('membership_impact_join_group', surveyConfig.membershipImpactJoin);
+
+            // Section 7
+            renderRadioGroup('age_group_group', surveyConfig.ageGroups);
+            renderRadioGroup('gender_group', surveyConfig.genderOptions);
+
+            // 监听变化以更新条件性问题
+            document.querySelectorAll('input[name="membership_type"]').forEach(radio => {
+                radio.addEventListener('change', showHideConditional);
+            });
+        }
+
+        /**
+         * 计算进度
+         */
+        function calculateProgress() {
+            const totalQuestions = document.querySelectorAll('.question-container').length;
+            let answeredQuestions = 0;
+
+            document.querySelectorAll('.question-container').forEach(container => {
+                const questionId = container.getAttribute('data-question-id');
+                let isAnswered = false;
+
+                if (questionId === 'ranked_factors') {
+                    // 检查排名：必须正好有3个
+                    isAnswered = rankedFactors.length === 3;
+                } else if (questionId === 'comfort_zone_amenities_ranked') {
+                    // 验证排名：必须正好有3个排名设施
+                    isAnswered = rankedComfortZoneAmenities.length === 3;
+                }
+
+                // 条件性问题只有在显示时才计算
+                if (container.closest('.conditional-section')) {
+                    if (container.closest('.conditional-section').classList.contains('show')) {
+                        if (isAnswered) answeredQuestions++;
+                    }
+                } else {
+                    if (isAnswered) answeredQuestions++;
+                }
+            });
+
+            const progress = Math.round((answeredQuestions / totalQuestions) * 100);
+            document.getElementById('progressBar').style.width = progress + '%';
+            return progress;
+        }
+
+        /**
+         * 滚动动画
+         */
+        function setupScrollAnimation() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            document.querySelectorAll('.section').forEach(section => {
+                observer.observe(section);
+            });
+        }
+
+        /**
+         * 验证表单
+         */
+        function validateForm() {
+            let isValid = true;
+            const questions = document.querySelectorAll('.question-container');
+
+            questions.forEach(questionDiv => {
+                const questionId = questionDiv.getAttribute('data-question-id');
+                const errorMsg = questionDiv.querySelector('.error-message');
+                let isFieldValid = false;
+
+                // 跳过隐藏的条件性问题
+                if (questionDiv.closest('.conditional-section') && 
+                    !questionDiv.closest('.conditional-section').classList.contains('show')) {
+                    return;
+                }
+
+                if (questionId === 'ranked_factors') {
+                    // 验证排名：必须正好有3个排名因素
+                    isFieldValid = rankedFactors.length === 3;
+                } else if (questionId === 'comfort_zone_amenities_ranked') {
+                    // 验证排名：必须正好有3个排名设施
+                    isFieldValid = rankedComfortZoneAmenities.length === 3;
+                } else if (questionId.startsWith('wellness_')) {
+                    const checked = questionDiv.querySelector(`input[name="${questionId}"]:checked`);
+                    isFieldValid = checked !== null;
+                } else {
+                    const checked = questionDiv.querySelector(`input[name="${questionId}"]:checked`);
+                    isFieldValid = checked !== null;
+                }
+
+                if (!isFieldValid) {
+                    questionDiv.classList.add('error');
+                    if (errorMsg) errorMsg.classList.add('show');
+                    isValid = false;
+                } else {
+                    questionDiv.classList.remove('error');
+                    if (errorMsg) errorMsg.classList.remove('show');
+                }
+            });
+
+            return isValid;
+        }
+
+        /**
+         * 收集表单数据
+         */
+        function collectFormData() {
+            const responses = {};
+            const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+            // 图片版本
+            responses['image_version_shown'] = selectedImageVersion || 'unknown';
+
+            // Section 1: Satisfaction
+            const overallSatisfaction = document.querySelector('input[name="overall_satisfaction"]:checked');
+            responses['overall_satisfaction'] = overallSatisfaction ? overallSatisfaction.value : '';
+
+            // Section 1: Ranked Factors (排名前3的因素)
+            responses['ranked_factor_1'] = rankedFactors[0] || '';
+            responses['ranked_factor_2'] = rankedFactors[1] || '';
+            responses['ranked_factor_3'] = rankedFactors[2] || '';
+            const rankedOther = document.querySelector('input[name="ranked_factors_other"]')?.value || '';
+            if (rankedOther) responses['ranked_factors_other'] = rankedOther;
+
+            // Section 3: Comfort Zone (排名前3的设施)
+            responses['comfort_zone_amenity_1'] = rankedComfortZoneAmenities[0] || '';
+            responses['comfort_zone_amenity_2'] = rankedComfortZoneAmenities[1] || '';
+            responses['comfort_zone_amenity_3'] = rankedComfortZoneAmenities[2] || '';
+            const comfortZoneOther = document.querySelector('input[name="comfort_zone_amenities_ranked_other"]')?.value || '';
+            if (comfortZoneOther) responses['comfort_zone_other'] = comfortZoneOther;
+
+            const usageFrequency = document.querySelector('input[name="usage_frequency"]:checked');
+            responses['usage_frequency'] = usageFrequency ? usageFrequency.value : '';
+
+            // Section 3: Membership (移到Section 3)
+            const membershipType = document.querySelector('input[name="membership_type"]:checked');
+            responses['membership_type'] = membershipType ? membershipType.value : '';
+            const membershipTypeOther = document.querySelector('input[name="membership_type_other"]')?.value || '';
+            if (membershipTypeOther) responses['membership_type_other'] = membershipTypeOther;
+
+            const membershipDuration = document.querySelector('input[name="membership_duration"]:checked');
+            responses['membership_duration'] = membershipDuration ? membershipDuration.value : '';
+
+            // Section 3: Membership Impact (移到Section 3)
+            const membershipImpactRenewal = document.querySelector('input[name="membership_impact_renewal"]:checked');
+            responses['membership_impact_renewal'] = membershipImpactRenewal ? membershipImpactRenewal.value : '';
+
+            const membershipImpactJoin = document.querySelector('input[name="membership_impact_join"]:checked');
+            responses['membership_impact_join'] = membershipImpactJoin ? membershipImpactJoin.value : '';
+
+            // Section 4: Wellness
+            surveyConfig.wellnessStatements.forEach((_, index) => {
+                const checked = document.querySelector(`input[name="wellness_q${index + 1}"]:checked`);
+                responses[`wellness_q${index + 1}`] = checked ? checked.value : '';
+            });
+
+            // Section 5: Demographics
+            const ageGroup = document.querySelector('input[name="age_group"]:checked');
+            responses['age_group'] = ageGroup ? ageGroup.value : '';
+
+            const gender = document.querySelector('input[name="gender"]:checked');
+            responses['gender'] = gender ? gender.value : '';
+            const genderSelfDescribe = document.querySelector('input[name="gender_other"]')?.value || '';
+            if (genderSelfDescribe) responses['gender_self_describe'] = genderSelfDescribe;
+
+            return { responses, timestamp };
+        }
+
+        /**
+         * 显示成功消息
+         */
+        function showSuccess(message) {
+            const successMsg = document.getElementById('successMessage');
+            successMsg.textContent = message;
+            successMsg.classList.add('show');
+            
+            setTimeout(() => {
+                successMsg.classList.remove('show');
+            }, 5000);
+        }
+
+        /**
+         * 显示错误消息
+         */
+        function showError(message) {
+            const errorMsg = document.getElementById('errorMessageBox');
+            errorMsg.textContent = message;
+            errorMsg.classList.add('show');
+            
+            setTimeout(() => {
+                errorMsg.classList.remove('show');
+            }, 5000);
+        }
+
+        /**
+         * CSV列定义（与服务器端保持一致）
+         */
+        const CSV_COLUMNS = [
+            'Timestamp',
+            'Overall_Satisfaction',
+            'Ranked_Factor_1',
+            'Ranked_Factor_2',
+            'Ranked_Factor_3',
+            'Ranked_Factors_Other',
+            'Image_Version_Shown',
+            'Comfort_Zone_Amenity_1',
+            'Comfort_Zone_Amenity_2',
+            'Comfort_Zone_Amenity_3',
+            'Comfort_Zone_Other',
+            'Usage_Frequency',
+            'Membership_Type',
+            'Membership_Type_Other',
+            'Membership_Duration',
+            'Membership_Impact_Renewal',
+            'Membership_Impact_Join',
+            'Wellness_Q1',
+            'Wellness_Q2',
+            'Wellness_Q3',
+            'Wellness_Q4',
+            'Wellness_Q5',
+            'Wellness_Q6',
+            'Age_Group',
+            'Gender',
+            'Gender_Self_Describe'
+        ];
+
+        /**
+         * 转义CSV字段中的特殊字符
+         */
+        function escapeCSVField(field) {
+            if (field === null || field === undefined || field === '') {
+                return '';
+            }
+            const stringField = String(field);
+            if (stringField.includes(',') || stringField.includes('"') || stringField.includes('\n')) {
+                return '"' + stringField.replace(/"/g, '""') + '"';
+            }
+            return stringField;
+        }
+
+        /**
+         * 将响应转换为CSV行
+         */
+        function convertToCSVRow(responses, timestamp) {
+            const row = [];
+            
+            CSV_COLUMNS.forEach(column => {
+                let value = '';
+                
+                switch (column) {
+                    case 'Timestamp':
+                        value = timestamp || new Date().toISOString().replace('T', ' ').substring(0, 19);
+                        break;
+                    case 'Overall_Satisfaction':
+                        value = responses.overall_satisfaction || '';
+                        break;
+                    case 'Ranked_Factor_1':
+                        value = responses.ranked_factor_1 || '';
+                        break;
+                    case 'Ranked_Factor_2':
+                        value = responses.ranked_factor_2 || '';
+                        break;
+                    case 'Ranked_Factor_3':
+                        value = responses.ranked_factor_3 || '';
+                        break;
+                    case 'Ranked_Factors_Other':
+                        value = responses.ranked_factors_other || '';
+                        break;
+                    case 'Image_Version_Shown':
+                        value = responses.image_version_shown || '';
+                        break;
+                    case 'Comfort_Zone_Amenity_1':
+                        value = responses.comfort_zone_amenity_1 || '';
+                        break;
+                    case 'Comfort_Zone_Amenity_2':
+                        value = responses.comfort_zone_amenity_2 || '';
+                        break;
+                    case 'Comfort_Zone_Amenity_3':
+                        value = responses.comfort_zone_amenity_3 || '';
+                        break;
+                    case 'Comfort_Zone_Other':
+                        value = responses.comfort_zone_other || '';
+                        break;
+                    case 'Usage_Frequency':
+                        value = responses.usage_frequency || '';
+                        break;
+                    case 'Membership_Type':
+                        value = responses.membership_type || '';
+                        break;
+                    case 'Membership_Type_Other':
+                        value = responses.membership_type_other || '';
+                        break;
+                    case 'Membership_Duration':
+                        value = responses.membership_duration || '';
+                        break;
+                    case 'Membership_Impact_Renewal':
+                        value = responses.membership_impact_renewal || '';
+                        break;
+                    case 'Membership_Impact_Join':
+                        value = responses.membership_impact_join || '';
+                        break;
+                    case 'Wellness_Q1':
+                    case 'Wellness_Q2':
+                    case 'Wellness_Q3':
+                    case 'Wellness_Q4':
+                    case 'Wellness_Q5':
+                    case 'Wellness_Q6':
+                        const wellnessNum = column.match(/\d+/)[0];
+                        value = responses[`wellness_q${wellnessNum}`] || '';
+                        break;
+                    case 'Age_Group':
+                        value = responses.age_group || '';
+                        break;
+                    case 'Gender':
+                        value = responses.gender || '';
+                        break;
+                    case 'Gender_Self_Describe':
+                        value = responses.gender_self_describe || '';
+                        break;
+                    default:
+                        value = '';
+                }
+                
+                row.push(escapeCSVField(value));
+            });
+            
+            return row.join(',');
+        }
+
+        /**
+         * 保存响应到 localStorage
+         */
+        function saveResponseToLocalStorage(responses, timestamp) {
+            try {
+                const storageKey = 'survey_responses';
+                let allResponses = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                
+                const responseData = {
+                    timestamp: timestamp || new Date().toISOString().replace('T', ' ').substring(0, 19),
+                    responses: responses
+                };
+                
+                allResponses.push(responseData);
+                localStorage.setItem(storageKey, JSON.stringify(allResponses));
+                
+                return true;
+            } catch (error) {
+                console.error('Error saving to localStorage:', error);
+                return false;
+            }
+        }
+
+        /**
+         * 导出所有响应为 CSV
+         */
+        function exportToCSV() {
+            try {
+                const storageKey = 'survey_responses';
+                const allResponses = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                
+                if (allResponses.length === 0) {
+                    alert('No responses to export.');
+                    return;
+                }
+                
+                // 创建 CSV 内容
+                let csvContent = CSV_COLUMNS.join(',') + '\n';
+                
+                allResponses.forEach(responseData => {
+                    const csvRow = convertToCSVRow(responseData.responses, responseData.timestamp);
+                    csvContent += csvRow + '\n';
+                });
+                
+                // 创建下载链接
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                const url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', `survey_responses_${new Date().toISOString().split('T')[0]}.csv`);
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } catch (error) {
+                console.error('Error exporting CSV:', error);
+                alert('Error exporting CSV. Please try again.');
+            }
+        }
+
+        /**
+         * 提交数据到 Google Sheets
+         * @param {Object} data - 要提交的数据对象
+         * @returns {Promise<Object>} - 返回提交结果
+         */
+        async function submitToGoogleSheets(data) {
+            if (!ENABLE_GOOGLE_SHEETS || !GOOGLE_APPS_SCRIPT_URL) {
+                throw new Error('Google Sheets integration is not configured');
+            }
+
+            if (DEBUG_MODE) {
+                console.log('📤 Submitting to Google Sheets:', {
+                    url: GOOGLE_APPS_SCRIPT_URL,
+                    data: data
+                });
+            }
+
+            try {
+                // Google Apps Script 需要特殊的跨域处理
+                // 使用 POST 方法发送 JSON 数据
+                const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // Google Apps Script 需要 no-cors 模式以避免 CORS 问题
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (DEBUG_MODE) {
+                    console.log('📥 Response received:', response);
+                }
+
+                // 注意：由于使用了 no-cors 模式，我们无法直接读取响应
+                // 但请求应该已经成功发送
+                // 如果 Google Apps Script 配置正确，数据应该已经写入
+                return { 
+                    success: true, 
+                    message: 'Data submitted successfully',
+                    note: 'Response cannot be read due to CORS, but request was sent'
+                };
+            } catch (error) {
+                if (DEBUG_MODE) {
+                    console.error('❌ Google Sheets submission error:', error);
+                    console.error('Error details:', {
+                        name: error.name,
+                        message: error.message,
+                        stack: error.stack
+                    });
+                }
+                throw new Error('Failed to submit to Google Sheets: ' + error.message);
+            }
+        }
+
+        /**
+         * 提交表单（支持 Google Sheets 和 localStorage）
+         */
+        async function submitForm(event) {
+            event.preventDefault();
+
+            if (!validateForm()) {
+                showError('Please complete all required fields');
+                return;
+            }
+
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.textContent;
+            
+            // 设置加载状态
+            submitBtn.disabled = true;
+            submitBtn.classList.add('loading');
+            submitBtn.textContent = 'Submitting...';
+
+            try {
+                const { responses, timestamp } = collectFormData();
+                
+                if (DEBUG_MODE) {
+                    console.log('📋 Form data collected:', { responses, timestamp });
+                }
+                
+                // 准备提交数据
+                const submitData = {
+                    timestamp: timestamp,
+                    ...responses
+                };
+
+                let googleSheetsSuccess = false;
+                let localStorageSuccess = false;
+                let googleSheetsError = null;
+
+                // 如果启用了 Google Sheets，先提交到 Google Sheets
+                if (ENABLE_GOOGLE_SHEETS) {
+                    try {
+                        if (DEBUG_MODE) {
+                            console.log('🔄 Attempting to submit to Google Sheets...');
+                        }
+                        await submitToGoogleSheets(submitData);
+                        googleSheetsSuccess = true;
+                        if (DEBUG_MODE) {
+                            console.log('✅ Successfully submitted to Google Sheets');
+                        }
+                    } catch (error) {
+                        googleSheetsError = error;
+                        if (DEBUG_MODE) {
+                            console.error('❌ Google Sheets submission failed:', error);
+                            console.error('Error details:', {
+                                message: error.message,
+                                name: error.name
+                            });
+                        }
+                        // 即使 Google Sheets 失败，也继续保存到 localStorage
+                    }
+                }
+
+                // 保存到 localStorage（作为备份）
+                try {
+                    if (DEBUG_MODE) {
+                        console.log('💾 Saving to localStorage...');
+                    }
+                    localStorageSuccess = saveResponseToLocalStorage(responses, timestamp);
+                    if (DEBUG_MODE && localStorageSuccess) {
+                        console.log('✅ Successfully saved to localStorage');
+                    }
+                } catch (error) {
+                    if (DEBUG_MODE) {
+                        console.error('❌ localStorage save failed:', error);
+                    }
+                }
+
+                // 显示成功消息
+                if (googleSheetsSuccess || localStorageSuccess) {
+                    let successMessage = 'Thank you! Your response has been saved successfully.';
+                    if (ENABLE_GOOGLE_SHEETS) {
+                        if (googleSheetsSuccess) {
+                            successMessage += ' (Submitted to Google Sheets)';
+                        } else {
+                            successMessage += ' (Saved locally - Google Sheets submission may have failed. Please check your Google Sheets.)';
+                            if (DEBUG_MODE && googleSheetsError) {
+                                console.warn('⚠️ Google Sheets error:', googleSheetsError.message);
+                            }
+                        }
+                    }
+                    showSuccess(successMessage);
+                    
+                    // 重置表单
+                    document.getElementById('surveyForm').reset();
+                    rankedFactors = [];
+                    rankedComfortZoneAmenities = [];
+                    updateRankedList();
+                    updateComfortZoneRankedList('comfort_zone_amenities_ranked_list');
+                    enforceRankingLimits();
+                    enforceComfortZoneRankingLimits('comfort_zone_amenities_ranked_container');
+                    selectRandomImage();
+                    showHideConditional();
+                    calculateProgress();
+                } else {
+                    showError('Failed to save response. Please try again.');
+                }
+            } catch (error) {
+                if (DEBUG_MODE) {
+                    console.error('❌ Submission error:', error);
+                    console.error('Error stack:', error.stack);
+                }
+                showError('An error occurred. Please try again. Check the console for details.');
+            } finally {
+                // 恢复按钮状态
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('loading');
+                submitBtn.textContent = originalText;
+            }
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            selectRandomImage();
+            renderAllQuestions();
+            setupScrollAnimation();
+            showHideConditional();
+            calculateProgress();
+
+            // 监听输入变化以更新进度
+            document.addEventListener('change', () => {
+                calculateProgress();
+            });
+
+            document.getElementById('surveyForm').addEventListener('submit', submitForm);
+            
+            // 检查 URL 参数，如果是管理员模式，显示导出按钮
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('admin') === '1') {
+                document.getElementById('exportBtn').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
