@@ -968,7 +968,62 @@
         <div id="debugContent" style="background: rgba(0,0,0,0.3); padding: 8px; border-radius: 4px; font-family: monospace; line-height: 1.6;">
             <div>⏳ 正在加载调试信息...</div>
             <div style="margin-top: 5px; color: yellow;">如果这里一直显示"正在加载"，说明 JavaScript 执行有问题</div>
+            <div id="debugSimple" style="margin-top: 10px; padding: 5px; background: #000; color: #0f0; border: 1px solid #0f0;">
+                <div>简单测试: <span id="testTime">-</span></div>
+            </div>
         </div>
+        
+        <!-- 内联脚本，立即执行，不依赖函数 -->
+        <script>
+            (function() {
+                try {
+                    // 立即更新简单测试
+                    var testTimeEl = document.getElementById('testTime');
+                    if (testTimeEl) {
+                        testTimeEl.textContent = new Date().toLocaleTimeString();
+                    }
+                    
+                    // 立即尝试显示调试信息
+                    var debugContent = document.getElementById('debugContent');
+                    if (debugContent) {
+                        var html = '<div style="color: #0f0;">✅ JavaScript 已执行</div>';
+                        html += '<div>时间: ' + new Date().toLocaleTimeString() + '</div>';
+                        html += '<div>User Agent: ' + (navigator.userAgent || 'Unknown') + '</div>';
+                        html += '<div>屏幕: ' + (window.screen.width || 0) + 'x' + (window.screen.height || 0) + '</div>';
+                        html += '<div>视口: ' + (window.innerWidth || 0) + 'x' + (window.innerHeight || 0) + '</div>';
+                        
+                        // 检查关键元素
+                        var overallGroup = document.getElementById('overall_satisfaction_group');
+                        var rankedGroup = document.getElementById('ranked_factors_group');
+                        
+                        html += '<div style="margin-top: 10px; padding: 5px; background: ' + (overallGroup ? '#0f0' : '#f00') + ';">问题1容器: ' + (overallGroup ? '找到' : '未找到') + '</div>';
+                        html += '<div style="padding: 5px; background: ' + (rankedGroup ? '#0f0' : '#f00') + ';">问题2容器: ' + (rankedGroup ? '找到' : '未找到') + '</div>';
+                        
+                        if (overallGroup) {
+                            var children = overallGroup.children ? overallGroup.children.length : 0;
+                            html += '<div>问题1子元素: ' + children + '</div>';
+                        }
+                        if (rankedGroup) {
+                            var children2 = rankedGroup.children ? rankedGroup.children.length : 0;
+                            html += '<div>问题2子元素: ' + children2 + '</div>';
+                        }
+                        
+                        // 检查表单元素
+                        var radios = document.querySelectorAll('input[type="radio"]');
+                        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                        html += '<div style="margin-top: 10px; padding: 5px; background: ' + (radios.length > 0 ? '#0f0' : '#f00') + ';">Radio 数量: ' + radios.length + '</div>';
+                        html += '<div style="padding: 5px; background: ' + (checkboxes.length > 0 ? '#0f0' : '#f00') + ';">Checkbox 数量: ' + checkboxes.length + '</div>';
+                        
+                        debugContent.innerHTML = html;
+                    }
+                } catch (e) {
+                    var debugContent = document.getElementById('debugContent');
+                    if (debugContent) {
+                        debugContent.innerHTML = '<div style="color: #f00;">❌ 错误: ' + e.message + '</div>';
+                    }
+                }
+            })();
+        </script>
     </div>
     
     <!-- 添加顶部间距，避免内容被调试框遮挡 -->
@@ -3275,16 +3330,25 @@
             }
         }
 
-        // 立即显示调试信息（不等待页面加载）
+        // 立即显示调试信息（不等待页面加载，兼容 Android 7.0）
         (function() {
             try {
                 // 等待 DOM 元素存在
                 function tryShowDebug() {
-                    const debugInfo = document.getElementById('debugInfo');
+                    var debugInfo = document.getElementById('debugInfo');
                     if (debugInfo) {
-                        showDebugInfo();
-                        // 每2秒更新一次调试信息
-                        setInterval(showDebugInfo, 2000);
+                        // 立即调用一次
+                        if (typeof showDebugInfo === 'function') {
+                            showDebugInfo();
+                            // 每2秒更新一次调试信息
+                            setInterval(showDebugInfo, 2000);
+                        } else {
+                            // 如果函数不存在，使用简单版本
+                            var debugContent = document.getElementById('debugContent');
+                            if (debugContent) {
+                                debugContent.innerHTML = '<div style="color: #f00;">❌ showDebugInfo 函数未定义</div>';
+                            }
+                        }
                     } else {
                         // 如果元素还不存在，100ms 后再试
                         setTimeout(tryShowDebug, 100);
@@ -3293,6 +3357,10 @@
                 tryShowDebug();
             } catch (e) {
                 console.error('Error in immediate debug info:', e);
+                var debugContent = document.getElementById('debugContent');
+                if (debugContent) {
+                    debugContent.innerHTML = '<div style="color: #f00;">❌ 初始化错误: ' + e.message + '</div>';
+                }
             }
         })();
 
