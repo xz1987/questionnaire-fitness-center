@@ -109,6 +109,14 @@
             opacity: 1;
             transform: translateY(0);
         }
+        
+        /* 移动设备优化：如果 JavaScript 未执行，至少内容可见 */
+        @media (max-width: 1024px) {
+            .section {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
         .section:nth-child(even) {
             background: #fafafa;
@@ -1902,42 +1910,69 @@
         }
 
         /**
-         * 渲染所有问题
+         * 渲染所有问题（带错误处理）
          */
         function renderAllQuestions() {
-            // Section 1
-            renderRadioGroup('overall_satisfaction_group', surveyConfig.overallSatisfaction);
-            renderRankingCheckboxGroup('ranked_factors_group', surveyConfig.topValuedFactors, 3);
+            try {
+                if (DEBUG_MODE) {
+                    console.log('📝 Starting to render questions...');
+                }
+                
+                // Section 1
+                renderRadioGroup('overall_satisfaction_group', surveyConfig.overallSatisfaction);
+                renderRankingCheckboxGroup('ranked_factors_group', surveyConfig.topValuedFactors, 3);
 
-            // Section 3
-            renderComfortZoneRankingCheckboxGroup('comfort_zone_amenities_ranked_group', surveyConfig.comfortZoneAmenities, 3, 'comfort_zone_amenities_ranked_list', 'comfort_zone_amenities_ranked_container');
-            renderRadioGroup('usage_frequency_group', surveyConfig.usageFrequency);
-            renderRadioGroup('membership_type_group', surveyConfig.membershipTypes);
-            renderRadioGroup('membership_duration_group', surveyConfig.membershipDurations);
-            renderRadioGroup('membership_impact_renewal_group', surveyConfig.membershipImpactRenewal);
-            renderRadioGroup('membership_impact_join_group', surveyConfig.membershipImpactJoin);
+                // Section 3
+                renderComfortZoneRankingCheckboxGroup('comfort_zone_amenities_ranked_group', surveyConfig.comfortZoneAmenities, 3, 'comfort_zone_amenities_ranked_list', 'comfort_zone_amenities_ranked_container');
+                renderRadioGroup('usage_frequency_group', surveyConfig.usageFrequency);
+                renderRadioGroup('membership_type_group', surveyConfig.membershipTypes);
+                renderRadioGroup('membership_duration_group', surveyConfig.membershipDurations);
+                renderRadioGroup('membership_impact_renewal_group', surveyConfig.membershipImpactRenewal);
+                renderRadioGroup('membership_impact_join_group', surveyConfig.membershipImpactJoin);
 
-            // Section 4
-            surveyConfig.wellnessStatements.forEach((statement, index) => {
-                renderLikertScale(`wellness_q${index + 1}`, statement);
-            });
+                // Section 4
+                surveyConfig.wellnessStatements.forEach((statement, index) => {
+                    renderLikertScale(`wellness_q${index + 1}`, statement);
+                });
 
-            // Section 5
-            renderRadioGroup('membership_type_group', surveyConfig.membershipTypes);
-            renderRadioGroup('membership_duration_group', surveyConfig.membershipDurations);
+                // Section 5 (重复，可能是错误，但保留以保持兼容性)
+                renderRadioGroup('membership_type_group', surveyConfig.membershipTypes);
+                renderRadioGroup('membership_duration_group', surveyConfig.membershipDurations);
 
-            // Section 6
-            renderRadioGroup('membership_impact_renewal_group', surveyConfig.membershipImpactRenewal);
-            renderRadioGroup('membership_impact_join_group', surveyConfig.membershipImpactJoin);
+                // Section 6 (重复，可能是错误，但保留以保持兼容性)
+                renderRadioGroup('membership_impact_renewal_group', surveyConfig.membershipImpactRenewal);
+                renderRadioGroup('membership_impact_join_group', surveyConfig.membershipImpactJoin);
 
-            // Section 7
-            renderRadioGroup('age_group_group', surveyConfig.ageGroups);
-            renderRadioGroup('gender_group', surveyConfig.genderOptions);
+                // Section 7
+                renderRadioGroup('age_group_group', surveyConfig.ageGroups);
+                renderRadioGroup('gender_group', surveyConfig.genderOptions);
 
-            // 监听变化以更新条件性问题
-            document.querySelectorAll('input[name="membership_type"]').forEach(radio => {
-                radio.addEventListener('change', showHideConditional);
-            });
+                // 监听变化以更新条件性问题
+                const membershipTypeRadios = document.querySelectorAll('input[name="membership_type"]');
+                if (membershipTypeRadios.length > 0) {
+                    membershipTypeRadios.forEach(radio => {
+                        radio.addEventListener('change', showHideConditional);
+                    });
+                } else {
+                    if (DEBUG_MODE) {
+                        console.warn('⚠️ No membership_type radio buttons found');
+                    }
+                }
+                
+                if (DEBUG_MODE) {
+                    console.log('✅ All questions rendered successfully');
+                }
+            } catch (error) {
+                console.error('❌ Error rendering questions:', error);
+                // 即使出错，也尝试显示错误信息
+                const sections = document.querySelectorAll('.section');
+                sections.forEach(section => {
+                    const errorDiv = document.createElement('div');
+                    errorDiv.style.cssText = 'background: #f8d7da; color: #721c24; padding: 15px; margin: 10px; border-radius: 4px;';
+                    errorDiv.textContent = 'Error loading questions. Please refresh the page.';
+                    section.appendChild(errorDiv);
+                });
+            }
         }
 
         /**
@@ -1975,22 +2010,59 @@
         }
 
         /**
-         * 滚动动画
+         * 滚动动画（带降级方案）
          */
         function setupScrollAnimation() {
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
+            const sections = document.querySelectorAll('.section');
+            
+            // 检查 IntersectionObserver 是否支持
+            if ('IntersectionObserver' in window) {
+                try {
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('visible');
+                            }
+                        });
+                    }, {
+                        threshold: 0.1
+                    });
+
+                    sections.forEach(section => {
+                        observer.observe(section);
+                    });
+                    
+                    if (DEBUG_MODE) {
+                        console.log('✅ IntersectionObserver initialized');
+                    }
+                } catch (error) {
+                    if (DEBUG_MODE) {
+                        console.warn('⚠️ IntersectionObserver error, using fallback:', error);
+                    }
+                    // 降级：直接显示所有内容
+                    sections.forEach(section => {
+                        section.classList.add('visible');
+                    });
+                }
+            } else {
+                // 降级：浏览器不支持 IntersectionObserver，直接显示所有内容
+                if (DEBUG_MODE) {
+                    console.warn('⚠️ IntersectionObserver not supported, showing all sections immediately');
+                }
+                sections.forEach(section => {
+                    section.classList.add('visible');
+                });
+            }
+            
+            // 移动设备优化：延迟后确保所有内容可见
+            // 某些移动浏览器可能需要额外时间
+            setTimeout(() => {
+                sections.forEach(section => {
+                    if (!section.classList.contains('visible')) {
+                        section.classList.add('visible');
                     }
                 });
-            }, {
-                threshold: 0.1
-            });
-
-            document.querySelectorAll('.section').forEach(section => {
-                observer.observe(section);
-            });
+            }, 500);
         }
 
         /**
@@ -2540,25 +2612,95 @@
             }
         }
 
-        // 初始化
-        document.addEventListener('DOMContentLoaded', () => {
-            selectRandomImage();
-            renderAllQuestions();
-            setupScrollAnimation();
-            showHideConditional();
-            calculateProgress();
-
-            // 监听输入变化以更新进度
-            document.addEventListener('change', () => {
+        // 初始化（带错误处理）
+        function initializeApp() {
+            try {
+                if (DEBUG_MODE) {
+                    console.log('🚀 Initializing application...');
+                }
+                
+                // 选择随机图片
+                selectRandomImage();
+                
+                // 渲染所有问题
+                if (DEBUG_MODE) {
+                    console.log('📝 Rendering questions...');
+                }
+                renderAllQuestions();
+                
+                // 设置滚动动画
+                setupScrollAnimation();
+                
+                // 显示/隐藏条件性问题
+                showHideConditional();
+                
+                // 计算进度
                 calculateProgress();
-            });
 
-            document.getElementById('surveyForm').addEventListener('submit', submitForm);
-            
-            // 检查 URL 参数，如果是管理员模式，显示导出按钮
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('admin') === '1') {
-                document.getElementById('exportBtn').style.display = 'block';
+                // 监听输入变化以更新进度
+                document.addEventListener('change', () => {
+                    calculateProgress();
+                });
+
+                // 绑定表单提交事件
+                const form = document.getElementById('surveyForm');
+                if (form) {
+                    form.addEventListener('submit', submitForm);
+                } else {
+                    console.error('❌ Form element not found!');
+                }
+                
+                // 检查 URL 参数，如果是管理员模式，显示导出按钮
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('admin') === '1') {
+                    const exportBtn = document.getElementById('exportBtn');
+                    if (exportBtn) {
+                        exportBtn.style.display = 'block';
+                    }
+                }
+                
+                // 确保所有 section 在移动设备上可见（额外保险）
+                setTimeout(() => {
+                    const sections = document.querySelectorAll('.section');
+                    sections.forEach(section => {
+                        section.classList.add('visible');
+                    });
+                    if (DEBUG_MODE) {
+                        console.log('✅ All sections made visible');
+                    }
+                }, 1000);
+                
+                if (DEBUG_MODE) {
+                    console.log('✅ Application initialized successfully');
+                }
+            } catch (error) {
+                console.error('❌ Initialization error:', error);
+                // 即使出错，也尝试显示内容
+                const sections = document.querySelectorAll('.section');
+                sections.forEach(section => {
+                    section.classList.add('visible');
+                });
+            }
+        }
+
+        // 使用多种方式确保初始化
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeApp);
+        } else {
+            // DOM 已经加载完成
+            initializeApp();
+        }
+        
+        // 额外的保险：如果上面的都没执行，在 window.onload 时再试一次
+        window.addEventListener('load', () => {
+            const sections = document.querySelectorAll('.section');
+            if (sections.length > 0 && !sections[0].classList.contains('visible')) {
+                if (DEBUG_MODE) {
+                    console.warn('⚠️ Sections not visible on load, forcing visibility');
+                }
+                sections.forEach(section => {
+                    section.classList.add('visible');
+                });
             }
         });
     </script>
