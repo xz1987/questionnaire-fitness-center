@@ -23,13 +23,6 @@
             line-height: 1.6;
             padding: 0;
             padding-bottom: 100px;
-            padding-top: 150px !important; /* 为调试框留出空间 */
-        }
-        
-        @media (max-width: 768px) {
-            body {
-                padding-top: 200px !important; /* 移动端更多空间 */
-            }
         }
 
         /* 进度条 */
@@ -970,8 +963,8 @@
     </style>
 </head>
 <body>
-    <!-- 调试信息框（始终显示） -->
-    <div id="debugInfo" style="position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; background: #ff0000 !important; color: white !important; padding: 10px !important; font-size: 14px !important; z-index: 99999 !important; border-bottom: 3px solid #000 !important; max-height: 300px !important; overflow-y: auto !important; display: block !important; visibility: visible !important; opacity: 1 !important;">
+    <!-- 调试信息框（已隐藏） -->
+    <div id="debugInfo" style="position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; background: #ff0000 !important; color: white !important; padding: 10px !important; font-size: 14px !important; z-index: 99999 !important; border-bottom: 3px solid #000 !important; max-height: 300px !important; overflow-y: auto !important; display: none !important; visibility: hidden !important; opacity: 0 !important;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
             <strong style="font-size: 16px;">🔍 调试信息（点击关闭）</strong>
             <button onclick="document.getElementById('debugInfo').style.display='none'" style="padding: 5px 15px; background: #000; color: white; border: 2px solid white; border-radius: 4px; cursor: pointer; font-weight: bold;">✕ 关闭</button>
@@ -3099,11 +3092,10 @@
                     return;
                 }
                 
-                // 强制显示调试信息框
-                debugInfo.style.display = 'block';
-                debugInfo.style.visibility = 'visible';
-                debugInfo.style.opacity = '1';
-                debugInfo.style.zIndex = '99999';
+                // 调试信息框已隐藏，不显示
+                debugInfo.style.display = 'none';
+                debugInfo.style.visibility = 'hidden';
+                debugInfo.style.opacity = '0';
                 
                 // 获取基本信息（使用兼容性更好的方法）
                 var isTouchDevice = false;
