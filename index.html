@@ -2246,15 +2246,23 @@
             var allCheckboxes = document.querySelectorAll('#' + groupId + ' input[type="checkbox"]');
 
             if (checkboxes.length >= maxSelections) {
-                allCheckboxes.forEach(cb => {
+                for (var i = 0; i < allCheckboxes.length; i++) {
+                    var cb = allCheckboxes[i];
                     if (!cb.checked) {
-                        cb.closest('.checkbox-option').classList.add('disabled');
+                        var optionDiv = cb.closest ? cb.closest('.checkbox-option') : cb.parentElement;
+                        if (optionDiv) {
+                            optionDiv.classList.add('disabled');
+                        }
                     }
-                });
+                }
             } else {
-                allCheckboxes.forEach(cb => {
-                    cb.closest('.checkbox-option').classList.remove('disabled');
-                });
+                for (var j = 0; j < allCheckboxes.length; j++) {
+                    var cb2 = allCheckboxes[j];
+                    var optionDiv2 = cb2.closest ? cb2.closest('.checkbox-option') : cb2.parentElement;
+                    if (optionDiv2) {
+                        optionDiv2.classList.remove('disabled');
+                    }
+                }
             }
 
             updateChoiceLimit(groupId.replace('_group', '_limit'), groupId, maxSelections);
@@ -2287,7 +2295,8 @@
             var container = document.getElementById('amenity_satisfaction_grid');
             container.innerHTML = '';
 
-            surveyConfig.amenities.forEach((amenity, amenityIndex) => {
+            for (var amenityIndex = 0; amenityIndex < surveyConfig.amenities.length; amenityIndex++) {
+                var amenity = surveyConfig.amenities[amenityIndex];
                 var row = document.createElement('div');
                 row.className = 'satisfaction-row';
 
@@ -2321,7 +2330,7 @@
 
                 row.appendChild(scaleContainer);
                 container.appendChild(row);
-            });
+            }
         }
 
         /**
@@ -2354,7 +2363,8 @@
             optionsDiv.className = 'likert-options';
 
             var scaleLabels = ['1', '2', '3', '4', '5'];
-            scaleLabels.forEach((value, index) => {
+            for (var index = 0; index < scaleLabels.length; index++) {
+                var value = scaleLabels[index];
                 var optionDiv = document.createElement('div');
                 optionDiv.className = 'likert-option';
 
@@ -2371,7 +2381,7 @@
                 optionDiv.appendChild(radio);
                 optionDiv.appendChild(label);
                 optionsDiv.appendChild(optionDiv);
-            });
+            }
 
             likertContainer.appendChild(optionsDiv);
             statementDiv.appendChild(likertContainer);
@@ -2396,7 +2406,10 @@
                 membershipDurationSection.classList.add('show');
             } else {
                 membershipDurationSection.classList.remove('show');
-                document.querySelectorAll('input[name="membership_duration"]').forEach(r => r.checked = false);
+                var durationRadios = document.querySelectorAll('input[name="membership_duration"]');
+                for (var dr = 0; dr < durationRadios.length; dr++) {
+                    durationRadios[dr].checked = false;
+                }
             }
 
             // Section 6: 根据会员类型显示不同版本
@@ -2407,11 +2420,17 @@
                 if (membershipType.value === "I'm not a member yet") {
                     membershipImpactJoinSection.classList.add('show');
                     membershipImpactRenewalSection.classList.remove('show');
-                    document.querySelectorAll('input[name="membership_impact_renewal"]').forEach(r => r.checked = false);
+                    var renewalRadios = document.querySelectorAll('input[name="membership_impact_renewal"]');
+                    for (var rr = 0; rr < renewalRadios.length; rr++) {
+                        renewalRadios[rr].checked = false;
+                    }
                 } else {
                     membershipImpactRenewalSection.classList.add('show');
                     membershipImpactJoinSection.classList.remove('show');
-                    document.querySelectorAll('input[name="membership_impact_join"]').forEach(r => r.checked = false);
+                    var joinRadios = document.querySelectorAll('input[name="membership_impact_join"]');
+                    for (var jr = 0; jr < joinRadios.length; jr++) {
+                        joinRadios[jr].checked = false;
+                    }
                 }
             } else {
                 membershipImpactRenewalSection.classList.remove('show');
@@ -2577,7 +2596,8 @@
                 return;
             }
 
-            rankedFactors.forEach((factor, index) => {
+            for (var index = 0; index < rankedFactors.length; index++) {
+                var factor = rankedFactors[index];
                 var rankedItem = document.createElement('div');
                 rankedItem.className = 'ranked-item';
                 rankedItem.draggable = true;
@@ -2657,7 +2677,10 @@
                         
                         // 更新排名数组
                         var rankedItems = Array.from(document.querySelectorAll('.ranked-item'));
-                        rankedFactors = rankedItems.map(item => item.dataset.factor);
+                        rankedFactors = [];
+                        for (var mi = 0; mi < rankedItems.length; mi++) {
+                            rankedFactors.push(rankedItems[mi].dataset.factor);
+                        }
                         updateRankNumbers();
                         
                         touchStartElement = null;
@@ -2731,12 +2754,13 @@
          */
         function updateRankNumbers() {
             var rankedItems = document.querySelectorAll('.ranked-item');
-            rankedItems.forEach((item, index) => {
+            for (var index = 0; index < rankedItems.length; index++) {
+                var item = rankedItems[index];
                 var rankNumber = item.querySelector('.rank-number');
                 if (rankNumber) {
                     rankNumber.textContent = index + 1;
                 }
-            });
+            }
         }
 
         /**
@@ -2758,14 +2782,17 @@
             var checkboxes = document.querySelectorAll('input[name="ranked_factors"]');
             var checkedCount = rankedFactors.length;
 
-            checkboxes.forEach(cb => {
-                var optionDiv = cb.closest('.checkbox-option');
-                if (checkedCount >= 3 && !cb.checked) {
-                    optionDiv.classList.add('disabled');
-                } else {
-                    optionDiv.classList.remove('disabled');
+            for (var i = 0; i < checkboxes.length; i++) {
+                var cb = checkboxes[i];
+                var optionDiv = cb.closest ? cb.closest('.checkbox-option') : cb.parentElement;
+                if (optionDiv) {
+                    if (checkedCount >= 3 && !cb.checked) {
+                        optionDiv.classList.add('disabled');
+                    } else {
+                        optionDiv.classList.remove('disabled');
+                    }
                 }
-            });
+            }
         }
 
         /**
@@ -2790,7 +2817,8 @@
                 
                 container.innerHTML = '';
 
-                options.forEach((option, index) => {
+                for (var index = 0; index < options.length; index++) {
+                    var option = options[index];
                     var checkboxDiv = document.createElement('div');
                     checkboxDiv.className = 'checkbox-option';
                     checkboxDiv.setAttribute('data-value', option);
@@ -2801,9 +2829,11 @@
                     checkbox.name = 'comfort_zone_amenities_ranked';
                     checkbox.value = option;
                     checkbox.setAttribute('aria-label', option);
-                    checkbox.addEventListener('change', function() {
-                        handleComfortZoneRankingChange(option, this.checked, listId, containerId);
-                    });
+                    checkbox.addEventListener('change', function(opt, list, cont) {
+                        return function() {
+                            handleComfortZoneRankingChange(opt, this.checked, list, cont);
+                        };
+                    }(option, listId, containerId));
 
                     var label = document.createElement('label');
                     label.htmlFor = groupId + '_' + index;
@@ -2821,7 +2851,7 @@
                     checkboxDiv.appendChild(label);
 
                     // 处理 "Other" 选项
-                    if (option === 'Other' || option.includes('Other')) {
+                    if (option === 'Other' || option.indexOf('Other') !== -1) {
                         var otherInput = document.createElement('input');
                         otherInput.type = 'text';
                         otherInput.id = groupId + '_other';
@@ -2831,13 +2861,15 @@
                         otherInput.style.display = 'none';
                         checkboxDiv.appendChild(otherInput);
 
-                        checkbox.addEventListener('change', function() {
-                            otherInput.style.display = this.checked ? 'block' : 'none';
-                        });
+                        checkbox.addEventListener('change', function(input) {
+                            return function() {
+                                input.style.display = this.checked ? 'block' : 'none';
+                            };
+                        }(otherInput));
                     }
 
                     container.appendChild(checkboxDiv);
-                });
+                }
 
                 updateComfortZoneRankedList(listId);
                 
@@ -2882,7 +2914,8 @@
                 return;
             }
 
-            rankedComfortZoneAmenities.forEach((amenity, index) => {
+            for (var index = 0; index < rankedComfortZoneAmenities.length; index++) {
+                var amenity = rankedComfortZoneAmenities[index];
                 var rankedItem = document.createElement('div');
                 rankedItem.className = 'ranked-item';
                 rankedItem.draggable = true;
@@ -2901,9 +2934,11 @@
                 removeBtn.type = 'button';
                 removeBtn.className = 'rank-remove-btn';
                 removeBtn.innerHTML = '×';
-                removeBtn.addEventListener('click', () => {
-                    removeFromComfortZoneRanking(amenity, listId);
-                });
+                removeBtn.addEventListener('click', function(amenityValue, listIdValue) {
+                    return function() {
+                        removeFromComfortZoneRanking(amenityValue, listIdValue);
+                    };
+                }(amenity, listId));
 
                 rankedItem.appendChild(rankNumber);
                 rankedItem.appendChild(itemText);
@@ -3010,12 +3045,13 @@
          */
         function updateComfortZoneRankNumbers(listId) {
             var rankedItems = document.querySelectorAll('#' + listId + ' .ranked-item');
-            rankedItems.forEach((item, index) => {
+            for (var index = 0; index < rankedItems.length; index++) {
+                var item = rankedItems[index];
                 var rankNumber = item.querySelector('.rank-number');
                 if (rankNumber) {
                     rankNumber.textContent = index + 1;
                 }
-            });
+            }
         }
 
         /**
@@ -3037,14 +3073,17 @@
             var checkboxes = document.querySelectorAll('input[name="comfort_zone_amenities_ranked"]');
             var checkedCount = rankedComfortZoneAmenities.length;
 
-            checkboxes.forEach(cb => {
-                var optionDiv = cb.closest('.checkbox-option');
-                if (checkedCount >= 3 && !cb.checked) {
-                    optionDiv.classList.add('disabled');
-                } else {
-                    optionDiv.classList.remove('disabled');
+            for (var i = 0; i < checkboxes.length; i++) {
+                var cb = checkboxes[i];
+                var optionDiv = cb.closest ? cb.closest('.checkbox-option') : cb.parentElement;
+                if (optionDiv) {
+                    if (checkedCount >= 3 && !cb.checked) {
+                        optionDiv.classList.add('disabled');
+                    } else {
+                        optionDiv.classList.remove('disabled');
+                    }
                 }
-            });
+            }
         }
 
         /**
@@ -3069,9 +3108,10 @@
                 renderRadioGroup('membership_impact_join_group', surveyConfig.membershipImpactJoin);
 
                 // Section 4
-                surveyConfig.wellnessStatements.forEach((statement, index) => {
+                for (var index = 0; index < surveyConfig.wellnessStatements.length; index++) {
+                    var statement = surveyConfig.wellnessStatements[index];
                     renderLikertScale('wellness_q' + (index + 1), statement);
-                });
+                }
 
                 // Section 5 (重复，可能是错误，但保留以保持兼容性)
                 renderRadioGroup('membership_type_group', surveyConfig.membershipTypes);
@@ -3088,9 +3128,9 @@
                 // 监听变化以更新条件性问题
                 var membershipTypeRadios = document.querySelectorAll('input[name="membership_type"]');
                 if (membershipTypeRadios.length > 0) {
-                    membershipTypeRadios.forEach(radio => {
-                        radio.addEventListener('change', showHideConditional);
-                    });
+                    for (var mr = 0; mr < membershipTypeRadios.length; mr++) {
+                        membershipTypeRadios[mr].addEventListener('change', showHideConditional);
+                    }
                 } else {
                     if (DEBUG_MODE) {
                         console.warn('⚠️ No membership_type radio buttons found');
@@ -3104,12 +3144,13 @@
                 console.error('❌ Error rendering questions:', error);
                 // 即使出错，也尝试显示错误信息
                 var sections = document.querySelectorAll('.section');
-                sections.forEach(section => {
+                for (var es = 0; es < sections.length; es++) {
+                    var section = sections[es];
                     var errorDiv = document.createElement('div');
                     errorDiv.style.cssText = 'background: #f8d7da; color: #721c24; padding: 15px; margin: 10px; border-radius: 4px;';
                     errorDiv.textContent = 'Error loading questions. Please refresh the page.';
                     section.appendChild(errorDiv);
-                });
+                }
             }
         }
 
@@ -3120,7 +3161,9 @@
             var totalQuestions = document.querySelectorAll('.question-container').length;
             var answeredQuestions = 0;
 
-            document.querySelectorAll('.question-container').forEach(container => {
+            var questionContainers = document.querySelectorAll('.question-container');
+            for (var qc = 0; qc < questionContainers.length; qc++) {
+                var container = questionContainers[qc];
                 var questionId = container.getAttribute('data-question-id');
                 var isAnswered = false;
 
@@ -3157,18 +3200,19 @@
             if ('IntersectionObserver' in window) {
                 try {
                     var observer = new IntersectionObserver((entries) => {
-                        entries.forEach(entry => {
+                        for (var e = 0; e < entries.length; e++) {
+                            var entry = entries[e];
                             if (entry.isIntersecting) {
                                 entry.target.classList.add('visible');
                             }
-                        });
+                        }
                     }, {
                         threshold: 0.1
                     });
 
-                    sections.forEach(section => {
-                        observer.observe(section);
-                    });
+                    for (var obs = 0; obs < sections.length; obs++) {
+                        observer.observe(sections[obs]);
+                    }
                     
                     if (DEBUG_MODE) {
                         console.log('✅ IntersectionObserver initialized');
@@ -3178,28 +3222,28 @@
                         console.warn('⚠️ IntersectionObserver error, using fallback:', error);
                     }
                     // 降级：直接显示所有内容
-                    sections.forEach(section => {
-                        section.classList.add('visible');
-                    });
+                    for (var fs = 0; fs < sections.length; fs++) {
+                        sections[fs].classList.add('visible');
+                    }
                 }
             } else {
                 // 降级：浏览器不支持 IntersectionObserver，直接显示所有内容
                 if (DEBUG_MODE) {
                     console.warn('⚠️ IntersectionObserver not supported, showing all sections immediately');
                 }
-                sections.forEach(section => {
-                    section.classList.add('visible');
-                });
+                for (var s = 0; s < sections.length; s++) {
+                    sections[s].classList.add('visible');
+                }
             }
             
             // 移动设备优化：延迟后确保所有内容可见
             // 某些移动浏览器可能需要额外时间
-            setTimeout(() => {
-                sections.forEach(section => {
-                    if (!section.classList.contains('visible')) {
-                        section.classList.add('visible');
+            setTimeout(function() {
+                for (var ts = 0; ts < sections.length; ts++) {
+                    if (!sections[ts].classList.contains('visible')) {
+                        sections[ts].classList.add('visible');
                     }
-                });
+                }
             }, 500);
         }
 
@@ -3210,7 +3254,8 @@
             var isValid = true;
             var questions = document.querySelectorAll('.question-container');
 
-            questions.forEach(questionDiv => {
+            for (var q = 0; q < questions.length; q++) {
+                var questionDiv = questions[q];
                 var questionId = questionDiv.getAttribute('data-question-id');
                 var errorMsg = questionDiv.querySelector('.error-message');
                 var isFieldValid = false;
@@ -3227,7 +3272,7 @@
                 } else if (questionId === 'comfort_zone_amenities_ranked') {
                     // 验证排名：必须正好有3个排名设施
                     isFieldValid = rankedComfortZoneAmenities.length === 3;
-                } else if (questionId.startsWith('wellness_')) {
+                } else if (questionId && questionId.indexOf('wellness_') === 0) {
                     var checked = questionDiv.querySelector('input[name="' + questionId + '"]:checked');
                     isFieldValid = checked !== null;
                 } else {
@@ -3243,7 +3288,7 @@
                     questionDiv.classList.remove('error');
                     if (errorMsg) errorMsg.classList.remove('show');
                 }
-            });
+            }
 
             return isValid;
         }
@@ -3266,14 +3311,16 @@
             responses['ranked_factor_1'] = rankedFactors[0] || '';
             responses['ranked_factor_2'] = rankedFactors[1] || '';
             responses['ranked_factor_3'] = rankedFactors[2] || '';
-            var rankedOther = document.querySelector('input[name="ranked_factors_other"]')?.value || '';
+            var rankedOtherInput = document.querySelector('input[name="ranked_factors_other"]');
+            var rankedOther = (rankedOtherInput && rankedOtherInput.value) || '';
             if (rankedOther) responses['ranked_factors_other'] = rankedOther;
 
             // Section 3: Comfort Zone (排名前3的设施)
             responses['comfort_zone_amenity_1'] = rankedComfortZoneAmenities[0] || '';
             responses['comfort_zone_amenity_2'] = rankedComfortZoneAmenities[1] || '';
             responses['comfort_zone_amenity_3'] = rankedComfortZoneAmenities[2] || '';
-            var comfortZoneOther = document.querySelector('input[name="comfort_zone_amenities_ranked_other"]')?.value || '';
+            var comfortZoneOtherInput = document.querySelector('input[name="comfort_zone_amenities_ranked_other"]');
+            var comfortZoneOther = (comfortZoneOtherInput && comfortZoneOtherInput.value) || '';
             if (comfortZoneOther) responses['comfort_zone_other'] = comfortZoneOther;
 
             var usageFrequency = document.querySelector('input[name="usage_frequency"]:checked');
@@ -3282,7 +3329,8 @@
             // Section 3: Membership (移到Section 3)
             var membershipType = document.querySelector('input[name="membership_type"]:checked');
             responses['membership_type'] = membershipType ? membershipType.value : '';
-            var membershipTypeOther = document.querySelector('input[name="membership_type_other"]')?.value || '';
+            var membershipTypeOtherInput = document.querySelector('input[name="membership_type_other"]');
+            var membershipTypeOther = (membershipTypeOtherInput && membershipTypeOtherInput.value) || '';
             if (membershipTypeOther) responses['membership_type_other'] = membershipTypeOther;
 
             var membershipDuration = document.querySelector('input[name="membership_duration"]:checked');
@@ -3296,10 +3344,10 @@
             responses['membership_impact_join'] = membershipImpactJoin ? membershipImpactJoin.value : '';
 
             // Section 4: Wellness
-            surveyConfig.wellnessStatements.forEach((_, index) => {
-                var checked = document.querySelector('input[name="wellness_q' + (index + 1) + '"]:checked');
-                responses['wellness_q' + (index + 1)] = checked ? checked.value : '';
-            });
+            for (var ws = 0; ws < surveyConfig.wellnessStatements.length; ws++) {
+                var checked = document.querySelector('input[name="wellness_q' + (ws + 1) + '"]:checked');
+                responses['wellness_q' + (ws + 1)] = checked ? checked.value : '';
+            }
 
             // Section 5: Demographics
             var ageGroup = document.querySelector('input[name="age_group"]:checked');
@@ -3307,7 +3355,8 @@
 
             var gender = document.querySelector('input[name="gender"]:checked');
             responses['gender'] = gender ? gender.value : '';
-            var genderSelfDescribe = document.querySelector('input[name="gender_other"]')?.value || '';
+            var genderSelfDescribeInput = document.querySelector('input[name="gender_other"]');
+            var genderSelfDescribe = (genderSelfDescribeInput && genderSelfDescribeInput.value) || '';
             if (genderSelfDescribe) responses['gender_self_describe'] = genderSelfDescribe;
 
             return { responses, timestamp };
@@ -3321,7 +3370,7 @@
             successMsg.textContent = message;
             successMsg.classList.add('show');
             
-            setTimeout(() => {
+            setTimeout(function() {
                 successMsg.classList.remove('show');
             }, 5000);
         }
@@ -3334,7 +3383,7 @@
             errorMsg.textContent = message;
             errorMsg.classList.add('show');
             
-            setTimeout(() => {
+            setTimeout(function() {
                 errorMsg.classList.remove('show');
             }, 5000);
         }
@@ -3379,7 +3428,7 @@
                 return '';
             }
             var stringField = String(field);
-            if (stringField.includes(',') || stringField.includes('"') || stringField.includes('\n')) {
+            if (stringField.indexOf(',') !== -1 || stringField.indexOf('"') !== -1 || stringField.indexOf('\n') !== -1) {
                 return '"' + stringField.replace(/"/g, '""') + '"';
             }
             return stringField;
@@ -3391,7 +3440,8 @@
         function convertToCSVRow(responses, timestamp) {
             var row = [];
             
-            CSV_COLUMNS.forEach(column => {
+            for (var col = 0; col < CSV_COLUMNS.length; col++) {
+                var column = CSV_COLUMNS[col];
                 var value = '';
                 
                 switch (column) {
@@ -3469,7 +3519,7 @@
                 }
                 
                 row.push(escapeCSVField(value));
-            });
+            }
             
             return row.join(',');
         }
@@ -3513,10 +3563,11 @@
                 // 创建 CSV 内容
                 var csvContent = CSV_COLUMNS.join(',') + '\n';
                 
-                allResponses.forEach(responseData => {
+                for (var ar = 0; ar < allResponses.length; ar++) {
+                    var responseData = allResponses[ar];
                     var csvRow = convertToCSVRow(responseData.responses, responseData.timestamp);
                     csvContent += csvRow + '\n';
-                });
+                }
                 
                 // 创建下载链接
                 var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -4164,11 +4215,11 @@
                 }
                 
                 // 确保所有 section 在移动设备上可见（额外保险）
-                setTimeout(() => {
+                setTimeout(function() {
                     var sections = document.querySelectorAll('.section');
-                    sections.forEach(section => {
-                        section.classList.add('visible');
-                    });
+                    for (var fs = 0; fs < sections.length; fs++) {
+                        sections[fs].classList.add('visible');
+                    }
                     if (DEBUG_MODE) {
                         console.log('✅ All sections made visible (backup)');
                     }
@@ -4182,9 +4233,9 @@
                 console.error('Error stack:', error.stack);
                 // 即使出错，也尝试显示内容
                 var sections = document.querySelectorAll('.section');
-                sections.forEach(section => {
-                    section.classList.add('visible');
-                });
+                for (var s = 0; s < sections.length; s++) {
+                    sections[s].classList.add('visible');
+                }
             }
         }
 
@@ -4305,9 +4356,9 @@
                 if (DEBUG_MODE) {
                     console.warn('⚠️ Sections not visible on load, forcing visibility');
                 }
-                sections.forEach(section => {
-                    section.classList.add('visible');
-                });
+                for (var s = 0; s < sections.length; s++) {
+                    sections[s].classList.add('visible');
+                }
             }
             showDebugInfo();
         });
