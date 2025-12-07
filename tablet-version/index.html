@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Finger Lakes Fitness Center - Renovation Survey (Tablet Version)</title>
+    <style>
+        /* Minimal CSS - only for basic layout, all form elements use inline styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+            background-color: #f5f5f5;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #ffffff;
+        }
+        td {
+            padding: 10px;
+            vertical-align: middle;
+        }
+        h1 {
+            text-align: center;
+            color: #008B8B;
+            font-size: 24px;
+            margin: 10px 0;
+        }
+        h2 {
+            color: #008B8B;
+            font-size: 20px;
+            margin: 20px 0 10px 0;
+        }
+        .section {
+            background-color: #ffffff;
+            padding: 15px;
+            margin: 15px 0;
+            border: 1px solid #cccccc;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            background-color: #008B8B;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin: 20px 0;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            display: none;
+        }
+        .error.show {
+            display: block;
+        }
+        .success {
+            color: green;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            margin: 10px 0;
+            display: none;
+        }
+        .success.show {
+            display: block;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 10px auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>FINGER LAKES FITNESS CENTER</h1>
+    <h2 style="text-align: center; font-size: 18px; color: #666;">RENOVATION SURVEY</h2>
+    <p style="text-align: center; color: #666; margin-bottom: 20px;">We appreciate your help!</p>
+
+    <div class="section" style="background-color: #e8f4f4; padding: 15px; margin: 15px 0;">
+        <h3 style="margin-top: 0; color: #008B8B;">Consent & Clarification Statement</h3>
+        <p style="font-size: 14px; line-height: 1.6;">
+            This survey is to better understand your wellness needs. Your feedback will help us enhance our facilities 
+            and explore future development. By completing this survey, you confirm you've read and understood this information. 
+            Participation is <strong>anonymous</strong> and <strong>voluntary</strong>; the survey takes about <strong>3-4 minutes</strong>.
+        </p>
+    </div>
+
+    <form id="surveyForm" method="post" action="#">
+        
+        <!-- Section 1: Current Satisfaction Assessment -->
+        <div class="section">
+            <h2>Section 1: Current Satisfaction Assessment</h2>
+            <p style="font-size: 16px; color: #666; margin-bottom: 15px;">
+                Understanding Your Current Experience<br>
+                Help us understand how well we're meeting your needs today.
+            </p>
+
+            <!-- Question 1: Overall Satisfaction -->
+            <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; margin-bottom: 20px; background-color: #ffffff;">
+                <tr>
+                    <td colspan="2" style="background-color: #f0f0f0; font-weight: bold; font-size: 16px;">
+                        How satisfied are you with Finger Lakes Fitness Center overall? <span style="color: red;">*</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="radio" name="overall_satisfaction" value="Very Dissatisfied" id="overall_1" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="overall_1" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Very Dissatisfied</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="radio" name="overall_satisfaction" value="Dissatisfied" id="overall_2" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="overall_2" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Dissatisfied</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="radio" name="overall_satisfaction" value="Neutral" id="overall_3" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="overall_3" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Neutral</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="radio" name="overall_satisfaction" value="Satisfied" id="overall_4" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="overall_4" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Satisfied</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="radio" name="overall_satisfaction" value="Very Satisfied" id="overall_5" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="overall_5" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Very Satisfied</label>
+                    </td>
+                </tr>
+            </table>
+            <div class="error" id="error_overall_satisfaction">Please select an option</div>
+
+            <!-- Question 2: Top 3 Valued Factors -->
+            <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; margin-bottom: 20px; background-color: #ffffff;">
+                <tr>
+                    <td colspan="2" style="background-color: #f0f0f0; font-weight: bold; font-size: 16px;">
+                        Please select your top 3 valued factors when choosing a fitness center <span style="color: red;">*</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="checkbox" name="ranked_factors" value="Availability of personal trainers or classes" id="factor_1" class="factor-checkbox" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="factor_1" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Availability of personal trainers or classes</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="checkbox" name="ranked_factors" value="Ventilation, lighting, and air conditioning" id="factor_2" class="factor-checkbox" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="factor_2" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Ventilation, lighting, and air conditioning</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="checkbox" name="ranked_factors" value="Locker rooms and shower facilities" id="factor_3" class="factor-checkbox" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="factor_3" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Locker rooms and shower facilities</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="checkbox" name="ranked_factors" value="Variety and quality of equipment" id="factor_4" class="factor-checkbox" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="factor_4" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Variety and quality of equipment</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="checkbox" name="ranked_factors" value="Availability of seating area" id="factor_5" class="factor-checkbox" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="factor_5" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Availability of seating area</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="checkbox" name="ranked_factors" value="Cleanliness and maintenance" id="factor_6" class="factor-checkbox" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="factor_6" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Cleanliness and maintenance</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="checkbox" name="ranked_factors" value="Commuting convenience" id="factor_7" class="factor-checkbox" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="factor_7" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Commuting convenience</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="checkbox" name="ranked_factors" value="Other" id="factor_8" class="factor-checkbox" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="factor_8" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Other: 
+                            <input type="text" name="ranked_factors_other" id="factor_other" placeholder="Please specify" style="display: none; font-size: 16px; padding: 8px; width: 200px; margin-left: 10px; border: 1px solid #ccc;">
+                        </label>
+                    </td>
+                </tr>
+            </table>
+            <p id="factor_limit_msg" style="color: red; font-size: 14px; display: none;">Maximum 3 selections allowed</p>
+            <div class="error" id="error_ranked_factors">Please select exactly 3 factors</div>
+        </div>
+
+        <!-- Section 2: Comfort Zone Concept -->
+        <div class="section">
+            <h2>Section 2: Comfort Zone Concept</h2>
+            <p style="font-size: 16px; color: #666; margin-bottom: 15px;">
+                We're Refreshing the Fitness Center<br>
+                We're exploring adding a dedicated comfort zone—a place to restore and recharge between workouts. 
+                This space would provide a comfortable environment to relax, transition between activities, and prepare mentally for your next set.
+            </p>
+
+            <div id="image_container" style="text-align: center; margin: 20px 0;">
+                <img id="rendering_image" src="" alt="Comfort Zone Rendering" style="max-width: 100%; height: auto; border: 1px solid #ccc;">
+                <p style="font-size: 14px; color: #666; margin-top: 10px;">View How It Looks in Space →</p>
+                <p style="font-size: 12px; color: #999; margin-top: 5px;">Renderings are conceptual — shown for inspiration, not final design.</p>
+            </div>
+
+            <!-- Question 3: Comfort Zone Amenities -->
+            <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; margin-bottom: 20px; background-color: #ffffff;">
+                <tr>
+                    <td colspan="2" style="background-color: #f0f0f0; font-weight: bold; font-size: 16px;">
+                        Please select your top 3 elements that would be most valuable in this comfort zone <span style="color: red;">*</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="checkbox" name="comfort_zone_amenities" value="Comfortable seating (e.g., couches and lounge chairs)" id="amenity_1" class="amenity-checkbox" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="amenity_1" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Comfortable seating (e.g., couches and lounge chairs)</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="checkbox" name="comfort_zone_amenities" value="Vending machine" id="amenity_2" class="amenity-checkbox" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="amenity_2" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Vending machine</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="checkbox" name="comfort_zone_amenities" value="Information / achievement board" id="amenity_3" class="amenity-checkbox" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="amenity_3" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Information / achievement board</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="checkbox" name="comfort_zone_amenities" value="Interaction & networking opportunities" id="amenity_4" class="amenity-checkbox" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="amenity_4" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Interaction & networking opportunities</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="checkbox" name="comfort_zone_amenities" value="Books / magazines" id="amenity_5" class="amenity-checkbox" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="amenity_5" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Books / magazines</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="checkbox" name="comfort_zone_amenities" value="Charging ports" id="amenity_6" class="amenity-checkbox" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="amenity_6" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Charging ports</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="checkbox" name="comfort_zone_amenities" value="Plants and natural elements" id="amenity_7" class="amenity-checkbox" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="amenity_7" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Plants and natural elements</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="checkbox" name="comfort_zone_amenities" value="Places to hang coats and change shoes" id="amenity_8" class="amenity-checkbox" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="amenity_8" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Places to hang coats and change shoes</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="checkbox" name="comfort_zone_amenities" value="Other" id="amenity_9" class="amenity-checkbox" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="amenity_9" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Other: 
+                            <input type="text" name="comfort_zone_other" id="amenity_other" placeholder="Please specify" style="display: none; font-size: 16px; padding: 8px; width: 200px; margin-left: 10px; border: 1px solid #ccc;">
+                        </label>
+                    </td>
+                </tr>
+            </table>
+            <p id="amenity_limit_msg" style="color: red; font-size: 14px; display: none;">Maximum 3 selections allowed</p>
+            <div class="error" id="error_comfort_zone_amenities">Please select exactly 3 elements</div>
+
+            <!-- Question 4: Usage Frequency -->
+            <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; margin-bottom: 20px; background-color: #ffffff;">
+                <tr>
+                    <td colspan="2" style="background-color: #f0f0f0; font-weight: bold; font-size: 16px;">
+                        If this comfort zone were available with your valued elements, how often would you use this space? <span style="color: red;">*</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="radio" name="usage_frequency" value="Rarely (once a month or less)" id="usage_1" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="usage_1" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Rarely (once a month or less)</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="radio" name="usage_frequency" value="Sometimes (2-3 times per month)" id="usage_2" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="usage_2" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Sometimes (2-3 times per month)</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="radio" name="usage_frequency" value="Often (1-2 times per week)" id="usage_3" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="usage_3" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Often (1-2 times per week)</label>
+                    </td>
+                </tr>
+            </table>
+            <div class="error" id="error_usage_frequency">Please select an option</div>
+
+            <!-- Question 5: Membership Type -->
+            <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; margin-bottom: 20px; background-color: #ffffff;">
+                <tr>
+                    <td colspan="2" style="background-color: #f0f0f0; font-weight: bold; font-size: 16px;">
+                        Your Membership Type: <span style="color: red;">*</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="radio" name="membership_type" value="I'm not a member yet" id="member_1" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="member_1" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">I'm not a member yet</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="radio" name="membership_type" value="Pay-per-use / Day rate" id="member_2" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="member_2" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Pay-per-use / Day rate</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="radio" name="membership_type" value="Monthly" id="member_3" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="member_3" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Monthly</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="radio" name="membership_type" value="6 Month" id="member_4" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="member_4" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">6 Month</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="radio" name="membership_type" value="Annual" id="member_5" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="member_5" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Annual</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="radio" name="membership_type" value="Other" id="member_6" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="member_6" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Other (Please specify): 
+                            <input type="text" name="membership_type_other" id="member_other" placeholder="Please specify" style="display: none; font-size: 16px; padding: 8px; width: 200px; margin-left: 10px; border: 1px solid #ccc;">
+                        </label>
+                    </td>
+                </tr>
+            </table>
+            <div class="error" id="error_membership_type">Please select an option</div>
+
+            <!-- Question 6: Membership Duration (Conditional) -->
+            <div id="membership_duration_section" style="display: none;">
+                <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; margin-bottom: 20px; background-color: #ffffff;">
+                    <tr>
+                        <td colspan="2" style="background-color: #f0f0f0; font-weight: bold; font-size: 16px;">
+                            (If you are a member) For how long have you been a member? <span style="color: red;">*</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 50px; text-align: center;">
+                            <input type="radio" name="membership_duration" value="Less than 6 months" id="duration_1" style="width: 28px; height: 28px; cursor: pointer;">
+                        </td>
+                        <td>
+                            <label for="duration_1" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Less than 6 months</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 50px; text-align: center;">
+                            <input type="radio" name="membership_duration" value="6 Months to 1 Year" id="duration_2" style="width: 28px; height: 28px; cursor: pointer;">
+                        </td>
+                        <td>
+                            <label for="duration_2" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">6 Months to 1 Year</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 50px; text-align: center;">
+                            <input type="radio" name="membership_duration" value="1-3 Years" id="duration_3" style="width: 28px; height: 28px; cursor: pointer;">
+                        </td>
+                        <td>
+                            <label for="duration_3" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">1-3 Years</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 50px; text-align: center;">
+                            <input type="radio" name="membership_duration" value="3-5 Years" id="duration_4" style="width: 28px; height: 28px; cursor: pointer;">
+                        </td>
+                        <td>
+                            <label for="duration_4" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">3-5 Years</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 50px; text-align: center;">
+                            <input type="radio" name="membership_duration" value="5+ Years" id="duration_5" style="width: 28px; height: 28px; cursor: pointer;">
+                        </td>
+                        <td>
+                            <label for="duration_5" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">5+ Years</label>
+                        </td>
+                    </tr>
+                </table>
+                <div class="error" id="error_membership_duration">Please select an option</div>
+            </div>
+
+            <!-- Question 7: Membership Impact Renewal (Conditional) -->
+            <div id="membership_impact_renewal_section" style="display: none;">
+                <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; margin-bottom: 20px; background-color: #ffffff;">
+                    <tr>
+                        <td colspan="2" style="background-color: #f0f0f0; font-weight: bold; font-size: 16px;">
+                            How would adding this comfort zone affect your likelihood to <strong>renew</strong> your membership? <span style="color: red;">*</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 50px; text-align: center;">
+                            <input type="radio" name="membership_impact_renewal" value="Much less likely to renew" id="renewal_1" style="width: 28px; height: 28px; cursor: pointer;">
+                        </td>
+                        <td>
+                            <label for="renewal_1" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Much less likely to renew</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 50px; text-align: center;">
+                            <input type="radio" name="membership_impact_renewal" value="Somewhat less likely to renew" id="renewal_2" style="width: 28px; height: 28px; cursor: pointer;">
+                        </td>
+                        <td>
+                            <label for="renewal_2" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Somewhat less likely to renew</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 50px; text-align: center;">
+                            <input type="radio" name="membership_impact_renewal" value="No impact on my decision" id="renewal_3" style="width: 28px; height: 28px; cursor: pointer;">
+                        </td>
+                        <td>
+                            <label for="renewal_3" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">No impact on my decision</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 50px; text-align: center;">
+                            <input type="radio" name="membership_impact_renewal" value="Somewhat more likely to renew" id="renewal_4" style="width: 28px; height: 28px; cursor: pointer;">
+                        </td>
+                        <td>
+                            <label for="renewal_4" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Somewhat more likely to renew</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 50px; text-align: center;">
+                            <input type="radio" name="membership_impact_renewal" value="Much more likely to renew" id="renewal_5" style="width: 28px; height: 28px; cursor: pointer;">
+                        </td>
+                        <td>
+                            <label for="renewal_5" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Much more likely to renew</label>
+                        </td>
+                    </tr>
+                </table>
+                <div class="error" id="error_membership_impact_renewal">Please select an option</div>
+            </div>
+
+            <!-- Question 8: Membership Impact Join (Conditional) -->
+            <div id="membership_impact_join_section" style="display: none;">
+                <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; margin-bottom: 20px; background-color: #ffffff;">
+                    <tr>
+                        <td colspan="2" style="background-color: #f0f0f0; font-weight: bold; font-size: 16px;">
+                            How would this comfort zone affect your likelihood to <strong>join</strong> with a new membership? <span style="color: red;">*</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 50px; text-align: center;">
+                            <input type="radio" name="membership_impact_join" value="Much less likely to join" id="join_1" style="width: 28px; height: 28px; cursor: pointer;">
+                        </td>
+                        <td>
+                            <label for="join_1" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Much less likely to join</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 50px; text-align: center;">
+                            <input type="radio" name="membership_impact_join" value="Somewhat less likely to join" id="join_2" style="width: 28px; height: 28px; cursor: pointer;">
+                        </td>
+                        <td>
+                            <label for="join_2" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Somewhat less likely to join</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 50px; text-align: center;">
+                            <input type="radio" name="membership_impact_join" value="No impact on my decision" id="join_3" style="width: 28px; height: 28px; cursor: pointer;">
+                        </td>
+                        <td>
+                            <label for="join_3" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">No impact on my decision</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 50px; text-align: center;">
+                            <input type="radio" name="membership_impact_join" value="Somewhat more likely to join" id="join_4" style="width: 28px; height: 28px; cursor: pointer;">
+                        </td>
+                        <td>
+                            <label for="join_4" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Somewhat more likely to join</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 50px; text-align: center;">
+                            <input type="radio" name="membership_impact_join" value="Much more likely to join" id="join_5" style="width: 28px; height: 28px; cursor: pointer;">
+                        </td>
+                        <td>
+                            <label for="join_5" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Much more likely to join</label>
+                        </td>
+                    </tr>
+                </table>
+                <div class="error" id="error_membership_impact_join">Please select an option</div>
+            </div>
+        </div>
+
+        <!-- Section 3: Wellness & Balance Assessment -->
+        <div class="section">
+            <h2>Section 3: Wellness & Balance Assessment</h2>
+            <p style="font-size: 16px; color: #666; margin-bottom: 15px;">
+                Think about how each statement fits you<br>
+                Please check the option that feels most true right now.
+            </p>
+
+            <!-- Wellness Question 1 -->
+            <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; margin-bottom: 20px; background-color: #ffffff;">
+                <tr>
+                    <td colspan="6" style="background-color: #f0f0f0; font-weight: bold; font-size: 16px;">
+                        I have balanced exercise, nutrition, and rest patterns <span style="color: red;">*</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center; font-size: 14px; color: #666;">Disagree</td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q1" value="1" id="wellness1_1" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness1_1" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">1</label>
+                    </td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q1" value="2" id="wellness1_2" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness1_2" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">2</label>
+                    </td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q1" value="3" id="wellness1_3" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness1_3" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">3</label>
+                    </td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q1" value="4" id="wellness1_4" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness1_4" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">4</label>
+                    </td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q1" value="5" id="wellness1_5" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness1_5" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">5</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6" style="text-align: center; font-size: 14px; color: #666;">Agree</td>
+                </tr>
+            </table>
+            <div class="error" id="error_wellness_q1">Please select an option</div>
+
+            <!-- Wellness Question 2 -->
+            <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; margin-bottom: 20px; background-color: #ffffff;">
+                <tr>
+                    <td colspan="6" style="background-color: #f0f0f0; font-weight: bold; font-size: 16px;">
+                        I maintain regular practices that help me stay centered and connected <span style="color: red;">*</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center; font-size: 14px; color: #666;">Disagree</td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q2" value="1" id="wellness2_1" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness2_1" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">1</label>
+                    </td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q2" value="2" id="wellness2_2" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness2_2" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">2</label>
+                    </td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q2" value="3" id="wellness2_3" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness2_3" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">3</label>
+                    </td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q2" value="4" id="wellness2_4" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness2_4" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">4</label>
+                    </td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q2" value="5" id="wellness2_5" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness2_5" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">5</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6" style="text-align: center; font-size: 14px; color: #666;">Agree</td>
+                </tr>
+            </table>
+            <div class="error" id="error_wellness_q2">Please select an option</div>
+
+            <!-- Wellness Question 3 -->
+            <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; margin-bottom: 20px; background-color: #ffffff;">
+                <tr>
+                    <td colspan="6" style="background-color: #f0f0f0; font-weight: bold; font-size: 16px;">
+                        I actively engage in learning to keep my mind focused and alert <span style="color: red;">*</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center; font-size: 14px; color: #666;">Disagree</td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q3" value="1" id="wellness3_1" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness3_1" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">1</label>
+                    </td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q3" value="2" id="wellness3_2" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness3_2" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">2</label>
+                    </td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q3" value="3" id="wellness3_3" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness3_3" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">3</label>
+                    </td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q3" value="4" id="wellness3_4" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness3_4" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">4</label>
+                    </td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q3" value="5" id="wellness3_5" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness3_5" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">5</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6" style="text-align: center; font-size: 14px; color: #666;">Agree</td>
+                </tr>
+            </table>
+            <div class="error" id="error_wellness_q3">Please select an option</div>
+
+            <!-- Wellness Question 4 -->
+            <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; margin-bottom: 20px; background-color: #ffffff;">
+                <tr>
+                    <td colspan="6" style="background-color: #f0f0f0; font-weight: bold; font-size: 16px;">
+                        I have consistent, genuine connections with others that make me feel supported <span style="color: red;">*</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center; font-size: 14px; color: #666;">Disagree</td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q4" value="1" id="wellness4_1" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness4_1" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">1</label>
+                    </td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q4" value="2" id="wellness4_2" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness4_2" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">2</label>
+                    </td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q4" value="3" id="wellness4_3" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness4_3" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">3</label>
+                    </td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q4" value="4" id="wellness4_4" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness4_4" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">4</label>
+                    </td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q4" value="5" id="wellness4_5" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness4_5" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">5</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6" style="text-align: center; font-size: 14px; color: #666;">Agree</td>
+                </tr>
+            </table>
+            <div class="error" id="error_wellness_q4">Please select an option</div>
+
+            <!-- Wellness Question 5 -->
+            <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; margin-bottom: 20px; background-color: #ffffff;">
+                <tr>
+                    <td colspan="6" style="background-color: #f0f0f0; font-weight: bold; font-size: 16px;">
+                        I am aware of my feelings and reflect on my emotions as part of staying balanced <span style="color: red;">*</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center; font-size: 14px; color: #666;">Disagree</td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q5" value="1" id="wellness5_1" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness5_1" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">1</label>
+                    </td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q5" value="2" id="wellness5_2" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness5_2" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">2</label>
+                    </td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q5" value="3" id="wellness5_3" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness5_3" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">3</label>
+                    </td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q5" value="4" id="wellness5_4" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness5_4" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">4</label>
+                    </td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q5" value="5" id="wellness5_5" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness5_5" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">5</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6" style="text-align: center; font-size: 14px; color: #666;">Agree</td>
+                </tr>
+            </table>
+            <div class="error" id="error_wellness_q5">Please select an option</div>
+
+            <!-- Wellness Question 6 -->
+            <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; margin-bottom: 20px; background-color: #ffffff;">
+                <tr>
+                    <td colspan="6" style="background-color: #f0f0f0; font-weight: bold; font-size: 16px;">
+                        My current work environment aligns with my skills and values <span style="color: red;">*</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center; font-size: 14px; color: #666;">Disagree</td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q6" value="1" id="wellness6_1" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness6_1" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">1</label>
+                    </td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q6" value="2" id="wellness6_2" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness6_2" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">2</label>
+                    </td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q6" value="3" id="wellness6_3" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness6_3" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">3</label>
+                    </td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q6" value="4" id="wellness6_4" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness6_4" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">4</label>
+                    </td>
+                    <td style="text-align: center;">
+                        <input type="radio" name="wellness_q6" value="5" id="wellness6_5" style="width: 28px; height: 28px; cursor: pointer;">
+                        <label for="wellness6_5" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">5</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="6" style="text-align: center; font-size: 14px; color: #666;">Agree</td>
+                </tr>
+            </table>
+            <div class="error" id="error_wellness_q6">Please select an option</div>
+        </div>
+
+        <!-- Section 4: Demographics -->
+        <div class="section">
+            <h2>Section 4: Demographics</h2>
+
+            <!-- Question: Age Group -->
+            <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; margin-bottom: 20px; background-color: #ffffff;">
+                <tr>
+                    <td colspan="2" style="background-color: #f0f0f0; font-weight: bold; font-size: 16px;">
+                        Age Group <span style="color: red;">*</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="radio" name="age_group" value="18-24" id="age_1" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="age_1" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">18-24</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="radio" name="age_group" value="25-34" id="age_2" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="age_2" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">25-34</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="radio" name="age_group" value="35-45" id="age_3" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="age_3" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">35-45</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="radio" name="age_group" value="45-54" id="age_4" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="age_4" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">45-54</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="radio" name="age_group" value="55-64" id="age_5" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="age_5" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">55-64</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="radio" name="age_group" value="65-74" id="age_6" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="age_6" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">65-74</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="radio" name="age_group" value="75+" id="age_7" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="age_7" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">75+</label>
+                    </td>
+                </tr>
+            </table>
+            <div class="error" id="error_age_group">Please select an option</div>
+
+            <!-- Question: Gender -->
+            <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; margin-bottom: 20px; background-color: #ffffff;">
+                <tr>
+                    <td colspan="2" style="background-color: #f0f0f0; font-weight: bold; font-size: 16px;">
+                        Gender <span style="color: red;">*</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="radio" name="gender" value="M" id="gender_1" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="gender_1" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">M</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="radio" name="gender" value="F" id="gender_2" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="gender_2" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">F</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="radio" name="gender" value="Transgender" id="gender_3" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="gender_3" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Transgender</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="radio" name="gender" value="Prefer not to respond" id="gender_4" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="gender_4" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Prefer not to respond</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50px; text-align: center;">
+                        <input type="radio" name="gender" value="Prefer to self-describe" id="gender_5" style="width: 28px; height: 28px; cursor: pointer;">
+                    </td>
+                    <td>
+                        <label for="gender_5" style="font-size: 18px; cursor: pointer; display: block; padding: 10px;">Prefer to self-describe: 
+                            <input type="text" name="gender_other" id="gender_other" placeholder="Please specify" style="display: none; font-size: 16px; padding: 8px; width: 200px; margin-left: 10px; border: 1px solid #ccc;">
+                        </label>
+                    </td>
+                </tr>
+            </table>
+            <div class="error" id="error_gender">Please select an option</div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="submit-btn" id="submitBtn">Submit Survey</button>
+        <div class="success" id="successMessage"></div>
+        
+        <!-- CSV Export Button (for admin/testing) -->
+        <button type="button" class="submit-btn" id="exportBtn" style="display: none; background-color: #FF6B6B; margin-top: 10px;" onclick="exportToCSV()">Export Responses to CSV</button>
+    </form>
+
+    <script>
+        // ES5 JavaScript Only - No arrow functions, no const/let
+        
+        // Global variables
+        var imageVersion = '';
+        var allResponses = [];
+        
+        // Initialize on page load
+        window.addEventListener('load', function() {
+            selectRandomImage();
+            setupCheckboxLimits();
+            setupConditionalQuestions();
+            setupOtherInputs();
+            
+            // Show export button if admin parameter in URL
+            var urlParams = window.location.search.substring(1).split('&');
+            for (var i = 0; i < urlParams.length; i++) {
+                var param = urlParams[i].split('=');
+                if (param[0] === 'admin' && param[1] === '1') {
+                    document.getElementById('exportBtn').style.display = 'block';
+                }
+            }
+        });
+        
+        // Select random image
+        function selectRandomImage() {
+            var random = Math.random();
+            var imagePath = random < 0.5 ? 'images/comfort-zone-v1.jpg' : 'images/comfort-zone-v2.jpg';
+            imageVersion = random < 0.5 ? 'v1' : 'v2';
+            document.getElementById('rendering_image').src = imagePath;
+        }
+        
+        // Setup checkbox limits (max 3 selections)
+        function setupCheckboxLimits() {
+            var factorCheckboxes = document.querySelectorAll('.factor-checkbox');
+            for (var i = 0; i < factorCheckboxes.length; i++) {
+                factorCheckboxes[i].addEventListener('change', function() {
+                    enforceCheckboxLimit('ranked_factors', 'factor_limit_msg', 'error_ranked_factors');
+                });
+            }
+            
+            var amenityCheckboxes = document.querySelectorAll('.amenity-checkbox');
+            for (var j = 0; j < amenityCheckboxes.length; j++) {
+                amenityCheckboxes[j].addEventListener('change', function() {
+                    enforceCheckboxLimit('comfort_zone_amenities', 'amenity_limit_msg', 'error_comfort_zone_amenities');
+                });
+            }
+        }
+        
+        // Enforce checkbox limit
+        function enforceCheckboxLimit(name, msgId, errorId) {
+            var checkboxes = document.querySelectorAll('input[name="' + name + '"]');
+            var checked = [];
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    checked.push(checkboxes[i]);
+                }
+            }
+            
+            if (checked.length > 3) {
+                // Uncheck the last one
+                checked[checked.length - 1].checked = false;
+                document.getElementById(msgId).style.display = 'block';
+                setTimeout(function() {
+                    document.getElementById(msgId).style.display = 'none';
+                }, 3000);
+            }
+        }
+        
+        // Setup conditional questions
+        function setupConditionalQuestions() {
+            var membershipTypeRadios = document.querySelectorAll('input[name="membership_type"]');
+            for (var i = 0; i < membershipTypeRadios.length; i++) {
+                membershipTypeRadios[i].addEventListener('change', function() {
+                    showHideConditional();
+                });
+            }
+            showHideConditional();
+        }
+        
+        // Show/hide conditional questions based on membership type
+        function showHideConditional() {
+            var membershipType = document.querySelector('input[name="membership_type"]:checked');
+            var durationSection = document.getElementById('membership_duration_section');
+            var renewalSection = document.getElementById('membership_impact_renewal_section');
+            var joinSection = document.getElementById('membership_impact_join_section');
+            
+            if (membershipType && membershipType.value !== "I'm not a member yet") {
+                durationSection.style.display = 'block';
+                renewalSection.style.display = 'block';
+                joinSection.style.display = 'none';
+            } else {
+                durationSection.style.display = 'none';
+                renewalSection.style.display = 'none';
+                joinSection.style.display = 'block';
+            }
+        }
+        
+        // Setup "Other" text inputs
+        function setupOtherInputs() {
+            // Factor other
+            var factorOther = document.getElementById('factor_8');
+            var factorOtherInput = document.getElementById('factor_other');
+            if (factorOther) {
+                factorOther.addEventListener('change', function() {
+                    factorOtherInput.style.display = this.checked ? 'inline-block' : 'none';
+                });
+            }
+            
+            // Amenity other
+            var amenityOther = document.getElementById('amenity_9');
+            var amenityOtherInput = document.getElementById('amenity_other');
+            if (amenityOther) {
+                amenityOther.addEventListener('change', function() {
+                    amenityOtherInput.style.display = this.checked ? 'inline-block' : 'none';
+                });
+            }
+            
+            // Membership type other
+            var memberOther = document.getElementById('member_6');
+            var memberOtherInput = document.getElementById('member_other');
+            if (memberOther) {
+                memberOther.addEventListener('change', function() {
+                    memberOtherInput.style.display = this.checked ? 'inline-block' : 'none';
+                });
+            }
+            
+            // Gender other
+            var genderOther = document.getElementById('gender_5');
+            var genderOtherInput = document.getElementById('gender_other');
+            if (genderOther) {
+                genderOther.addEventListener('change', function() {
+                    genderOtherInput.style.display = this.checked ? 'inline-block' : 'none';
+                });
+            }
+        }
+        
+        // Form validation
+        function validateForm() {
+            var isValid = true;
+            var errors = [];
+            
+            // Clear all errors
+            var errorDivs = document.querySelectorAll('.error');
+            for (var e = 0; e < errorDivs.length; e++) {
+                errorDivs[e].classList.remove('show');
+            }
+            
+            // Validate overall satisfaction
+            if (!document.querySelector('input[name="overall_satisfaction"]:checked')) {
+                document.getElementById('error_overall_satisfaction').classList.add('show');
+                isValid = false;
+            }
+            
+            // Validate ranked factors (exactly 3)
+            var factorCheckboxes = document.querySelectorAll('input[name="ranked_factors"]:checked');
+            if (factorCheckboxes.length !== 3) {
+                document.getElementById('error_ranked_factors').classList.add('show');
+                isValid = false;
+            }
+            
+            // Validate comfort zone amenities (exactly 3)
+            var amenityCheckboxes = document.querySelectorAll('input[name="comfort_zone_amenities"]:checked');
+            if (amenityCheckboxes.length !== 3) {
+                document.getElementById('error_comfort_zone_amenities').classList.add('show');
+                isValid = false;
+            }
+            
+            // Validate usage frequency
+            if (!document.querySelector('input[name="usage_frequency"]:checked')) {
+                document.getElementById('error_usage_frequency').classList.add('show');
+                isValid = false;
+            }
+            
+            // Validate membership type
+            if (!document.querySelector('input[name="membership_type"]:checked')) {
+                document.getElementById('error_membership_type').classList.add('show');
+                isValid = false;
+            }
+            
+            // Validate membership duration (if shown)
+            var durationSection = document.getElementById('membership_duration_section');
+            if (durationSection.style.display !== 'none') {
+                if (!document.querySelector('input[name="membership_duration"]:checked')) {
+                    document.getElementById('error_membership_duration').classList.add('show');
+                    isValid = false;
+                }
+            }
+            
+            // Validate membership impact renewal (if shown)
+            var renewalSection = document.getElementById('membership_impact_renewal_section');
+            if (renewalSection.style.display !== 'none') {
+                if (!document.querySelector('input[name="membership_impact_renewal"]:checked')) {
+                    document.getElementById('error_membership_impact_renewal').classList.add('show');
+                    isValid = false;
+                }
+            }
+            
+            // Validate membership impact join (if shown)
+            var joinSection = document.getElementById('membership_impact_join_section');
+            if (joinSection.style.display !== 'none') {
+                if (!document.querySelector('input[name="membership_impact_join"]:checked')) {
+                    document.getElementById('error_membership_impact_join').classList.add('show');
+                    isValid = false;
+                }
+            }
+            
+            // Validate wellness questions
+            for (var w = 1; w <= 6; w++) {
+                if (!document.querySelector('input[name="wellness_q' + w + '"]:checked')) {
+                    document.getElementById('error_wellness_q' + w).classList.add('show');
+                    isValid = false;
+                }
+            }
+            
+            // Validate age group
+            if (!document.querySelector('input[name="age_group"]:checked')) {
+                document.getElementById('error_age_group').classList.add('show');
+                isValid = false;
+            }
+            
+            // Validate gender
+            if (!document.querySelector('input[name="gender"]:checked')) {
+                document.getElementById('error_gender').classList.add('show');
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+        
+        // Collect form data
+        function collectFormData() {
+            var data = {};
+            
+            // Overall satisfaction
+            var overallSatisfaction = document.querySelector('input[name="overall_satisfaction"]:checked');
+            data.overall_satisfaction = overallSatisfaction ? overallSatisfaction.value : '';
+            
+            // Ranked factors (top 3)
+            var factorCheckboxes = document.querySelectorAll('input[name="ranked_factors"]:checked');
+            data.ranked_factor_1 = factorCheckboxes[0] ? factorCheckboxes[0].value : '';
+            data.ranked_factor_2 = factorCheckboxes[1] ? factorCheckboxes[1].value : '';
+            data.ranked_factor_3 = factorCheckboxes[2] ? factorCheckboxes[2].value : '';
+            var factorOtherInput = document.getElementById('factor_other');
+            data.ranked_factors_other = factorOtherInput && factorOtherInput.value ? factorOtherInput.value : '';
+            
+            // Image version
+            data.image_version_shown = imageVersion;
+            
+            // Comfort zone amenities (top 3)
+            var amenityCheckboxes = document.querySelectorAll('input[name="comfort_zone_amenities"]:checked');
+            data.comfort_zone_amenity_1 = amenityCheckboxes[0] ? amenityCheckboxes[0].value : '';
+            data.comfort_zone_amenity_2 = amenityCheckboxes[1] ? amenityCheckboxes[1].value : '';
+            data.comfort_zone_amenity_3 = amenityCheckboxes[2] ? amenityCheckboxes[2].value : '';
+            var amenityOtherInput = document.getElementById('amenity_other');
+            data.comfort_zone_other = amenityOtherInput && amenityOtherInput.value ? amenityOtherInput.value : '';
+            
+            // Usage frequency
+            var usageFrequency = document.querySelector('input[name="usage_frequency"]:checked');
+            data.usage_frequency = usageFrequency ? usageFrequency.value : '';
+            
+            // Membership type
+            var membershipType = document.querySelector('input[name="membership_type"]:checked');
+            data.membership_type = membershipType ? membershipType.value : '';
+            var memberOtherInput = document.getElementById('member_other');
+            data.membership_type_other = memberOtherInput && memberOtherInput.value ? memberOtherInput.value : '';
+            
+            // Membership duration
+            var membershipDuration = document.querySelector('input[name="membership_duration"]:checked');
+            data.membership_duration = membershipDuration ? membershipDuration.value : '';
+            
+            // Membership impact renewal
+            var membershipImpactRenewal = document.querySelector('input[name="membership_impact_renewal"]:checked');
+            data.membership_impact_renewal = membershipImpactRenewal ? membershipImpactRenewal.value : '';
+            
+            // Membership impact join
+            var membershipImpactJoin = document.querySelector('input[name="membership_impact_join"]:checked');
+            data.membership_impact_join = membershipImpactJoin ? membershipImpactJoin.value : '';
+            
+            // Wellness questions
+            for (var w = 1; w <= 6; w++) {
+                var wellnessQ = document.querySelector('input[name="wellness_q' + w + '"]:checked');
+                data['wellness_q' + w] = wellnessQ ? wellnessQ.value : '';
+            }
+            
+            // Age group
+            var ageGroup = document.querySelector('input[name="age_group"]:checked');
+            data.age_group = ageGroup ? ageGroup.value : '';
+            
+            // Gender
+            var gender = document.querySelector('input[name="gender"]:checked');
+            data.gender = gender ? gender.value : '';
+            var genderOtherInput = document.getElementById('gender_other');
+            data.gender_self_describe = genderOtherInput && genderOtherInput.value ? genderOtherInput.value : '';
+            
+            return data;
+        }
+        
+        // Escape CSV field
+        function escapeCSVField(field) {
+            if (field === null || field === undefined || field === '') {
+                return '';
+            }
+            var stringField = String(field);
+            if (stringField.indexOf(',') !== -1 || stringField.indexOf('"') !== -1 || stringField.indexOf('\n') !== -1) {
+                return '"' + stringField.replace(/"/g, '""') + '"';
+            }
+            return stringField;
+        }
+        
+        // Convert to CSV row
+        function convertToCSVRow(data, timestamp) {
+            var csvColumns = [
+                'Timestamp',
+                'Overall_Satisfaction',
+                'Ranked_Factor_1',
+                'Ranked_Factor_2',
+                'Ranked_Factor_3',
+                'Ranked_Factors_Other',
+                'Image_Version_Shown',
+                'Comfort_Zone_Amenity_1',
+                'Comfort_Zone_Amenity_2',
+                'Comfort_Zone_Amenity_3',
+                'Comfort_Zone_Other',
+                'Usage_Frequency',
+                'Membership_Type',
+                'Membership_Type_Other',
+                'Membership_Duration',
+                'Membership_Impact_Renewal',
+                'Membership_Impact_Join',
+                'Wellness_Q1',
+                'Wellness_Q2',
+                'Wellness_Q3',
+                'Wellness_Q4',
+                'Wellness_Q5',
+                'Wellness_Q6',
+                'Age_Group',
+                'Gender',
+                'Gender_Self_Describe'
+            ];
+            
+            var row = [];
+            for (var i = 0; i < csvColumns.length; i++) {
+                var column = csvColumns[i];
+                var value = '';
+                
+                switch (column) {
+                    case 'Timestamp':
+                        value = timestamp || new Date().toISOString().replace('T', ' ').substring(0, 19);
+                        break;
+                    case 'Overall_Satisfaction':
+                        value = data.overall_satisfaction || '';
+                        break;
+                    case 'Ranked_Factor_1':
+                        value = data.ranked_factor_1 || '';
+                        break;
+                    case 'Ranked_Factor_2':
+                        value = data.ranked_factor_2 || '';
+                        break;
+                    case 'Ranked_Factor_3':
+                        value = data.ranked_factor_3 || '';
+                        break;
+                    case 'Ranked_Factors_Other':
+                        value = data.ranked_factors_other || '';
+                        break;
+                    case 'Image_Version_Shown':
+                        value = data.image_version_shown || '';
+                        break;
+                    case 'Comfort_Zone_Amenity_1':
+                        value = data.comfort_zone_amenity_1 || '';
+                        break;
+                    case 'Comfort_Zone_Amenity_2':
+                        value = data.comfort_zone_amenity_2 || '';
+                        break;
+                    case 'Comfort_Zone_Amenity_3':
+                        value = data.comfort_zone_amenity_3 || '';
+                        break;
+                    case 'Comfort_Zone_Other':
+                        value = data.comfort_zone_other || '';
+                        break;
+                    case 'Usage_Frequency':
+                        value = data.usage_frequency || '';
+                        break;
+                    case 'Membership_Type':
+                        value = data.membership_type || '';
+                        break;
+                    case 'Membership_Type_Other':
+                        value = data.membership_type_other || '';
+                        break;
+                    case 'Membership_Duration':
+                        value = data.membership_duration || '';
+                        break;
+                    case 'Membership_Impact_Renewal':
+                        value = data.membership_impact_renewal || '';
+                        break;
+                    case 'Membership_Impact_Join':
+                        value = data.membership_impact_join || '';
+                        break;
+                    case 'Wellness_Q1':
+                        value = data.wellness_q1 || '';
+                        break;
+                    case 'Wellness_Q2':
+                        value = data.wellness_q2 || '';
+                        break;
+                    case 'Wellness_Q3':
+                        value = data.wellness_q3 || '';
+                        break;
+                    case 'Wellness_Q4':
+                        value = data.wellness_q4 || '';
+                        break;
+                    case 'Wellness_Q5':
+                        value = data.wellness_q5 || '';
+                        break;
+                    case 'Wellness_Q6':
+                        value = data.wellness_q6 || '';
+                        break;
+                    case 'Age_Group':
+                        value = data.age_group || '';
+                        break;
+                    case 'Gender':
+                        value = data.gender || '';
+                        break;
+                    case 'Gender_Self_Describe':
+                        value = data.gender_self_describe || '';
+                        break;
+                    default:
+                        value = '';
+                }
+                
+                row.push(escapeCSVField(value));
+            }
+            
+            return row.join(',');
+        }
+        
+        // Save to localStorage
+        function saveToLocalStorage(data, timestamp) {
+            try {
+                var storageKey = 'survey_responses';
+                var stored = localStorage.getItem(storageKey);
+                var allResponses = stored ? JSON.parse(stored) : [];
+                
+                allResponses.push({
+                    timestamp: timestamp,
+                    data: data
+                });
+                
+                localStorage.setItem(storageKey, JSON.stringify(allResponses));
+                return allResponses;
+            } catch (e) {
+                console.error('Error saving to localStorage:', e);
+                return [];
+            }
+        }
+        
+        // Export to CSV
+        function exportToCSV() {
+            try {
+                var storageKey = 'survey_responses';
+                var stored = localStorage.getItem(storageKey);
+                var allResponses = stored ? JSON.parse(stored) : [];
+                
+                if (allResponses.length === 0) {
+                    alert('No responses to export');
+                    return;
+                }
+                
+                var csvColumns = [
+                    'Timestamp',
+                    'Overall_Satisfaction',
+                    'Ranked_Factor_1',
+                    'Ranked_Factor_2',
+                    'Ranked_Factor_3',
+                    'Ranked_Factors_Other',
+                    'Image_Version_Shown',
+                    'Comfort_Zone_Amenity_1',
+                    'Comfort_Zone_Amenity_2',
+                    'Comfort_Zone_Amenity_3',
+                    'Comfort_Zone_Other',
+                    'Usage_Frequency',
+                    'Membership_Type',
+                    'Membership_Type_Other',
+                    'Membership_Duration',
+                    'Membership_Impact_Renewal',
+                    'Membership_Impact_Join',
+                    'Wellness_Q1',
+                    'Wellness_Q2',
+                    'Wellness_Q3',
+                    'Wellness_Q4',
+                    'Wellness_Q5',
+                    'Wellness_Q6',
+                    'Age_Group',
+                    'Gender',
+                    'Gender_Self_Describe'
+                ];
+                
+                var csvContent = csvColumns.join(',') + '\n';
+                
+                for (var i = 0; i < allResponses.length; i++) {
+                    var csvRow = convertToCSVRow(allResponses[i].data, allResponses[i].timestamp);
+                    csvContent += csvRow + '\n';
+                }
+                
+                // Create download link
+                var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                var link = document.createElement('a');
+                var url = URL.createObjectURL(blob);
+                link.setAttribute('href', url);
+                link.setAttribute('download', 'survey_responses_' + new Date().getTime() + '.csv');
+                link.style.display = 'none';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } catch (e) {
+                alert('Error exporting CSV: ' + e.message);
+            }
+        }
+        
+        // Form submit handler
+        document.getElementById('surveyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!validateForm()) {
+                alert('Please fill in all required fields correctly.');
+                return;
+            }
+            
+            var data = collectFormData();
+            var timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
+            
+            // Save to localStorage
+            saveToLocalStorage(data, timestamp);
+            
+            // Show success message
+            var successMsg = document.getElementById('successMessage');
+            successMsg.textContent = 'Thank you! Your response has been saved.';
+            successMsg.classList.add('show');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+            
+            // Reset form after 3 seconds
+            setTimeout(function() {
+                document.getElementById('surveyForm').reset();
+                successMsg.classList.remove('show');
+                selectRandomImage();
+                showHideConditional();
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
+
