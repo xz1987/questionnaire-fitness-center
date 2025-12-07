@@ -69,6 +69,46 @@ To enable CSV export functionality:
    - Age group (radio buttons)
    - Gender (radio buttons)
 
+## Google Sheets Integration
+
+### Setup Instructions
+
+1. **Create Google Apps Script**:
+   - Copy the `Code.gs` file from the main project to your Google Apps Script
+   - Update `SPREADSHEET_ID` with your Google Sheets ID
+   - Update `SHEET_NAME` if needed (default: "Sheet1")
+   - Deploy as Web App with "Who has access: Anyone"
+
+2. **Configure in HTML**:
+   - Open `index.html`
+   - Find the line: `var GOOGLE_APPS_SCRIPT_URL = '...';`
+   - Replace with your Google Apps Script Web App URL
+
+3. **How It Works**:
+   - On form submit, data is sent to Google Sheets via POST request
+   - Data is also saved to localStorage as backup
+   - If Google Sheets submission fails, data is still saved locally
+   - Success/error messages are displayed to the user
+
+### Data Format
+
+The survey data is submitted in JSON format with the following fields:
+- `timestamp`: ISO format timestamp
+- `overall_satisfaction`: Selected satisfaction level
+- `ranked_factor_1`, `ranked_factor_2`, `ranked_factor_3`: Top 3 factors
+- `ranked_factors_other`: Other factor text (if applicable)
+- `image_version_shown`: "v1" or "v2" (randomly selected)
+- `comfort_zone_amenity_1`, `comfort_zone_amenity_2`, `comfort_zone_amenity_3`: Top 3 amenities
+- `comfort_zone_other`: Other amenity text (if applicable)
+- `usage_frequency`: Selected frequency
+- `membership_type`, `membership_type_other`: Membership type
+- `membership_duration`: Duration (if member)
+- `membership_impact_renewal`: Impact on renewal (if member)
+- `membership_impact_join`: Impact on joining (if not member)
+- `wellness_q1` through `wellness_q6`: Wellness question responses (1-5)
+- `age_group`: Selected age group
+- `gender`, `gender_self_describe`: Gender selection
+
 ## Technical Details
 
 ### Browser Compatibility
@@ -86,7 +126,8 @@ To enable CSV export functionality:
 
 ### Data Storage
 
-- Responses saved to browser localStorage
+- **Primary**: Responses submitted to Google Sheets (if configured)
+- **Backup**: Responses saved to browser localStorage
 - Format: JSON array with timestamp and data
 - CSV export available in admin mode
 
