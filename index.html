@@ -130,12 +130,24 @@
                 padding: 14px;
             }
             
-            .radio-option input[type="radio"],
-            .checkbox-option input[type="checkbox"] {
-                width: 28px;
-                height: 28px;
-                min-width: 28px;
-                min-height: 28px;
+            /* 移动设备上的自定义单选按钮和复选框大小已通过CSS伪元素控制 */
+            .radio-option label:before,
+            .checkbox-option label:before {
+                width: 32px;
+                height: 32px;
+                min-width: 32px;
+                min-height: 32px;
+            }
+
+            .radio-option input[type="radio"]:checked + label:after {
+                width: 14px;
+                height: 14px;
+                left: 9px;
+            }
+
+            .checkbox-option input[type="checkbox"]:checked + label:after {
+                font-size: 22px;
+                left: 7px;
             }
             
             .satisfaction-scale-item,
@@ -145,12 +157,19 @@
                 padding: 12px;
             }
             
-            .satisfaction-scale-item input[type="radio"],
-            .likert-option input[type="radio"] {
-                width: 24px;
-                height: 24px;
-                min-width: 24px;
-                min-height: 24px;
+            .satisfaction-scale-item label:before,
+            .likert-option label:before {
+                width: 28px;
+                height: 28px;
+                min-width: 28px;
+                min-height: 28px;
+            }
+
+            .satisfaction-scale-item input[type="radio"]:checked + label:after,
+            .likert-option input[type="radio"]:checked + label:after {
+                width: 14px;
+                height: 14px;
+                top: 7px;
             }
             
             input[type="text"],
@@ -173,12 +192,24 @@
                 padding: 14px;
             }
             
-            .radio-option input[type="radio"],
-            .checkbox-option input[type="checkbox"] {
-                width: 28px;
-                height: 28px;
-                min-width: 28px;
-                min-height: 28px;
+            /* 触摸设备上的自定义单选按钮和复选框大小已通过CSS伪元素控制 */
+            .radio-option label:before,
+            .checkbox-option label:before {
+                width: 32px;
+                height: 32px;
+                min-width: 32px;
+                min-height: 32px;
+            }
+
+            .radio-option input[type="radio"]:checked + label:after {
+                width: 14px;
+                height: 14px;
+                left: 9px;
+            }
+
+            .checkbox-option input[type="checkbox"]:checked + label:after {
+                font-size: 22px;
+                left: 7px;
             }
             
             /* 移除 hover 效果，使用 active 代替 */
@@ -285,31 +316,78 @@
             box-shadow: 0 0 0 3px rgba(0, 139, 139, 0.1);
         }
 
+        /* 隐藏默认单选按钮 - 兼容旧版浏览器 */
         .radio-option input[type="radio"] {
-            margin-right: 12px;
-            width: 24px;
-            height: 24px;
-            min-width: 24px;
-            min-height: 24px;
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+            margin: 0;
+            padding: 0;
             cursor: pointer;
-            accent-color: #008B8B;
             flex-shrink: 0;
-            -webkit-appearance: radio;
-            appearance: radio;
-            position: relative;
-            z-index: 2;
         }
         
         /* 确保 label 可点击整个区域 */
         .radio-option label {
             flex: 1;
             cursor: pointer;
-            user-select: none;
             -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
             padding: 4px 0;
-            min-height: 24px;
+            padding-left: 44px;
+            min-height: 44px;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
             display: flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            -ms-flex-align: center;
             align-items: center;
+            position: relative;
+        }
+
+        /* 自定义单选按钮圆圈 - 使用伪元素 */
+        .radio-option input[type="radio"] + label:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            -webkit-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            min-height: 28px;
+            border: 2px solid #008B8B;
+            border-radius: 50%;
+            background: white;
+            -webkit-transition: all 0.2s ease;
+            transition: all 0.2s ease;
+        }
+
+        /* 选中状态 - 填充圆圈 */
+        .radio-option input[type="radio"]:checked + label:after {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 50%;
+            -webkit-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #008B8B;
+        }
+
+        /* 焦点状态 */
+        .radio-option input[type="radio"]:focus + label:before {
+            box-shadow: 0 0 0 3px rgba(0, 139, 139, 0.2);
         }
 
         /* Checkbox Groups */
@@ -371,32 +449,80 @@
             pointer-events: none;
         }
 
+        /* 隐藏默认复选框 - 兼容旧版浏览器 */
         .checkbox-option input[type="checkbox"] {
-            margin-right: 12px;
-            width: 24px;
-            height: 24px;
-            min-width: 24px;
-            min-height: 24px;
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+            margin: 0;
+            padding: 0;
             cursor: pointer;
-            accent-color: #008B8B;
             flex-shrink: 0;
-            -webkit-appearance: checkbox;
-            appearance: checkbox;
-            position: relative;
-            z-index: 2;
         }
-        
-        /* 确保 label 可点击整个区域 */
+
+        /* 复选框 label 样式 */
         .checkbox-option label {
             flex: 1;
             cursor: pointer;
-            user-select: none;
             -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
             padding: 4px 0;
-            min-height: 24px;
+            padding-left: 44px;
+            min-height: 44px;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
             display: flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            -ms-flex-align: center;
             align-items: center;
+            position: relative;
         }
+
+        /* 自定义复选框方框 - 使用伪元素 */
+        .checkbox-option input[type="checkbox"] + label:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            -webkit-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            min-height: 28px;
+            border: 2px solid #008B8B;
+            border-radius: 4px;
+            background: white;
+            -webkit-transition: all 0.2s ease;
+            transition: all 0.2s ease;
+        }
+
+        /* 选中状态 - 显示对勾 */
+        .checkbox-option input[type="checkbox"]:checked + label:after {
+            content: '✓';
+            position: absolute;
+            left: 6px;
+            top: 50%;
+            -webkit-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+            font-size: 20px;
+            font-weight: bold;
+            color: #008B8B;
+            line-height: 1;
+        }
+
+        /* 焦点状态 */
+        .checkbox-option input[type="checkbox"]:focus + label:before {
+            box-shadow: 0 0 0 3px rgba(0, 139, 139, 0.2);
+        }
+        
 
         .choice-limit {
             color: #FF6B6B;
@@ -503,19 +629,63 @@
             transform: scale(0.95);
         }
 
+        /* 隐藏默认单选按钮 - satisfaction scale */
         .satisfaction-scale-item input[type="radio"] {
-            margin-bottom: 5px;
-            accent-color: #008B8B;
-            width: 20px;
-            height: 20px;
-            min-width: 20px;
-            min-height: 20px;
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+            margin: 0;
+            padding: 0;
         }
 
         .satisfaction-scale-item label {
             font-size: 0.85em;
             color: #666;
             cursor: pointer;
+            position: relative;
+            padding-top: 28px;
+            display: block;
+            text-align: center;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* 自定义单选按钮圆圈 - satisfaction scale */
+        .satisfaction-scale-item input[type="radio"] + label:before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            -webkit-transform: translateX(-50%);
+            -ms-transform: translateX(-50%);
+            transform: translateX(-50%);
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
+            min-height: 24px;
+            border: 2px solid #008B8B;
+            border-radius: 50%;
+            background: white;
+            -webkit-transition: all 0.2s ease;
+            transition: all 0.2s ease;
+        }
+
+        /* 选中状态 - satisfaction scale */
+        .satisfaction-scale-item input[type="radio"]:checked + label:after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 6px;
+            -webkit-transform: translateX(-50%);
+            -ms-transform: translateX(-50%);
+            transform: translateX(-50%);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #008B8B;
         }
 
         /* Likert Scale */
@@ -575,19 +745,63 @@
             transform: scale(0.95);
         }
 
+        /* 隐藏默认单选按钮 - likert scale */
         .likert-option input[type="radio"] {
-            margin-bottom: 5px;
-            accent-color: #008B8B;
-            width: 20px;
-            height: 20px;
-            min-width: 20px;
-            min-height: 20px;
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+            margin: 0;
+            padding: 0;
         }
 
         .likert-option label {
             font-size: 0.9em;
             color: #666;
             cursor: pointer;
+            position: relative;
+            padding-top: 28px;
+            display: block;
+            text-align: center;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* 自定义单选按钮圆圈 - likert scale */
+        .likert-option input[type="radio"] + label:before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            -webkit-transform: translateX(-50%);
+            -ms-transform: translateX(-50%);
+            transform: translateX(-50%);
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
+            min-height: 24px;
+            border: 2px solid #008B8B;
+            border-radius: 50%;
+            background: white;
+            -webkit-transition: all 0.2s ease;
+            transition: all 0.2s ease;
+        }
+
+        /* 选中状态 - likert scale */
+        .likert-option input[type="radio"]:checked + label:after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 6px;
+            -webkit-transform: translateX(-50%);
+            -ms-transform: translateX(-50%);
+            transform: translateX(-50%);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #008B8B;
         }
 
         /* Image Display */
@@ -983,10 +1197,24 @@
                 min-height: 56px; /* Minimum touch target size */
             }
 
-            .radio-option input[type="radio"],
-            .checkbox-option input[type="checkbox"] {
-                width: 24px;
-                height: 24px;
+            /* 移动设备上的自定义单选按钮和复选框大小已通过CSS伪元素控制 */
+            .radio-option label:before,
+            .checkbox-option label:before {
+                width: 30px;
+                height: 30px;
+                min-width: 30px;
+                min-height: 30px;
+            }
+
+            .radio-option input[type="radio"]:checked + label:after {
+                width: 14px;
+                height: 14px;
+                left: 8px;
+            }
+
+            .checkbox-option input[type="checkbox"]:checked + label:after {
+                font-size: 22px;
+                left: 6px;
             }
 
             .ranked-item {
@@ -1077,10 +1305,24 @@
                 min-height: 48px;
             }
 
-            .radio-option input[type="radio"],
-            .checkbox-option input[type="checkbox"] {
-                width: 22px;
-                height: 22px;
+            /* 小屏移动设备上的自定义单选按钮和复选框大小已通过CSS伪元素控制 */
+            .radio-option label:before,
+            .checkbox-option label:before {
+                width: 28px;
+                height: 28px;
+                min-width: 28px;
+                min-height: 28px;
+            }
+
+            .radio-option input[type="radio"]:checked + label:after {
+                width: 12px;
+                height: 12px;
+                left: 8px;
+            }
+
+            .checkbox-option input[type="checkbox"]:checked + label:after {
+                font-size: 20px;
+                left: 5px;
             }
 
             .ranked-item {
