@@ -1408,7 +1408,39 @@
                     How satisfied are you with Finger Lakes Fitness Center overall?
                     <span class="required-marker">*</span>
                 </label>
-                <div class="radio-group" id="overall_satisfaction_group"></div>
+                <div class="radio-group" id="overall_satisfaction_group" style="display: block !important; visibility: visible !important; opacity: 1 !important; background-color: #ffffff !important; width: 100% !important;">
+                    <!-- Static fallback options - visible even if JavaScript fails -->
+                    <div style="background: #f5f5f5 !important; border: 2px solid #ddd !important; padding: 15px !important; margin: 10px 0 !important; border-radius: 8px !important; cursor: pointer !important; min-height: 44px !important; visibility: visible !important; opacity: 1 !important; display: block !important;">
+                        <label for="overall_satisfaction_0" style="display: block !important; font-size: 16px !important; color: #000 !important; cursor: pointer !important; visibility: visible !important; opacity: 1 !important;">
+                            <input type="radio" id="overall_satisfaction_0" name="overall_satisfaction" value="Very Dissatisfied" style="width: 20px !important; height: 20px !important; margin-right: 10px !important; vertical-align: middle !important; display: inline-block !important; visibility: visible !important; opacity: 1 !important; cursor: pointer !important;">
+                            <span style="vertical-align: middle !important; color: #000 !important; font-size: 16px !important; visibility: visible !important; opacity: 1 !important;">Very Dissatisfied</span>
+                        </label>
+                    </div>
+                    <div style="background: #f5f5f5 !important; border: 2px solid #ddd !important; padding: 15px !important; margin: 10px 0 !important; border-radius: 8px !important; cursor: pointer !important; min-height: 44px !important; visibility: visible !important; opacity: 1 !important; display: block !important;">
+                        <label for="overall_satisfaction_1" style="display: block !important; font-size: 16px !important; color: #000 !important; cursor: pointer !important; visibility: visible !important; opacity: 1 !important;">
+                            <input type="radio" id="overall_satisfaction_1" name="overall_satisfaction" value="Dissatisfied" style="width: 20px !important; height: 20px !important; margin-right: 10px !important; vertical-align: middle !important; display: inline-block !important; visibility: visible !important; opacity: 1 !important; cursor: pointer !important;">
+                            <span style="vertical-align: middle !important; color: #000 !important; font-size: 16px !important; visibility: visible !important; opacity: 1 !important;">Dissatisfied</span>
+                        </label>
+                    </div>
+                    <div style="background: #f5f5f5 !important; border: 2px solid #ddd !important; padding: 15px !important; margin: 10px 0 !important; border-radius: 8px !important; cursor: pointer !important; min-height: 44px !important; visibility: visible !important; opacity: 1 !important; display: block !important;">
+                        <label for="overall_satisfaction_2" style="display: block !important; font-size: 16px !important; color: #000 !important; cursor: pointer !important; visibility: visible !important; opacity: 1 !important;">
+                            <input type="radio" id="overall_satisfaction_2" name="overall_satisfaction" value="Neutral" style="width: 20px !important; height: 20px !important; margin-right: 10px !important; vertical-align: middle !important; display: inline-block !important; visibility: visible !important; opacity: 1 !important; cursor: pointer !important;">
+                            <span style="vertical-align: middle !important; color: #000 !important; font-size: 16px !important; visibility: visible !important; opacity: 1 !important;">Neutral</span>
+                        </label>
+                    </div>
+                    <div style="background: #f5f5f5 !important; border: 2px solid #ddd !important; padding: 15px !important; margin: 10px 0 !important; border-radius: 8px !important; cursor: pointer !important; min-height: 44px !important; visibility: visible !important; opacity: 1 !important; display: block !important;">
+                        <label for="overall_satisfaction_3" style="display: block !important; font-size: 16px !important; color: #000 !important; cursor: pointer !important; visibility: visible !important; opacity: 1 !important;">
+                            <input type="radio" id="overall_satisfaction_3" name="overall_satisfaction" value="Satisfied" style="width: 20px !important; height: 20px !important; margin-right: 10px !important; vertical-align: middle !important; display: inline-block !important; visibility: visible !important; opacity: 1 !important; cursor: pointer !important;">
+                            <span style="vertical-align: middle !important; color: #000 !important; font-size: 16px !important; visibility: visible !important; opacity: 1 !important;">Satisfied</span>
+                        </label>
+                    </div>
+                    <div style="background: #f5f5f5 !important; border: 2px solid #ddd !important; padding: 15px !important; margin: 10px 0 !important; border-radius: 8px !important; cursor: pointer !important; min-height: 44px !important; visibility: visible !important; opacity: 1 !important; display: block !important;">
+                        <label for="overall_satisfaction_4" style="display: block !important; font-size: 16px !important; color: #000 !important; cursor: pointer !important; visibility: visible !important; opacity: 1 !important;">
+                            <input type="radio" id="overall_satisfaction_4" name="overall_satisfaction" value="Very Satisfied" style="width: 20px !important; height: 20px !important; margin-right: 10px !important; vertical-align: middle !important; display: inline-block !important; visibility: visible !important; opacity: 1 !important; cursor: pointer !important;">
+                            <span style="vertical-align: middle !important; color: #000 !important; font-size: 16px !important; visibility: visible !important; opacity: 1 !important;">Very Satisfied</span>
+                        </label>
+                    </div>
+                </div>
                 <div class="error-message">Please select an option</div>
             </div>
 
@@ -1421,7 +1453,59 @@
                     Drag or touch to reorder your selections (top 3 will be ranked)
                 </p>
                 <div class="ranking-container" id="ranked_factors_container">
-                    <div class="checkbox-group" id="ranked_factors_group"></div>
+                    <div class="checkbox-group" id="ranked_factors_group" style="display: block !important; visibility: visible !important; opacity: 1 !important; background-color: #ffffff !important; width: 100% !important;">
+                        <!-- Static fallback options - visible even if JavaScript fails -->
+                        <div class="checkbox-option" data-value="Availability of personal trainers or classes" style="background: #f5f5f5 !important; border: 2px solid #ddd !important; padding: 15px !important; margin: 10px 0 !important; border-radius: 8px !important; cursor: pointer !important; min-height: 44px !important; visibility: visible !important; opacity: 1 !important; display: block !important;">
+                            <label for="ranked_factors_group_0" style="display: block !important; font-size: 16px !important; color: #000 !important; cursor: pointer !important; visibility: visible !important; opacity: 1 !important;">
+                                <input type="checkbox" id="ranked_factors_group_0" name="ranked_factors" value="Availability of personal trainers or classes" class="factor-checkbox" style="width: 20px !important; height: 20px !important; margin-right: 10px !important; vertical-align: middle !important; display: inline-block !important; visibility: visible !important; opacity: 1 !important; cursor: pointer !important;">
+                                <span style="vertical-align: middle !important; color: #000 !important; font-size: 16px !important; visibility: visible !important; opacity: 1 !important;">Availability of personal trainers or classes</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-option" data-value="Ventilation, lighting, and air conditioning" style="background: #f5f5f5 !important; border: 2px solid #ddd !important; padding: 15px !important; margin: 10px 0 !important; border-radius: 8px !important; cursor: pointer !important; min-height: 44px !important; visibility: visible !important; opacity: 1 !important; display: block !important;">
+                            <label for="ranked_factors_group_1" style="display: block !important; font-size: 16px !important; color: #000 !important; cursor: pointer !important; visibility: visible !important; opacity: 1 !important;">
+                                <input type="checkbox" id="ranked_factors_group_1" name="ranked_factors" value="Ventilation, lighting, and air conditioning" class="factor-checkbox" style="width: 20px !important; height: 20px !important; margin-right: 10px !important; vertical-align: middle !important; display: inline-block !important; visibility: visible !important; opacity: 1 !important; cursor: pointer !important;">
+                                <span style="vertical-align: middle !important; color: #000 !important; font-size: 16px !important; visibility: visible !important; opacity: 1 !important;">Ventilation, lighting, and air conditioning</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-option" data-value="Locker rooms and shower facilities" style="background: #f5f5f5 !important; border: 2px solid #ddd !important; padding: 15px !important; margin: 10px 0 !important; border-radius: 8px !important; cursor: pointer !important; min-height: 44px !important; visibility: visible !important; opacity: 1 !important; display: block !important;">
+                            <label for="ranked_factors_group_2" style="display: block !important; font-size: 16px !important; color: #000 !important; cursor: pointer !important; visibility: visible !important; opacity: 1 !important;">
+                                <input type="checkbox" id="ranked_factors_group_2" name="ranked_factors" value="Locker rooms and shower facilities" class="factor-checkbox" style="width: 20px !important; height: 20px !important; margin-right: 10px !important; vertical-align: middle !important; display: inline-block !important; visibility: visible !important; opacity: 1 !important; cursor: pointer !important;">
+                                <span style="vertical-align: middle !important; color: #000 !important; font-size: 16px !important; visibility: visible !important; opacity: 1 !important;">Locker rooms and shower facilities</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-option" data-value="Variety and quality of equipment" style="background: #f5f5f5 !important; border: 2px solid #ddd !important; padding: 15px !important; margin: 10px 0 !important; border-radius: 8px !important; cursor: pointer !important; min-height: 44px !important; visibility: visible !important; opacity: 1 !important; display: block !important;">
+                            <label for="ranked_factors_group_3" style="display: block !important; font-size: 16px !important; color: #000 !important; cursor: pointer !important; visibility: visible !important; opacity: 1 !important;">
+                                <input type="checkbox" id="ranked_factors_group_3" name="ranked_factors" value="Variety and quality of equipment" class="factor-checkbox" style="width: 20px !important; height: 20px !important; margin-right: 10px !important; vertical-align: middle !important; display: inline-block !important; visibility: visible !important; opacity: 1 !important; cursor: pointer !important;">
+                                <span style="vertical-align: middle !important; color: #000 !important; font-size: 16px !important; visibility: visible !important; opacity: 1 !important;">Variety and quality of equipment</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-option" data-value="Availability of seating area" style="background: #f5f5f5 !important; border: 2px solid #ddd !important; padding: 15px !important; margin: 10px 0 !important; border-radius: 8px !important; cursor: pointer !important; min-height: 44px !important; visibility: visible !important; opacity: 1 !important; display: block !important;">
+                            <label for="ranked_factors_group_4" style="display: block !important; font-size: 16px !important; color: #000 !important; cursor: pointer !important; visibility: visible !important; opacity: 1 !important;">
+                                <input type="checkbox" id="ranked_factors_group_4" name="ranked_factors" value="Availability of seating area" class="factor-checkbox" style="width: 20px !important; height: 20px !important; margin-right: 10px !important; vertical-align: middle !important; display: inline-block !important; visibility: visible !important; opacity: 1 !important; cursor: pointer !important;">
+                                <span style="vertical-align: middle !important; color: #000 !important; font-size: 16px !important; visibility: visible !important; opacity: 1 !important;">Availability of seating area</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-option" data-value="Cleanliness and maintenance" style="background: #f5f5f5 !important; border: 2px solid #ddd !important; padding: 15px !important; margin: 10px 0 !important; border-radius: 8px !important; cursor: pointer !important; min-height: 44px !important; visibility: visible !important; opacity: 1 !important; display: block !important;">
+                            <label for="ranked_factors_group_5" style="display: block !important; font-size: 16px !important; color: #000 !important; cursor: pointer !important; visibility: visible !important; opacity: 1 !important;">
+                                <input type="checkbox" id="ranked_factors_group_5" name="ranked_factors" value="Cleanliness and maintenance" class="factor-checkbox" style="width: 20px !important; height: 20px !important; margin-right: 10px !important; vertical-align: middle !important; display: inline-block !important; visibility: visible !important; opacity: 1 !important; cursor: pointer !important;">
+                                <span style="vertical-align: middle !important; color: #000 !important; font-size: 16px !important; visibility: visible !important; opacity: 1 !important;">Cleanliness and maintenance</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-option" data-value="Commuting convenience" style="background: #f5f5f5 !important; border: 2px solid #ddd !important; padding: 15px !important; margin: 10px 0 !important; border-radius: 8px !important; cursor: pointer !important; min-height: 44px !important; visibility: visible !important; opacity: 1 !important; display: block !important;">
+                            <label for="ranked_factors_group_6" style="display: block !important; font-size: 16px !important; color: #000 !important; cursor: pointer !important; visibility: visible !important; opacity: 1 !important;">
+                                <input type="checkbox" id="ranked_factors_group_6" name="ranked_factors" value="Commuting convenience" class="factor-checkbox" style="width: 20px !important; height: 20px !important; margin-right: 10px !important; vertical-align: middle !important; display: inline-block !important; visibility: visible !important; opacity: 1 !important; cursor: pointer !important;">
+                                <span style="vertical-align: middle !important; color: #000 !important; font-size: 16px !important; visibility: visible !important; opacity: 1 !important;">Commuting convenience</span>
+                            </label>
+                        </div>
+                        <div class="checkbox-option" data-value="Other" style="background: #f5f5f5 !important; border: 2px solid #ddd !important; padding: 15px !important; margin: 10px 0 !important; border-radius: 8px !important; cursor: pointer !important; min-height: 44px !important; visibility: visible !important; opacity: 1 !important; display: block !important;">
+                            <label for="ranked_factors_group_7" style="display: block !important; font-size: 16px !important; color: #000 !important; cursor: pointer !important; visibility: visible !important; opacity: 1 !important;">
+                                <input type="checkbox" id="ranked_factors_group_7" name="ranked_factors" value="Other" class="factor-checkbox" style="width: 20px !important; height: 20px !important; margin-right: 10px !important; vertical-align: middle !important; display: inline-block !important; visibility: visible !important; opacity: 1 !important; cursor: pointer !important;">
+                                <span style="vertical-align: middle !important; color: #000 !important; font-size: 16px !important; visibility: visible !important; opacity: 1 !important;">Other: </span>
+                                <input type="text" id="ranked_factors_group_other" name="ranked_factors_other" placeholder="Please specify" style="display: none; margin-top: 10px; padding: 8px; width: 200px; font-size: 14px; color: #000000; background-color: #ffffff; border: 1px solid #cccccc;">
+                            </label>
+                        </div>
+                        <p id="factor-limit-message" style="color: red; font-size: 14px; margin-top: 10px; display: none;">Maximum 3 selections allowed</p>
+                    </div>
                     <div class="ranked-selections" id="ranked_selections">
                         <p class="ranking-instructions">Select up to 3 factors, then drag to rank them:</p>
                         <div class="ranked-list" id="ranked_list"></div>
@@ -3961,7 +4045,49 @@
                     allGroups[g].style.cssText = 'display: block !important; visibility: visible !important; opacity: 1 !important; background-color: #ffffff !important; width: 100% !important;';
                 }
                 
-                renderAllQuestions();
+                // 检查是否已经有静态内容，如果没有则渲染
+                var overallGroup = document.getElementById('overall_satisfaction_group');
+                var rankedGroup = document.getElementById('ranked_factors_group');
+                
+                // 如果容器是空的，才渲染（如果已经有静态内容，就保留）
+                if (overallGroup && overallGroup.children.length === 0) {
+                    renderAllQuestions();
+                } else if (overallGroup && overallGroup.children.length > 0) {
+                    // 已经有静态内容，只需要添加事件监听
+                    console.log('✅ Static content already present, adding event listeners');
+                    // 添加点击事件到静态选项
+                    var staticRadios = overallGroup.querySelectorAll('input[type="radio"]');
+                    for (var sr = 0; sr < staticRadios.length; sr++) {
+                        staticRadios[sr].addEventListener('change', function() {
+                            calculateProgress();
+                        });
+                    }
+                } else {
+                    renderAllQuestions();
+                }
+                
+                // 为静态复选框添加限制
+                var staticCheckboxes = document.querySelectorAll('.factor-checkbox');
+                for (var sc = 0; sc < staticCheckboxes.length; sc++) {
+                    (function(cb) {
+                        cb.addEventListener('change', function() {
+                            var checked = document.querySelectorAll('.factor-checkbox:checked');
+                            if (checked.length > 3) {
+                                this.checked = false;
+                                var msg = document.getElementById('factor-limit-message');
+                                if (msg) {
+                                    msg.style.display = 'block';
+                                    setTimeout(function() {
+                                        msg.style.display = 'none';
+                                    }, 3000);
+                                }
+                                alert('Maximum 3 selections allowed');
+                            } else {
+                                calculateProgress();
+                            }
+                        });
+                    })(staticCheckboxes[sc]);
+                }
                 
                 // 验证渲染结果 - 多次检查
                 function verifyRendering() {
