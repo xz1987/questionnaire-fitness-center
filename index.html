@@ -263,42 +263,26 @@
             margin-left: 4px;
         }
 
-        /* Radio Groups */
+        /* Radio Groups - Simple, bulletproof layout */
         .radio-group {
-            display: -webkit-box !important;
-            display: -webkit-flex !important;
-            display: -ms-flexbox !important;
-            display: flex !important;
-            -webkit-box-orient: vertical;
-            -webkit-box-direction: normal;
-            -webkit-flex-direction: column;
-            -ms-flex-direction: column;
-            flex-direction: column;
+            width: 100% !important;
+            background-color: #ffffff !important;
             visibility: visible !important;
             opacity: 1 !important;
-            min-height: 50px; /* 确保容器有高度 */
-        }
-
-        .radio-group > * {
-            margin-bottom: 12px;
-        }
-
-        .radio-group > *:last-child {
-            margin-bottom: 0;
+            display: block !important;
+            min-height: 50px !important;
         }
 
         .radio-option {
-            display: flex;
-            align-items: center;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            min-height: 44px; /* 移动端最小触摸区域 */
-            -webkit-tap-highlight-color: rgba(0, 139, 139, 0.2);
-            position: relative;
-            z-index: 1;
+            display: block !important;
+            padding: 10px !important;
+            margin: 5px 0 !important;
+            background-color: #ffffff !important;
+            border: 1px solid #cccccc !important;
+            cursor: pointer !important;
+            min-height: 44px !important;
+            visibility: visible !important;
+            opacity: 1 !important;
         }
 
         .radio-option:hover {
@@ -316,116 +300,58 @@
             box-shadow: 0 0 0 3px rgba(0, 139, 139, 0.1);
         }
 
-        /* 隐藏默认单选按钮 - 兼容旧版浏览器 */
+        /* 确保单选按钮可见 - 使用默认浏览器样式 */
         .radio-option input[type="radio"] {
-            position: absolute;
-            opacity: 0;
-            width: 0;
-            height: 0;
-            margin: 0;
-            padding: 0;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-        
-        /* 确保 label 可点击整个区域 */
-        .radio-option label {
-            flex: 1;
-            cursor: pointer;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            padding: 4px 0;
-            padding-left: 44px;
-            min-height: 44px;
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-align: center;
-            -webkit-align-items: center;
-            -ms-flex-align: center;
-            align-items: center;
-            position: relative;
-        }
-
-        /* 自定义单选按钮圆圈 - 使用伪元素 */
-        .radio-option input[type="radio"] + label:before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            -webkit-transform: translateY(-50%);
-            -ms-transform: translateY(-50%);
-            transform: translateY(-50%);
-            width: 28px;
-            height: 28px;
-            min-width: 28px;
-            min-height: 28px;
-            border: 2px solid #008B8B;
-            border-radius: 50%;
-            background: white;
-            -webkit-transition: all 0.2s ease;
-            transition: all 0.2s ease;
-        }
-
-        /* 选中状态 - 填充圆圈 */
-        .radio-option input[type="radio"]:checked + label:after {
-            content: '';
-            position: absolute;
-            left: 8px;
-            top: 50%;
-            -webkit-transform: translateY(-50%);
-            -ms-transform: translateY(-50%);
-            transform: translateY(-50%);
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #008B8B;
-        }
-
-        /* 焦点状态 */
-        .radio-option input[type="radio"]:focus + label:before {
-            box-shadow: 0 0 0 3px rgba(0, 139, 139, 0.2);
-        }
-
-        /* Checkbox Groups */
-        .checkbox-group {
-            display: -webkit-box !important;
-            display: -webkit-flex !important;
-            display: -ms-flexbox !important;
-            display: flex !important;
-            -webkit-box-orient: vertical;
-            -webkit-box-direction: normal;
-            -webkit-flex-direction: column;
-            -ms-flex-direction: column;
-            flex-direction: column;
+            width: 24px !important;
+            height: 24px !important;
+            margin: 0 10px 0 0 !important;
+            padding: 0 !important;
+            display: inline-block !important;
             visibility: visible !important;
             opacity: 1 !important;
-            min-height: 50px; /* 确保容器有高度 */
+            position: relative !important;
+            z-index: 1 !important;
+            vertical-align: middle !important;
+            cursor: pointer !important;
+            -webkit-appearance: radio !important;
+            -moz-appearance: radio !important;
+            appearance: radio !important;
+        }
+        
+        /* 确保 label 可见且可点击 */
+        .radio-option label {
+            display: inline-block !important;
+            cursor: pointer !important;
+            font-size: 16px !important;
+            color: #000000 !important;
+            vertical-align: middle !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            background-color: transparent !important;
+            padding: 0 !important;
+            margin: 0 !important;
         }
 
-        .checkbox-group > * {
-            margin-bottom: 12px;
-        }
-
-        .checkbox-group > *:last-child {
-            margin-bottom: 0;
+        /* Checkbox Groups - Simple, bulletproof layout */
+        .checkbox-group {
+            width: 100% !important;
+            background-color: #ffffff !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            display: block !important;
+            min-height: 50px !important;
         }
 
         .checkbox-option {
-            display: flex;
-            align-items: center;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            min-height: 44px; /* 移动端最小触摸区域 */
-            -webkit-tap-highlight-color: rgba(0, 139, 139, 0.2);
-            position: relative;
-            z-index: 1;
+            display: block !important;
+            padding: 10px !important;
+            margin: 5px 0 !important;
+            background-color: #ffffff !important;
+            border: 1px solid #cccccc !important;
+            cursor: pointer !important;
+            min-height: 44px !important;
+            visibility: visible !important;
+            opacity: 1 !important;
         }
 
         .checkbox-option:hover {
@@ -449,78 +375,36 @@
             pointer-events: none;
         }
 
-        /* 隐藏默认复选框 - 兼容旧版浏览器 */
+        /* 确保复选框可见 - 使用默认浏览器样式 */
         .checkbox-option input[type="checkbox"] {
-            position: absolute;
-            opacity: 0;
-            width: 0;
-            height: 0;
-            margin: 0;
-            padding: 0;
-            cursor: pointer;
-            flex-shrink: 0;
+            width: 24px !important;
+            height: 24px !important;
+            margin: 0 10px 0 0 !important;
+            padding: 0 !important;
+            display: inline-block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            position: relative !important;
+            z-index: 1 !important;
+            vertical-align: middle !important;
+            cursor: pointer !important;
+            -webkit-appearance: checkbox !important;
+            -moz-appearance: checkbox !important;
+            appearance: checkbox !important;
         }
 
-        /* 复选框 label 样式 */
+        /* 确保 label 可见且可点击 */
         .checkbox-option label {
-            flex: 1;
-            cursor: pointer;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            padding: 4px 0;
-            padding-left: 44px;
-            min-height: 44px;
-            display: -webkit-box;
-            display: -webkit-flex;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-align: center;
-            -webkit-align-items: center;
-            -ms-flex-align: center;
-            align-items: center;
-            position: relative;
-        }
-
-        /* 自定义复选框方框 - 使用伪元素 */
-        .checkbox-option input[type="checkbox"] + label:before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            -webkit-transform: translateY(-50%);
-            -ms-transform: translateY(-50%);
-            transform: translateY(-50%);
-            width: 28px;
-            height: 28px;
-            min-width: 28px;
-            min-height: 28px;
-            border: 2px solid #008B8B;
-            border-radius: 4px;
-            background: white;
-            -webkit-transition: all 0.2s ease;
-            transition: all 0.2s ease;
-        }
-
-        /* 选中状态 - 显示对勾 */
-        .checkbox-option input[type="checkbox"]:checked + label:after {
-            content: '✓';
-            position: absolute;
-            left: 6px;
-            top: 50%;
-            -webkit-transform: translateY(-50%);
-            -ms-transform: translateY(-50%);
-            transform: translateY(-50%);
-            font-size: 20px;
-            font-weight: bold;
-            color: #008B8B;
-            line-height: 1;
-        }
-
-        /* 焦点状态 */
-        .checkbox-option input[type="checkbox"]:focus + label:before {
-            box-shadow: 0 0 0 3px rgba(0, 139, 139, 0.2);
+            display: inline-block !important;
+            cursor: pointer !important;
+            font-size: 16px !important;
+            color: #000000 !important;
+            vertical-align: middle !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            background-color: transparent !important;
+            padding: 0 !important;
+            margin: 0 !important;
         }
         
 
@@ -2038,7 +1922,7 @@
         };
 
         /**
-         * 渲染单选按钮组（带错误处理）
+         * 渲染单选按钮组（带错误处理）- 使用简单布局确保旧版设备可见
          */
         function renderRadioGroup(groupId, options) {
             try {
@@ -2053,59 +1937,74 @@
                     return;
                 }
                 
-                // 强制显示容器
-                container.style.display = 'flex';
+                // 强制显示容器 - 使用最简单的布局
+                container.style.display = 'block';
                 container.style.visibility = 'visible';
                 container.style.opacity = '1';
+                container.style.backgroundColor = '#ffffff';
+                container.style.width = '100%';
                 
                 container.innerHTML = '';
                 
                 console.log('📝 Rendering radio group:', groupId, 'with', options.length, 'options');
 
-                options.forEach((option, index) => {
+                for (var index = 0; index < options.length; index++) {
+                    var option = options[index];
+                    
+                    // 创建简单的div容器
                     var radioDiv = document.createElement('div');
                     radioDiv.className = 'radio-option';
+                    // 内联样式确保可见性
+                    radioDiv.style.cssText = 'display: block !important; padding: 10px !important; margin: 5px 0 !important; background-color: #ffffff !important; border: 1px solid #cccccc !important; cursor: pointer !important; min-height: 44px !important; visibility: visible !important; opacity: 1 !important;';
 
                     var radio = document.createElement('input');
                     radio.type = 'radio';
                     radio.id = groupId + '_' + index;
                     radio.name = groupId.replace('_group', '');
                     radio.value = option;
-                    radio.setAttribute('aria-label', option); // 无障碍支持
+                    radio.setAttribute('aria-label', option);
+                    // 内联样式确保可见性
+                    radio.style.cssText = 'width: 24px !important; height: 24px !important; margin: 0 10px 0 0 !important; padding: 0 !important; display: inline-block !important; visibility: visible !important; opacity: 1 !important; position: relative !important; z-index: 1 !important; vertical-align: middle !important; cursor: pointer !important;';
 
                     var label = document.createElement('label');
                     label.htmlFor = groupId + '_' + index;
                     label.textContent = option;
                     label.setAttribute('aria-label', option);
+                    // 内联样式确保可见性
+                    label.style.cssText = 'display: inline-block !important; cursor: pointer !important; font-size: 16px !important; color: #000000 !important; vertical-align: middle !important; visibility: visible !important; opacity: 1 !important; background-color: transparent !important; padding: 0 !important; margin: 0 !important;';
 
                     // 确保整个 div 可点击
-                    radioDiv.addEventListener('click', function(e) {
-                        if (e.target !== radio) {
-                            radio.click();
-                        }
-                    });
+                    radioDiv.addEventListener('click', function(radioInput) {
+                        return function(e) {
+                            if (e.target !== radioInput) {
+                                radioInput.click();
+                            }
+                        };
+                    }(radio));
 
                     radioDiv.appendChild(radio);
                     radioDiv.appendChild(label);
 
                     // 处理 "Other" 或 "self-describe" 选项
-                    if (option === 'Other' || option.includes('Other') || option.includes('self-describe')) {
+                    if (option === 'Other' || option.indexOf('Other') !== -1 || option.indexOf('self-describe') !== -1) {
                         var otherInput = document.createElement('input');
                         otherInput.type = 'text';
                         otherInput.id = groupId + '_other';
                         otherInput.name = groupId.replace('_group', '') + '_other';
                         otherInput.className = 'other-input';
                         otherInput.placeholder = 'Please specify...';
-                        otherInput.style.display = 'none';
+                        otherInput.style.cssText = 'display: none; margin-top: 10px; padding: 8px; width: 100%; font-size: 16px; color: #000000; background-color: #ffffff; border: 1px solid #cccccc;';
                         radioDiv.appendChild(otherInput);
 
-                        radio.addEventListener('change', function() {
-                            otherInput.style.display = this.checked ? 'block' : 'none';
-                        });
+                        radio.addEventListener('change', function(input) {
+                            return function() {
+                                input.style.display = this.checked ? 'block' : 'none';
+                            };
+                        }(otherInput));
                     }
 
                     container.appendChild(radioDiv);
-                });
+                }
                 
                 if (DEBUG_MODE) {
                     console.log('✅ Rendered radio group:', groupId, 'with', options.length, 'options');
@@ -2116,7 +2015,7 @@
         }
 
         /**
-         * 渲染复选框组（带限制，带错误处理）
+         * 渲染复选框组（带限制，带错误处理）- 使用简单布局确保旧版设备可见
          */
         function renderCheckboxGroup(groupId, options, maxSelections) {
             try {
@@ -2131,26 +2030,37 @@
                     return;
                 }
                 
-                // 强制显示容器
-                container.style.display = 'flex';
+                // 强制显示容器 - 使用最简单的布局
+                container.style.display = 'block';
                 container.style.visibility = 'visible';
                 container.style.opacity = '1';
+                container.style.backgroundColor = '#ffffff';
+                container.style.width = '100%';
                 
                 container.innerHTML = '';
                 
                 console.log('📝 Rendering checkbox group:', groupId, 'with', options.length, 'options');
 
-                options.forEach((option, index) => {
+                for (var index = 0; index < options.length; index++) {
+                    var option = options[index];
+                    
+                    // 创建简单的div容器
                     var checkboxDiv = document.createElement('div');
                     checkboxDiv.className = 'checkbox-option';
                     checkboxDiv.setAttribute('data-value', option);
+                    // 内联样式确保可见性
+                    checkboxDiv.style.cssText = 'display: block !important; padding: 10px !important; margin: 5px 0 !important; background-color: #ffffff !important; border: 1px solid #cccccc !important; cursor: pointer !important; min-height: 44px !important; visibility: visible !important; opacity: 1 !important;';
 
                     var checkbox = document.createElement('input');
                     checkbox.type = 'checkbox';
                     checkbox.id = groupId + '_' + index;
                     checkbox.name = groupId.replace('_group', '');
                     checkbox.value = option;
-                    checkbox.setAttribute('aria-label', option); // 无障碍支持
+                    checkbox.setAttribute('aria-label', option);
+                    // 内联样式确保可见性
+                    checkbox.style.cssText = 'width: 24px !important; height: 24px !important; margin: 0 10px 0 0 !important; padding: 0 !important; display: inline-block !important; visibility: visible !important; opacity: 1 !important; position: relative !important; z-index: 1 !important; vertical-align: middle !important; cursor: pointer !important;';
+                    
+                    var selfCheckbox = checkbox;
                     checkbox.addEventListener('change', function() {
                         enforceCheckboxLimit(groupId, maxSelections);
                     });
@@ -2159,35 +2069,41 @@
                     label.htmlFor = groupId + '_' + index;
                     label.textContent = option;
                     label.setAttribute('aria-label', option);
+                    // 内联样式确保可见性
+                    label.style.cssText = 'display: inline-block !important; cursor: pointer !important; font-size: 16px !important; color: #000000 !important; vertical-align: middle !important; visibility: visible !important; opacity: 1 !important; background-color: transparent !important; padding: 0 !important; margin: 0 !important;';
 
                     // 确保整个 div 可点击
-                    checkboxDiv.addEventListener('click', function(e) {
-                        if (e.target !== checkbox) {
-                            checkbox.click();
-                        }
-                    });
+                    checkboxDiv.addEventListener('click', function(checkboxInput) {
+                        return function(e) {
+                            if (e.target !== checkboxInput) {
+                                checkboxInput.click();
+                            }
+                        };
+                    }(checkbox));
 
                     checkboxDiv.appendChild(checkbox);
                     checkboxDiv.appendChild(label);
 
                     // 处理 "Other" 选项
-                    if (option === 'Other' || option.includes('Other')) {
+                    if (option === 'Other' || option.indexOf('Other') !== -1) {
                         var otherInput = document.createElement('input');
                         otherInput.type = 'text';
                         otherInput.id = groupId + '_other';
                         otherInput.name = groupId.replace('_group', '') + '_other';
                         otherInput.className = 'other-input';
                         otherInput.placeholder = 'Please specify...';
-                        otherInput.style.display = 'none';
+                        otherInput.style.cssText = 'display: none; margin-top: 10px; padding: 8px; width: 100%; font-size: 16px; color: #000000; background-color: #ffffff; border: 1px solid #cccccc;';
                         checkboxDiv.appendChild(otherInput);
 
-                        checkbox.addEventListener('change', function() {
-                            otherInput.style.display = this.checked ? 'block' : 'none';
-                        });
+                        checkbox.addEventListener('change', function(input) {
+                            return function() {
+                                input.style.display = this.checked ? 'block' : 'none';
+                            };
+                        }(otherInput));
                     }
 
                     container.appendChild(checkboxDiv);
-                });
+                }
 
                 updateChoiceLimit(groupId.replace('_group', '_limit'), groupId, maxSelections);
                 
@@ -4124,8 +4040,69 @@
             showDebugInfo();
         }
         
+        // 调试代码：检查表单输入是否可见
+        window.addEventListener('load', function() {
+            console.log('Page loaded');
+            
+            // 计数可见的输入
+            var radios = document.querySelectorAll('input[type="radio"]');
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            
+            console.log('Radio buttons found: ' + radios.length);
+            console.log('Checkboxes found: ' + checkboxes.length);
+            
+            // 检查是否可见
+            for (var i = 0; i < radios.length; i++) {
+                var radio = radios[i];
+                var style = window.getComputedStyle(radio);
+                console.log('Radio ' + i + ' display: ' + style.display + ', visibility: ' + style.visibility + ', opacity: ' + style.opacity);
+                
+                // 如果不可见，强制显示
+                if (style.display === 'none' || style.visibility === 'hidden' || parseFloat(style.opacity) < 0.1) {
+                    radio.style.display = 'inline-block';
+                    radio.style.visibility = 'visible';
+                    radio.style.opacity = '1';
+                    console.log('Fixed radio ' + i + ' visibility');
+                }
+            }
+            
+            for (var j = 0; j < checkboxes.length; j++) {
+                var checkbox = checkboxes[j];
+                var style2 = window.getComputedStyle(checkbox);
+                console.log('Checkbox ' + j + ' display: ' + style2.display + ', visibility: ' + style2.visibility + ', opacity: ' + style2.opacity);
+                
+                // 如果不可见，强制显示
+                if (style2.display === 'none' || style2.visibility === 'hidden' || parseFloat(style2.opacity) < 0.1) {
+                    checkbox.style.display = 'inline-block';
+                    checkbox.style.visibility = 'visible';
+                    checkbox.style.opacity = '1';
+                    console.log('Fixed checkbox ' + j + ' visibility');
+                }
+            }
+            
+            // 检查标签是否可见
+            var labels = document.querySelectorAll('label');
+            for (var k = 0; k < labels.length; k++) {
+                var label = labels[k];
+                var style3 = window.getComputedStyle(label);
+                if (style3.display === 'none' || style3.visibility === 'hidden' || parseFloat(style3.opacity) < 0.1) {
+                    label.style.display = 'inline-block';
+                    label.style.visibility = 'visible';
+                    label.style.opacity = '1';
+                    label.style.color = '#000000';
+                    console.log('Fixed label ' + k + ' visibility');
+                }
+            }
+            
+            // 如果没找到任何输入，显示警告
+            if (radios.length === 0 && checkboxes.length === 0) {
+                console.warn('WARNING: No form inputs detected!');
+                alert('WARNING: No form inputs detected! Please check the console for details.');
+            }
+        });
+        
         // 额外的保险：如果上面的都没执行，在 window.onload 时再试一次
-        window.addEventListener('load', () => {
+        window.addEventListener('load', function() {
             var sections = document.querySelectorAll('.section');
             if (sections.length > 0 && !sections[0].classList.contains('visible')) {
                 if (DEBUG_MODE) {
