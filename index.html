@@ -234,12 +234,26 @@
 
         /* Radio Groups */
         .radio-group {
+            display: -webkit-box !important;
+            display: -webkit-flex !important;
+            display: -ms-flexbox !important;
             display: flex !important;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -webkit-flex-direction: column;
+            -ms-flex-direction: column;
             flex-direction: column;
-            gap: 12px;
             visibility: visible !important;
             opacity: 1 !important;
             min-height: 50px; /* 确保容器有高度 */
+        }
+
+        .radio-group > * {
+            margin-bottom: 12px;
+        }
+
+        .radio-group > *:last-child {
+            margin-bottom: 0;
         }
 
         .radio-option {
@@ -300,12 +314,26 @@
 
         /* Checkbox Groups */
         .checkbox-group {
+            display: -webkit-box !important;
+            display: -webkit-flex !important;
+            display: -ms-flexbox !important;
             display: flex !important;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -webkit-flex-direction: column;
+            -ms-flex-direction: column;
             flex-direction: column;
-            gap: 12px;
             visibility: visible !important;
             opacity: 1 !important;
             min-height: 50px; /* 确保容器有高度 */
+        }
+
+        .checkbox-group > * {
+            margin-bottom: 12px;
+        }
+
+        .checkbox-group > *:last-child {
+            margin-bottom: 0;
         }
 
         .checkbox-option {
@@ -381,18 +409,36 @@
             color: #FF6B6B;
         }
 
-        /* Satisfaction Grid */
+        /* Satisfaction Grid - Using Flexbox for compatibility */
         .satisfaction-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -webkit-flex-direction: column;
+            -ms-flex-direction: column;
+            flex-direction: column;
             margin-top: 15px;
         }
 
+        .satisfaction-grid > * {
+            margin-bottom: 15px;
+        }
+
+        .satisfaction-grid > *:last-child {
+            margin-bottom: 0;
+        }
+
         .satisfaction-row {
-            display: grid;
-            grid-template-columns: 200px 1fr;
-            gap: 15px;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            -ms-flex-align: center;
             align-items: center;
             padding: 12px;
             border: 1px solid #e0e0e0;
@@ -400,14 +446,36 @@
         }
 
         .satisfaction-label {
+            -webkit-box-flex: 0;
+            -webkit-flex: 0 0 200px;
+            -ms-flex: 0 0 200px;
+            flex: 0 0 200px;
+            min-width: 200px;
             font-weight: 500;
             color: #333;
         }
 
         .satisfaction-scale {
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
             display: flex;
-            gap: 10px;
+            -webkit-flex-wrap: wrap;
+            -ms-flex-wrap: wrap;
             flex-wrap: wrap;
+        }
+
+        .satisfaction-scale > * {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .satisfaction-scale > *:last-child {
+            margin-right: 0;
         }
 
         .satisfaction-scale-item {
@@ -464,9 +532,22 @@
         }
 
         .likert-options {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
             display: flex;
-            gap: 10px;
+            -webkit-flex-wrap: wrap;
+            -ms-flex-wrap: wrap;
             flex-wrap: wrap;
+        }
+
+        .likert-options > * {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .likert-options > *:last-child {
+            margin-right: 0;
         }
 
         .likert-option {
@@ -752,9 +833,23 @@
         }
 
         .ranked-list {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
             display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -webkit-flex-direction: column;
+            -ms-flex-direction: column;
             flex-direction: column;
-            gap: 10px;
+        }
+
+        .ranked-list > * {
+            margin-bottom: 10px;
+        }
+
+        .ranked-list > *:last-child {
+            margin-bottom: 0;
         }
 
         .ranked-item {
@@ -822,16 +917,29 @@
             background: #FF6B6B;
             color: white;
             border: none;
-            width: 30px;
-            height: 30px;
+            min-width: 44px;
+            min-height: 44px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             cursor: pointer;
             font-size: 1.2em;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
             display: flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            -ms-flex-align: center;
             align-items: center;
+            -webkit-box-pack: center;
+            -webkit-justify-content: center;
+            -ms-flex-pack: center;
             justify-content: center;
             margin-left: 10px;
             transition: all 0.2s ease;
+            -webkit-tap-highlight-color: rgba(255, 107, 107, 0.3);
+            touch-action: manipulation;
         }
 
         .rank-remove-btn:hover {
@@ -848,7 +956,7 @@
 
         /* Responsive Design */
         
-        /* Tablet Styles (768px - 1024px) */
+        /* Tabvar Styles (768px - 1024px) */
         @media (min-width: 768px) and (max-width: 1024px) {
             .section {
                 padding: 30px;
@@ -914,7 +1022,19 @@
             }
         }
 
-        /* Mobile Styles (max-width: 768px) */
+        /* Large Phone (414px - 767px) */
+        @media (min-width: 414px) and (max-width: 767px) {
+            .section {
+                padding: 25px;
+                margin: 20px 10px;
+            }
+
+            .header h1 {
+                font-size: 1.9em;
+            }
+        }
+
+        /* Small Phone and Mobile Styles (max-width: 768px) */
         @media (max-width: 768px) {
             .section {
                 padding: 20px;
@@ -926,7 +1046,20 @@
             }
 
             .satisfaction-row {
-                grid-template-columns: 1fr;
+                -webkit-box-orient: vertical;
+                -webkit-box-direction: normal;
+                -webkit-flex-direction: column;
+                -ms-flex-direction: column;
+                flex-direction: column;
+            }
+
+            .satisfaction-label {
+                -webkit-box-flex: 0;
+                -webkit-flex: 0 0 auto;
+                -ms-flex: 0 0 auto;
+                flex: 0 0 auto;
+                min-width: auto;
+                margin-bottom: 10px;
             }
 
             .likert-options {
@@ -1260,6 +1393,238 @@
     <script>
         /**
          * ============================================
+         * ES5 Polyfills for Older Tablets (iOS 10+, Android 5.0+)
+         * ============================================
+         */
+        
+        // Promise Polyfill (for older browsers)
+        if (typeof Promise === 'undefined') {
+            (function() {
+                function Promise(executor) {
+                    var self = this;
+                    self.state = 'pending';
+                    self.value = undefined;
+                    self.handlers = [];
+                    
+                    function resolve(result) {
+                        if (self.state === 'pending') {
+                            self.state = 'fulfilled';
+                            self.value = result;
+                            self.handlers.forEach(handle);
+                            self.handlers = null;
+                        }
+                    }
+                    
+                    function reject(error) {
+                        if (self.state === 'pending') {
+                            self.state = 'rejected';
+                            self.value = error;
+                            self.handlers.forEach(handle);
+                            self.handlers = null;
+                        }
+                    }
+                    
+                    function handle(handler) {
+                        if (self.state === 'pending') {
+                            self.handlers.push(handler);
+                        } else {
+                            if (self.state === 'fulfilled' && typeof handler.onFulfilled === 'function') {
+                                handler.onFulfilled(self.value);
+                            }
+                            if (self.state === 'rejected' && typeof handler.onRejected === 'function') {
+                                handler.onRejected(self.value);
+                            }
+                        }
+                    }
+                    
+                    self.then = function(onFulfilled, onRejected) {
+                        return new Promise(function(resolve, reject) {
+                            handle({
+                                onFulfilled: function(result) {
+                                    try {
+                                        resolve(onFulfilled ? onFulfilled(result) : result);
+                                    } catch (ex) {
+                                        reject(ex);
+                                    }
+                                },
+                                onRejected: function(error) {
+                                    try {
+                                        resolve(onRejected ? onRejected(error) : error);
+                                    } catch (ex) {
+                                        reject(ex);
+                                    }
+                                }
+                            });
+                        });
+                    };
+                    
+                    try {
+                        executor(resolve, reject);
+                    } catch (ex) {
+                        reject(ex);
+                    }
+                }
+                window.Promise = Promise;
+            })();
+        }
+        
+        // Array.from Polyfill
+        if (!Array.from) {
+            Array.from = function(arrayLike, mapFn, thisArg) {
+                var C = this;
+                var items = Object(arrayLike);
+                if (items == null) {
+                    throw new TypeError('Array.from requires an array-like object - not null or undefined');
+                }
+                var mapFunction = mapFn === undefined ? undefined : mapFn;
+                var T;
+                if (typeof mapFunction !== 'undefined') {
+                    if (typeof mapFunction !== 'function') {
+                        throw new TypeError('Array.from: when provided, the second argument must be a function');
+                    }
+                    if (arguments.length > 2) {
+                        T = thisArg;
+                    }
+                }
+                var len = parseInt(items.length) || 0;
+                var A = typeof C === 'function' ? Object(new C(len)) : new Array(len);
+                var k = 0;
+                var kValue;
+                while (k < len) {
+                    kValue = items[k];
+                    if (mapFunction) {
+                        A[k] = typeof T === 'undefined' ? mapFunction(kValue, k) : mapFunction.call(T, kValue, k);
+                    } else {
+                        A[k] = kValue;
+                    }
+                    k += 1;
+                }
+                A.length = len;
+                return A;
+            };
+        }
+        
+        // Object.assign Polyfill
+        if (typeof Object.assign !== 'function') {
+            Object.assign = function(target) {
+                if (target == null) {
+                    throw new TypeError('Cannot convert undefined or null to object');
+                }
+                var to = Object(target);
+                for (var index = 1; index < arguments.length; index++) {
+                    var nextSource = arguments[index];
+                    if (nextSource != null) {
+                        for (var nextKey in nextSource) {
+                            if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
+                                to[nextKey] = nextSource[nextKey];
+                            }
+                        }
+                    }
+                }
+                return to;
+            };
+        }
+        
+        // Fetch API Polyfill (simplified version for basic POST requests)
+        if (typeof window.fetch === 'undefined') {
+            window.fetch = function(url, options) {
+                options = options || {};
+                var method = (options.method || 'GET').toUpperCase();
+                var headers = options.headers || {};
+                var body = options.body;
+                
+                return new Promise(function(resolve, reject) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open(method, url, true);
+                    
+                    // Set headers
+                    for (var header in headers) {
+                        if (headers.hasOwnProperty(header)) {
+                            xhr.setRequestHeader(header, headers[header]);
+                        }
+                    }
+                    
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4) {
+                            if (xhr.status >= 200 && xhr.status < 300) {
+                                var response = {
+                                    ok: true,
+                                    status: xhr.status,
+                                    statusText: xhr.statusText,
+                                    url: url,
+                                    type: 'basic',
+                                    text: function() {
+                                        return Promise.resolve(xhr.responseText);
+                                    },
+                                    json: function() {
+                                        try {
+                                            return Promise.resolve(JSON.parse(xhr.responseText));
+                                        } catch (e) {
+                                            return Promise.reject(e);
+                                        }
+                                    }
+                                };
+                                resolve(response);
+                            } else {
+                                reject(new Error('Network request failed with status ' + xhr.status));
+                            }
+                        }
+                    };
+                    
+                    xhr.onerror = function() {
+                        reject(new Error('Network request failed'));
+                    };
+                    
+                    if (body) {
+                        xhr.send(body);
+                    } else {
+                        xhr.send();
+                    }
+                });
+            };
+        }
+        
+        /**
+         * ============================================
+         * 触摸事件优化 - 防止双击和意外触发
+         * ============================================
+         */
+        var lastTouchTime = 0;
+        var touchDelay = 300; // 300ms 延迟防止双击
+        
+        function preventDoubleTap(element) {
+            if (!element) return;
+            
+            var lastClickTime = 0;
+            var clickDelay = 300;
+            
+            element.addEventListener('click', function(e) {
+                var currentTime = new Date().getTime();
+                if (currentTime - lastClickTime < clickDelay) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
+                }
+                lastClickTime = currentTime;
+            }, false);
+            
+            // 触摸设备优化
+            if ('ontouchstart' in window) {
+                var lastTouchStart = 0;
+                element.addEventListener('touchstart', function(e) {
+                    var currentTime = new Date().getTime();
+                    if (currentTime - lastTouchStart < touchDelay) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        return false;
+                    }
+                    lastTouchStart = currentTime;
+                }, false);
+            }
+        }
+        
+        /**
+         * ============================================
          * Google Sheets 配置
          * ============================================
          * Google Apps Script Web App URL
@@ -1287,7 +1652,7 @@
 
         function selectRandomImage() {
             try {
-                const imageElement = document.getElementById('renderingImage');
+                var imageElement = document.getElementById('renderingImage');
                 if (!imageElement) {
                     if (DEBUG_MODE) {
                         console.error('❌ Image element not found!');
@@ -1295,7 +1660,7 @@
                     return;
                 }
                 
-                const random = Math.random();
+                var random = Math.random();
                 // 50/50 概率选择
                 selectedImageVersion = random < 0.5 ? 'comfort-zone-v1' : 'comfort-zone-v2';
                 
@@ -1332,7 +1697,7 @@
          * 调查问题配置
          * ============================================
          */
-        const surveyConfig = {
+        var surveyConfig = {
             overallSatisfaction: [
                 'Very Dissatisfied',
                 'Dissatisfied',
@@ -1435,7 +1800,7 @@
          */
         function renderRadioGroup(groupId, options) {
             try {
-                const container = document.getElementById(groupId);
+                var container = document.getElementById(groupId);
                 if (!container) {
                     console.error('❌ Container not found:', groupId);
                     return;
@@ -1456,17 +1821,17 @@
                 console.log('📝 Rendering radio group:', groupId, 'with', options.length, 'options');
 
                 options.forEach((option, index) => {
-                    const radioDiv = document.createElement('div');
+                    var radioDiv = document.createElement('div');
                     radioDiv.className = 'radio-option';
 
-                    const radio = document.createElement('input');
+                    var radio = document.createElement('input');
                     radio.type = 'radio';
                     radio.id = groupId + '_' + index;
                     radio.name = groupId.replace('_group', '');
                     radio.value = option;
                     radio.setAttribute('aria-label', option); // 无障碍支持
 
-                    const label = document.createElement('label');
+                    var label = document.createElement('label');
                     label.htmlFor = groupId + '_' + index;
                     label.textContent = option;
                     label.setAttribute('aria-label', option);
@@ -1483,7 +1848,7 @@
 
                     // 处理 "Other" 或 "self-describe" 选项
                     if (option === 'Other' || option.includes('Other') || option.includes('self-describe')) {
-                        const otherInput = document.createElement('input');
+                        var otherInput = document.createElement('input');
                         otherInput.type = 'text';
                         otherInput.id = groupId + '_other';
                         otherInput.name = groupId.replace('_group', '') + '_other';
@@ -1513,7 +1878,7 @@
          */
         function renderCheckboxGroup(groupId, options, maxSelections) {
             try {
-                const container = document.getElementById(groupId);
+                var container = document.getElementById(groupId);
                 if (!container) {
                     console.error('❌ Container not found:', groupId);
                     return;
@@ -1534,11 +1899,11 @@
                 console.log('📝 Rendering checkbox group:', groupId, 'with', options.length, 'options');
 
                 options.forEach((option, index) => {
-                    const checkboxDiv = document.createElement('div');
+                    var checkboxDiv = document.createElement('div');
                     checkboxDiv.className = 'checkbox-option';
                     checkboxDiv.setAttribute('data-value', option);
 
-                    const checkbox = document.createElement('input');
+                    var checkbox = document.createElement('input');
                     checkbox.type = 'checkbox';
                     checkbox.id = groupId + '_' + index;
                     checkbox.name = groupId.replace('_group', '');
@@ -1548,7 +1913,7 @@
                         enforceCheckboxLimit(groupId, maxSelections);
                     });
 
-                    const label = document.createElement('label');
+                    var label = document.createElement('label');
                     label.htmlFor = groupId + '_' + index;
                     label.textContent = option;
                     label.setAttribute('aria-label', option);
@@ -1565,7 +1930,7 @@
 
                     // 处理 "Other" 选项
                     if (option === 'Other' || option.includes('Other')) {
-                        const otherInput = document.createElement('input');
+                        var otherInput = document.createElement('input');
                         otherInput.type = 'text';
                         otherInput.id = groupId + '_other';
                         otherInput.name = groupId.replace('_group', '') + '_other';
@@ -1618,7 +1983,7 @@
          * 更新选择限制提示
          */
         function updateChoiceLimit(limitId, groupId, maxSelections) {
-            const limitElement = document.getElementById(limitId);
+            var limitElement = document.getElementById(limitId);
             var checkedCount = document.querySelectorAll('#' + groupId + ' input[type="checkbox"]:checked').length;
 
             if (checkedCount > 0) {
@@ -1638,33 +2003,33 @@
          * 渲染满意度评分网格
          */
         function renderSatisfactionGrid() {
-            const container = document.getElementById('amenity_satisfaction_grid');
+            var container = document.getElementById('amenity_satisfaction_grid');
             container.innerHTML = '';
 
             surveyConfig.amenities.forEach((amenity, amenityIndex) => {
-                const row = document.createElement('div');
+                var row = document.createElement('div');
                 row.className = 'satisfaction-row';
 
-                const label = document.createElement('div');
+                var label = document.createElement('div');
                 label.className = 'satisfaction-label';
                 label.textContent = amenity;
                 row.appendChild(label);
 
-                const scaleContainer = document.createElement('div');
+                var scaleContainer = document.createElement('div');
                 scaleContainer.className = 'satisfaction-scale';
 
-                for (let i = 1; i <= 5; i++) {
-                    const scaleItem = document.createElement('div');
+                for (var i = 1; i <= 5; i++) {
+                    var scaleItem = document.createElement('div');
                     scaleItem.className = 'satisfaction-scale-item';
 
-                    const radio = document.createElement('input');
+                    var radio = document.createElement('input');
                     radio.type = 'radio';
                     radio.id = 'amenity_' + amenityIndex + '_' + i;
                     radio.name = 'amenity_' + amenityIndex;
                     radio.value = i;
                     radio.required = true;
 
-                    const label = document.createElement('label');
+                    var label = document.createElement('label');
                     label.htmlFor = 'amenity_' + amenityIndex + '_' + i;
                     label.textContent = i;
 
@@ -1682,43 +2047,43 @@
          * 渲染Likert量表
          */
         function renderLikertScale(statementId, statementText) {
-            const container = document.getElementById('wellness_statements');
-            const statementDiv = document.createElement('div');
+            var container = document.getElementById('wellness_statements');
+            var statementDiv = document.createElement('div');
             statementDiv.className = 'form-group question-container';
             statementDiv.setAttribute('data-question-id', statementId);
 
-            const label = document.createElement('label');
+            var label = document.createElement('label');
             label.className = 'question-label';
             label.textContent = statementText;
-            const requiredMarker = document.createElement('span');
+            var requiredMarker = document.createElement('span');
             requiredMarker.className = 'required-marker';
             requiredMarker.textContent = '*';
             label.appendChild(requiredMarker);
             statementDiv.appendChild(label);
 
-            const likertContainer = document.createElement('div');
+            var likertContainer = document.createElement('div');
             likertContainer.className = 'likert-scale';
 
-            const labelsDiv = document.createElement('div');
+            var labelsDiv = document.createElement('div');
             labelsDiv.className = 'likert-labels';
             labelsDiv.innerHTML = '<span>Disagree</span><span>Agree</span>';
             likertContainer.appendChild(labelsDiv);
 
-            const optionsDiv = document.createElement('div');
+            var optionsDiv = document.createElement('div');
             optionsDiv.className = 'likert-options';
 
-            const scaleLabels = ['1', '2', '3', '4', '5'];
+            var scaleLabels = ['1', '2', '3', '4', '5'];
             scaleLabels.forEach((value, index) => {
-                const optionDiv = document.createElement('div');
+                var optionDiv = document.createElement('div');
                 optionDiv.className = 'likert-option';
 
-                const radio = document.createElement('input');
+                var radio = document.createElement('input');
                 radio.type = 'radio';
                 radio.id = statementId + '_' + index;
                 radio.name = statementId;
                 radio.value = value;
 
-                const label = document.createElement('label');
+                var label = document.createElement('label');
                 label.htmlFor = statementId + '_' + index;
                 label.textContent = value;
 
@@ -1730,7 +2095,7 @@
             likertContainer.appendChild(optionsDiv);
             statementDiv.appendChild(likertContainer);
 
-            const errorMsg = document.createElement('div');
+            var errorMsg = document.createElement('div');
             errorMsg.className = 'error-message';
             errorMsg.textContent = 'Please select an option';
             statementDiv.appendChild(errorMsg);
@@ -1743,8 +2108,8 @@
          */
         function showHideConditional() {
             // Q5.2: Membership Duration - 只在非会员时显示
-            const membershipType = document.querySelector('input[name="membership_type"]:checked');
-            const membershipDurationSection = document.getElementById('membership_duration_section');
+            var membershipType = document.querySelector('input[name="membership_type"]:checked');
+            var membershipDurationSection = document.getElementById('membership_duration_section');
             
             if (membershipType && membershipType.value !== "I'm not a member yet") {
                 membershipDurationSection.classList.add('show');
@@ -1754,8 +2119,8 @@
             }
 
             // Section 6: 根据会员类型显示不同版本
-            const membershipImpactRenewalSection = document.getElementById('membership_impact_renewal_section');
-            const membershipImpactJoinSection = document.getElementById('membership_impact_join_section');
+            var membershipImpactRenewalSection = document.getElementById('membership_impact_renewal_section');
+            var membershipImpactJoinSection = document.getElementById('membership_impact_join_section');
             
             if (membershipType) {
                 if (membershipType.value === "I'm not a member yet") {
@@ -1776,16 +2141,16 @@
         /**
          * 排名功能全局变量
          */
-        let rankedFactors = [];
-        let rankedComfortZoneAmenities = [];
-        let draggedElement = null;
+        var rankedFactors = [];
+        var rankedComfortZoneAmenities = [];
+        var draggedElement = null;
 
         /**
          * 渲染排名复选框组（带错误处理）
          */
         function renderRankingCheckboxGroup(groupId, options, maxSelections) {
             try {
-                const container = document.getElementById(groupId);
+                var container = document.getElementById(groupId);
                 if (!container) {
                     console.error('❌ Container not found:', groupId);
                     return;
@@ -1806,11 +2171,11 @@
                 console.log('📝 Rendering ranking checkbox group:', groupId, 'with', options.length, 'options');
 
                 options.forEach((option, index) => {
-                    const checkboxDiv = document.createElement('div');
+                    var checkboxDiv = document.createElement('div');
                     checkboxDiv.className = 'checkbox-option';
                     checkboxDiv.setAttribute('data-value', option);
 
-                    const checkbox = document.createElement('input');
+                    var checkbox = document.createElement('input');
                     checkbox.type = 'checkbox';
                     checkbox.id = groupId + '_' + index;
                     checkbox.name = 'ranked_factors';
@@ -1820,7 +2185,7 @@
                         handleRankingChange(option, this.checked);
                     });
 
-                    const label = document.createElement('label');
+                    var label = document.createElement('label');
                     label.htmlFor = groupId + '_' + index;
                     label.textContent = option;
                     label.setAttribute('aria-label', option);
@@ -1837,7 +2202,7 @@
 
                     // 处理 "Other" 选项
                     if (option === 'Other' || option.includes('Other')) {
-                        const otherInput = document.createElement('input');
+                        var otherInput = document.createElement('input');
                         otherInput.type = 'text';
                         otherInput.id = groupId + '_other';
                         otherInput.name = 'ranked_factors_other';
@@ -1871,8 +2236,8 @@
             if (isChecked) {
                 if (rankedFactors.length >= 3) {
                     // 如果已经有3个，移除最后一个
-                    const lastFactor = rankedFactors.pop();
-                    const checkbox = Array.from(document.querySelectorAll('input[name="ranked_factors"]'))
+                    var lastFactor = rankedFactors.pop();
+                    var checkbox = Array.from(document.querySelectorAll('input[name="ranked_factors"]'))
                         .find(cb => cb.value === lastFactor);
                     if (checkbox) checkbox.checked = false;
                 }
@@ -1888,7 +2253,7 @@
          * 更新排名列表显示
          */
         function updateRankedList() {
-            const rankedList = document.getElementById('ranked_list');
+            var rankedList = document.getElementById('ranked_list');
             rankedList.innerHTML = '';
 
             if (rankedFactors.length === 0) {
@@ -1897,25 +2262,25 @@
             }
 
             rankedFactors.forEach((factor, index) => {
-                const rankedItem = document.createElement('div');
+                var rankedItem = document.createElement('div');
                 rankedItem.className = 'ranked-item';
                 rankedItem.draggable = true;
                 rankedItem.dataset.factor = factor;
                 rankedItem.dataset.index = index;
 
-                const rankNumber = document.createElement('div');
+                var rankNumber = document.createElement('div');
                 rankNumber.className = 'rank-number';
                 rankNumber.textContent = index + 1;
 
-                const itemText = document.createElement('div');
+                var itemText = document.createElement('div');
                 itemText.className = 'ranked-item-text';
                 itemText.textContent = factor;
 
-                const removeBtn = document.createElement('button');
+                var removeBtn = document.createElement('button');
                 removeBtn.type = 'button';
                 removeBtn.className = 'rank-remove-btn';
                 removeBtn.innerHTML = '×';
-                removeBtn.addEventListener('click', () => {
+                removeBtn.addEventListener('click', function() {
                     removeFromRanking(factor);
                 });
 
@@ -1930,8 +2295,8 @@
                 rankedItem.addEventListener('dragend', handleDragEnd);
                 
                 // 触摸事件支持（平板和移动设备）
-                let touchStartY = 0;
-                let touchStartElement = null;
+                var touchStartY = 0;
+                var touchStartElement = null;
                 
                 rankedItem.addEventListener('touchstart', function(e) {
                     touchStartY = e.touches[0].clientY;
@@ -1944,14 +2309,14 @@
                     if (!touchStartElement) return;
                     e.preventDefault();
                     
-                    const touchY = e.touches[0].clientY;
-                    const allItems = Array.from(document.querySelectorAll('.ranked-item'));
-                    const currentIndex = allItems.indexOf(this);
+                    var touchY = e.touches[0].clientY;
+                    var allItems = Array.from(document.querySelectorAll('.ranked-item'));
+                    var currentIndex = allItems.indexOf(this);
                     
                     // 找到触摸点下方的元素
-                    let targetElement = null;
-                    for (let item of allItems) {
-                        const rect = item.getBoundingClientRect();
+                    var targetElement = null;
+                    for (var item of allItems) {
+                        var rect = item.getBoundingClientRect();
                         if (touchY >= rect.top && touchY <= rect.bottom && item !== this) {
                             targetElement = item;
                             break;
@@ -1959,8 +2324,8 @@
                     }
                     
                     if (targetElement && targetElement !== touchStartElement) {
-                        const targetIndex = allItems.indexOf(targetElement);
-                        const startIndex = allItems.indexOf(touchStartElement);
+                        var targetIndex = allItems.indexOf(targetElement);
+                        var startIndex = allItems.indexOf(touchStartElement);
                         
                         if (startIndex < targetIndex) {
                             targetElement.parentNode.insertBefore(touchStartElement, targetElement.nextSibling);
@@ -1975,7 +2340,7 @@
                         touchStartElement.classList.remove('dragging');
                         
                         // 更新排名数组
-                        const rankedItems = Array.from(document.querySelectorAll('.ranked-item'));
+                        var rankedItems = Array.from(document.querySelectorAll('.ranked-item'));
                         rankedFactors = rankedItems.map(item => item.dataset.factor);
                         updateRankNumbers();
                         
@@ -2009,9 +2374,9 @@
             }
             e.dataTransfer.dropEffect = 'move';
             if (this !== draggedElement) {
-                const allItems = Array.from(document.querySelectorAll('.ranked-item'));
-                const draggedIndex = allItems.indexOf(draggedElement);
-                const targetIndex = allItems.indexOf(this);
+                var allItems = Array.from(document.querySelectorAll('.ranked-item'));
+                var draggedIndex = allItems.indexOf(draggedElement);
+                var targetIndex = allItems.indexOf(this);
 
                 if (draggedIndex < targetIndex) {
                     this.parentNode.insertBefore(draggedElement, this.nextSibling);
@@ -2039,7 +2404,7 @@
             this.classList.remove('dragging');
             
             // 更新排名数组
-            const rankedItems = Array.from(document.querySelectorAll('.ranked-item'));
+            var rankedItems = Array.from(document.querySelectorAll('.ranked-item'));
             rankedFactors = rankedItems.map(item => item.dataset.factor);
             
             updateRankNumbers();
@@ -2049,9 +2414,9 @@
          * 更新排名数字
          */
         function updateRankNumbers() {
-            const rankedItems = document.querySelectorAll('.ranked-item');
+            var rankedItems = document.querySelectorAll('.ranked-item');
             rankedItems.forEach((item, index) => {
-                const rankNumber = item.querySelector('.rank-number');
+                var rankNumber = item.querySelector('.rank-number');
                 if (rankNumber) {
                     rankNumber.textContent = index + 1;
                 }
@@ -2063,7 +2428,7 @@
          */
         function removeFromRanking(factor) {
             rankedFactors = rankedFactors.filter(f => f !== factor);
-            const checkbox = Array.from(document.querySelectorAll('input[name="ranked_factors"]'))
+            var checkbox = Array.from(document.querySelectorAll('input[name="ranked_factors"]'))
                 .find(cb => cb.value === factor);
             if (checkbox) checkbox.checked = false;
             updateRankedList();
@@ -2074,11 +2439,11 @@
          * 强制执行排名限制
          */
         function enforceRankingLimits() {
-            const checkboxes = document.querySelectorAll('input[name="ranked_factors"]');
-            const checkedCount = rankedFactors.length;
+            var checkboxes = document.querySelectorAll('input[name="ranked_factors"]');
+            var checkedCount = rankedFactors.length;
 
             checkboxes.forEach(cb => {
-                const optionDiv = cb.closest('.checkbox-option');
+                var optionDiv = cb.closest('.checkbox-option');
                 if (checkedCount >= 3 && !cb.checked) {
                     optionDiv.classList.add('disabled');
                 } else {
@@ -2092,7 +2457,7 @@
          */
         function renderComfortZoneRankingCheckboxGroup(groupId, options, maxSelections, listId, containerId) {
             try {
-                const container = document.getElementById(groupId);
+                var container = document.getElementById(groupId);
                 if (!container) {
                     if (DEBUG_MODE) {
                         console.error('❌ Container not found:', groupId);
@@ -2110,11 +2475,11 @@
                 container.innerHTML = '';
 
                 options.forEach((option, index) => {
-                    const checkboxDiv = document.createElement('div');
+                    var checkboxDiv = document.createElement('div');
                     checkboxDiv.className = 'checkbox-option';
                     checkboxDiv.setAttribute('data-value', option);
 
-                    const checkbox = document.createElement('input');
+                    var checkbox = document.createElement('input');
                     checkbox.type = 'checkbox';
                     checkbox.id = groupId + '_' + index;
                     checkbox.name = 'comfort_zone_amenities_ranked';
@@ -2124,7 +2489,7 @@
                         handleComfortZoneRankingChange(option, this.checked, listId, containerId);
                     });
 
-                    const label = document.createElement('label');
+                    var label = document.createElement('label');
                     label.htmlFor = groupId + '_' + index;
                     label.textContent = option;
                     label.setAttribute('aria-label', option);
@@ -2141,7 +2506,7 @@
 
                     // 处理 "Other" 选项
                     if (option === 'Other' || option.includes('Other')) {
-                        const otherInput = document.createElement('input');
+                        var otherInput = document.createElement('input');
                         otherInput.type = 'text';
                         otherInput.id = groupId + '_other';
                         otherInput.name = 'comfort_zone_amenities_ranked_other';
@@ -2174,8 +2539,8 @@
         function handleComfortZoneRankingChange(amenity, isChecked, listId, containerId) {
             if (isChecked) {
                 if (rankedComfortZoneAmenities.length >= 3) {
-                    const lastAmenity = rankedComfortZoneAmenities.pop();
-                    const checkbox = Array.from(document.querySelectorAll('input[name="comfort_zone_amenities_ranked"]'))
+                    var lastAmenity = rankedComfortZoneAmenities.pop();
+                    var checkbox = Array.from(document.querySelectorAll('input[name="comfort_zone_amenities_ranked"]'))
                         .find(cb => cb.value === lastAmenity);
                     if (checkbox) checkbox.checked = false;
                 }
@@ -2191,7 +2556,7 @@
          * 更新舒适区设施排名列表显示
          */
         function updateComfortZoneRankedList(listId) {
-            const rankedList = document.getElementById(listId);
+            var rankedList = document.getElementById(listId);
             if (!rankedList) return;
             
             rankedList.innerHTML = '';
@@ -2202,21 +2567,21 @@
             }
 
             rankedComfortZoneAmenities.forEach((amenity, index) => {
-                const rankedItem = document.createElement('div');
+                var rankedItem = document.createElement('div');
                 rankedItem.className = 'ranked-item';
                 rankedItem.draggable = true;
                 rankedItem.dataset.amenity = amenity;
                 rankedItem.dataset.index = index;
 
-                const rankNumber = document.createElement('div');
+                var rankNumber = document.createElement('div');
                 rankNumber.className = 'rank-number';
                 rankNumber.textContent = index + 1;
 
-                const itemText = document.createElement('div');
+                var itemText = document.createElement('div');
                 itemText.className = 'ranked-item-text';
                 itemText.textContent = amenity;
 
-                const removeBtn = document.createElement('button');
+                var removeBtn = document.createElement('button');
                 removeBtn.type = 'button';
                 removeBtn.className = 'rank-remove-btn';
                 removeBtn.innerHTML = '×';
@@ -2241,8 +2606,8 @@
                     e.dataTransfer.dropEffect = 'move';
                     if (this !== draggedElement) {
                         var allItems = Array.from(document.querySelectorAll('#' + listId + ' .ranked-item'));
-                        const draggedIndex = allItems.indexOf(draggedElement);
-                        const targetIndex = allItems.indexOf(this);
+                        var draggedIndex = allItems.indexOf(draggedElement);
+                        var targetIndex = allItems.indexOf(this);
                         if (draggedIndex < targetIndex) {
                             this.parentNode.insertBefore(draggedElement, this.nextSibling);
                         } else {
@@ -2265,8 +2630,8 @@
                 });
                 
                 // 触摸事件支持（平板和移动设备）
-                let touchStartY = 0;
-                let touchStartElement = null;
+                var touchStartY = 0;
+                var touchStartElement = null;
                 
                 rankedItem.addEventListener('touchstart', function(e) {
                     touchStartY = e.touches[0].clientY;
@@ -2279,14 +2644,14 @@
                     if (!touchStartElement) return;
                     e.preventDefault();
                     
-                    const touchY = e.touches[0].clientY;
+                    var touchY = e.touches[0].clientY;
                     var allItems = Array.from(document.querySelectorAll('#' + listId + ' .ranked-item'));
-                    const currentIndex = allItems.indexOf(this);
+                    var currentIndex = allItems.indexOf(this);
                     
                     // 找到触摸点下方的元素
-                    let targetElement = null;
-                    for (let item of allItems) {
-                        const rect = item.getBoundingClientRect();
+                    var targetElement = null;
+                    for (var item of allItems) {
+                        var rect = item.getBoundingClientRect();
                         if (touchY >= rect.top && touchY <= rect.bottom && item !== this) {
                             targetElement = item;
                             break;
@@ -2294,8 +2659,8 @@
                     }
                     
                     if (targetElement && targetElement !== touchStartElement) {
-                        const targetIndex = allItems.indexOf(targetElement);
-                        const startIndex = allItems.indexOf(touchStartElement);
+                        var targetIndex = allItems.indexOf(targetElement);
+                        var startIndex = allItems.indexOf(touchStartElement);
                         
                         if (startIndex < targetIndex) {
                             targetElement.parentNode.insertBefore(touchStartElement, targetElement.nextSibling);
@@ -2330,7 +2695,7 @@
         function updateComfortZoneRankNumbers(listId) {
             var rankedItems = document.querySelectorAll('#' + listId + ' .ranked-item');
             rankedItems.forEach((item, index) => {
-                const rankNumber = item.querySelector('.rank-number');
+                var rankNumber = item.querySelector('.rank-number');
                 if (rankNumber) {
                     rankNumber.textContent = index + 1;
                 }
@@ -2342,7 +2707,7 @@
          */
         function removeFromComfortZoneRanking(amenity, listId) {
             rankedComfortZoneAmenities = rankedComfortZoneAmenities.filter(a => a !== amenity);
-            const checkbox = Array.from(document.querySelectorAll('input[name="comfort_zone_amenities_ranked"]'))
+            var checkbox = Array.from(document.querySelectorAll('input[name="comfort_zone_amenities_ranked"]'))
                 .find(cb => cb.value === amenity);
             if (checkbox) checkbox.checked = false;
             updateComfortZoneRankedList(listId);
@@ -2353,11 +2718,11 @@
          * 强制执行舒适区设施排名限制
          */
         function enforceComfortZoneRankingLimits(containerId) {
-            const checkboxes = document.querySelectorAll('input[name="comfort_zone_amenities_ranked"]');
-            const checkedCount = rankedComfortZoneAmenities.length;
+            var checkboxes = document.querySelectorAll('input[name="comfort_zone_amenities_ranked"]');
+            var checkedCount = rankedComfortZoneAmenities.length;
 
             checkboxes.forEach(cb => {
-                const optionDiv = cb.closest('.checkbox-option');
+                var optionDiv = cb.closest('.checkbox-option');
                 if (checkedCount >= 3 && !cb.checked) {
                     optionDiv.classList.add('disabled');
                 } else {
@@ -2405,7 +2770,7 @@
                 renderRadioGroup('gender_group', surveyConfig.genderOptions);
 
                 // 监听变化以更新条件性问题
-                const membershipTypeRadios = document.querySelectorAll('input[name="membership_type"]');
+                var membershipTypeRadios = document.querySelectorAll('input[name="membership_type"]');
                 if (membershipTypeRadios.length > 0) {
                     membershipTypeRadios.forEach(radio => {
                         radio.addEventListener('change', showHideConditional);
@@ -2422,9 +2787,9 @@
             } catch (error) {
                 console.error('❌ Error rendering questions:', error);
                 // 即使出错，也尝试显示错误信息
-                const sections = document.querySelectorAll('.section');
+                var sections = document.querySelectorAll('.section');
                 sections.forEach(section => {
-                    const errorDiv = document.createElement('div');
+                    var errorDiv = document.createElement('div');
                     errorDiv.style.cssText = 'background: #f8d7da; color: #721c24; padding: 15px; margin: 10px; border-radius: 4px;';
                     errorDiv.textContent = 'Error loading questions. Please refresh the page.';
                     section.appendChild(errorDiv);
@@ -2436,12 +2801,12 @@
          * 计算进度
          */
         function calculateProgress() {
-            const totalQuestions = document.querySelectorAll('.question-container').length;
-            let answeredQuestions = 0;
+            var totalQuestions = document.querySelectorAll('.question-container').length;
+            var answeredQuestions = 0;
 
             document.querySelectorAll('.question-container').forEach(container => {
-                const questionId = container.getAttribute('data-question-id');
-                let isAnswered = false;
+                var questionId = container.getAttribute('data-question-id');
+                var isAnswered = false;
 
                 if (questionId === 'ranked_factors') {
                     // 检查排名：必须正好有3个
@@ -2461,7 +2826,7 @@
                 }
             });
 
-            const progress = Math.round((answeredQuestions / totalQuestions) * 100);
+            var progress = Math.round((answeredQuestions / totalQuestions) * 100);
             document.getElementById('progressBar').style.width = progress + '%';
             return progress;
         }
@@ -2470,12 +2835,12 @@
          * 滚动动画（带降级方案）
          */
         function setupScrollAnimation() {
-            const sections = document.querySelectorAll('.section');
+            var sections = document.querySelectorAll('.section');
             
             // 检查 IntersectionObserver 是否支持
             if ('IntersectionObserver' in window) {
                 try {
-                    const observer = new IntersectionObserver((entries) => {
+                    var observer = new IntersectionObserver((entries) => {
                         entries.forEach(entry => {
                             if (entry.isIntersecting) {
                                 entry.target.classList.add('visible');
@@ -2526,13 +2891,13 @@
          * 验证表单
          */
         function validateForm() {
-            let isValid = true;
-            const questions = document.querySelectorAll('.question-container');
+            var isValid = true;
+            var questions = document.querySelectorAll('.question-container');
 
             questions.forEach(questionDiv => {
-                const questionId = questionDiv.getAttribute('data-question-id');
-                const errorMsg = questionDiv.querySelector('.error-message');
-                let isFieldValid = false;
+                var questionId = questionDiv.getAttribute('data-question-id');
+                var errorMsg = questionDiv.querySelector('.error-message');
+                var isFieldValid = false;
 
                 // 跳过隐藏的条件性问题
                 if (questionDiv.closest('.conditional-section') && 
@@ -2571,47 +2936,47 @@
          * 收集表单数据
          */
         function collectFormData() {
-            const responses = {};
-            const timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
+            var responses = {};
+            var timestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
 
             // 图片版本
             responses['image_version_shown'] = selectedImageVersion || 'unknown';
 
             // Section 1: Satisfaction
-            const overallSatisfaction = document.querySelector('input[name="overall_satisfaction"]:checked');
+            var overallSatisfaction = document.querySelector('input[name="overall_satisfaction"]:checked');
             responses['overall_satisfaction'] = overallSatisfaction ? overallSatisfaction.value : '';
 
             // Section 1: Ranked Factors (排名前3的因素)
             responses['ranked_factor_1'] = rankedFactors[0] || '';
             responses['ranked_factor_2'] = rankedFactors[1] || '';
             responses['ranked_factor_3'] = rankedFactors[2] || '';
-            const rankedOther = document.querySelector('input[name="ranked_factors_other"]')?.value || '';
+            var rankedOther = document.querySelector('input[name="ranked_factors_other"]')?.value || '';
             if (rankedOther) responses['ranked_factors_other'] = rankedOther;
 
             // Section 3: Comfort Zone (排名前3的设施)
             responses['comfort_zone_amenity_1'] = rankedComfortZoneAmenities[0] || '';
             responses['comfort_zone_amenity_2'] = rankedComfortZoneAmenities[1] || '';
             responses['comfort_zone_amenity_3'] = rankedComfortZoneAmenities[2] || '';
-            const comfortZoneOther = document.querySelector('input[name="comfort_zone_amenities_ranked_other"]')?.value || '';
+            var comfortZoneOther = document.querySelector('input[name="comfort_zone_amenities_ranked_other"]')?.value || '';
             if (comfortZoneOther) responses['comfort_zone_other'] = comfortZoneOther;
 
-            const usageFrequency = document.querySelector('input[name="usage_frequency"]:checked');
+            var usageFrequency = document.querySelector('input[name="usage_frequency"]:checked');
             responses['usage_frequency'] = usageFrequency ? usageFrequency.value : '';
 
             // Section 3: Membership (移到Section 3)
-            const membershipType = document.querySelector('input[name="membership_type"]:checked');
+            var membershipType = document.querySelector('input[name="membership_type"]:checked');
             responses['membership_type'] = membershipType ? membershipType.value : '';
-            const membershipTypeOther = document.querySelector('input[name="membership_type_other"]')?.value || '';
+            var membershipTypeOther = document.querySelector('input[name="membership_type_other"]')?.value || '';
             if (membershipTypeOther) responses['membership_type_other'] = membershipTypeOther;
 
-            const membershipDuration = document.querySelector('input[name="membership_duration"]:checked');
+            var membershipDuration = document.querySelector('input[name="membership_duration"]:checked');
             responses['membership_duration'] = membershipDuration ? membershipDuration.value : '';
 
             // Section 3: Membership Impact (移到Section 3)
-            const membershipImpactRenewal = document.querySelector('input[name="membership_impact_renewal"]:checked');
+            var membershipImpactRenewal = document.querySelector('input[name="membership_impact_renewal"]:checked');
             responses['membership_impact_renewal'] = membershipImpactRenewal ? membershipImpactRenewal.value : '';
 
-            const membershipImpactJoin = document.querySelector('input[name="membership_impact_join"]:checked');
+            var membershipImpactJoin = document.querySelector('input[name="membership_impact_join"]:checked');
             responses['membership_impact_join'] = membershipImpactJoin ? membershipImpactJoin.value : '';
 
             // Section 4: Wellness
@@ -2621,12 +2986,12 @@
             });
 
             // Section 5: Demographics
-            const ageGroup = document.querySelector('input[name="age_group"]:checked');
+            var ageGroup = document.querySelector('input[name="age_group"]:checked');
             responses['age_group'] = ageGroup ? ageGroup.value : '';
 
-            const gender = document.querySelector('input[name="gender"]:checked');
+            var gender = document.querySelector('input[name="gender"]:checked');
             responses['gender'] = gender ? gender.value : '';
-            const genderSelfDescribe = document.querySelector('input[name="gender_other"]')?.value || '';
+            var genderSelfDescribe = document.querySelector('input[name="gender_other"]')?.value || '';
             if (genderSelfDescribe) responses['gender_self_describe'] = genderSelfDescribe;
 
             return { responses, timestamp };
@@ -2636,7 +3001,7 @@
          * 显示成功消息
          */
         function showSuccess(message) {
-            const successMsg = document.getElementById('successMessage');
+            var successMsg = document.getElementById('successMessage');
             successMsg.textContent = message;
             successMsg.classList.add('show');
             
@@ -2649,7 +3014,7 @@
          * 显示错误消息
          */
         function showError(message) {
-            const errorMsg = document.getElementById('errorMessageBox');
+            var errorMsg = document.getElementById('errorMessageBox');
             errorMsg.textContent = message;
             errorMsg.classList.add('show');
             
@@ -2661,7 +3026,7 @@
         /**
          * CSV列定义（与服务器端保持一致）
          */
-        const CSV_COLUMNS = [
+        var CSV_COLUMNS = [
             'Timestamp',
             'Overall_Satisfaction',
             'Ranked_Factor_1',
@@ -2697,7 +3062,7 @@
             if (field === null || field === undefined || field === '') {
                 return '';
             }
-            const stringField = String(field);
+            var stringField = String(field);
             if (stringField.includes(',') || stringField.includes('"') || stringField.includes('\n')) {
                 return '"' + stringField.replace(/"/g, '""') + '"';
             }
@@ -2708,10 +3073,10 @@
          * 将响应转换为CSV行
          */
         function convertToCSVRow(responses, timestamp) {
-            const row = [];
+            var row = [];
             
             CSV_COLUMNS.forEach(column => {
-                let value = '';
+                var value = '';
                 
                 switch (column) {
                     case 'Timestamp':
@@ -2771,7 +3136,7 @@
                     case 'Wellness_Q4':
                     case 'Wellness_Q5':
                     case 'Wellness_Q6':
-                        const wellnessNum = column.match(/\d+/)[0];
+                        var wellnessNum = column.match(/\d+/)[0];
                         value = responses['wellness_q' + wellnessNum] || '';
                         break;
                     case 'Age_Group':
@@ -2798,10 +3163,10 @@
          */
         function saveResponseToLocalStorage(responses, timestamp) {
             try {
-                const storageKey = 'survey_responses';
-                let allResponses = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                var storageKey = 'survey_responses';
+                var allResponses = JSON.parse(localStorage.getItem(storageKey) || '[]');
                 
-                const responseData = {
+                var responseData = {
                     timestamp: timestamp || new Date().toISOString().replace('T', ' ').substring(0, 19),
                     responses: responses
                 };
@@ -2821,8 +3186,8 @@
          */
         function exportToCSV() {
             try {
-                const storageKey = 'survey_responses';
-                const allResponses = JSON.parse(localStorage.getItem(storageKey) || '[]');
+                var storageKey = 'survey_responses';
+                var allResponses = JSON.parse(localStorage.getItem(storageKey) || '[]');
                 
                 if (allResponses.length === 0) {
                     alert('No responses to export.');
@@ -2830,17 +3195,17 @@
                 }
                 
                 // 创建 CSV 内容
-                let csvContent = CSV_COLUMNS.join(',') + '\n';
+                var csvContent = CSV_COLUMNS.join(',') + '\n';
                 
                 allResponses.forEach(responseData => {
-                    const csvRow = convertToCSVRow(responseData.responses, responseData.timestamp);
+                    var csvRow = convertToCSVRow(responseData.responses, responseData.timestamp);
                     csvContent += csvRow + '\n';
                 });
                 
                 // 创建下载链接
-                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-                const link = document.createElement('a');
-                const url = URL.createObjectURL(blob);
+                var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                var link = document.createElement('a');
+                var url = URL.createObjectURL(blob);
                 link.setAttribute('href', url);
                 var dateStr = new Date().toISOString().split('T')[0];
                 link.setAttribute('download', 'survey_responses_' + dateStr + '.csv');
@@ -2860,80 +3225,82 @@
          * @param {Object} data - 要提交的数据对象
          * @returns {Promise<Object>} - 返回提交结果
          */
-        async function submitToGoogleSheets(data) {
-            if (!ENABLE_GOOGLE_SHEETS || !GOOGLE_APPS_SCRIPT_URL) {
-                throw new Error('Google Sheets integration is not configured');
-            }
+        function submitToGoogleSheets(data) {
+            return new Promise(function(resolve, reject) {
+                if (!ENABLE_GOOGLE_SHEETS || !GOOGLE_APPS_SCRIPT_URL) {
+                    reject(new Error('Google Sheets integration is not configured'));
+                    return;
+                }
 
-            if (DEBUG_MODE) {
-                console.log('📤 Submitting to Google Sheets:', {
-                    url: GOOGLE_APPS_SCRIPT_URL,
-                    data: data,
-                    timestamp: new Date().toISOString()
-                });
-            }
+                if (DEBUG_MODE) {
+                    console.log('📤 Submitting to Google Sheets:', {
+                        url: GOOGLE_APPS_SCRIPT_URL,
+                        data: data,
+                        timestamp: new Date().toISOString()
+                    });
+                }
 
-            try {
                 // 验证 URL 格式
-                if (!GOOGLE_APPS_SCRIPT_URL.startsWith('https://script.google.com/')) {
-                    throw new Error('Invalid Google Apps Script URL format');
+                if (GOOGLE_APPS_SCRIPT_URL.indexOf('https://script.google.com/') !== 0) {
+                    reject(new Error('Invalid Google Apps Script URL format'));
+                    return;
                 }
 
                 // 使用 no-cors 模式避免 CORS 预检请求（OPTIONS）问题
                 // 注意：no-cors 模式下无法读取响应，但请求会成功发送
-                const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+                fetch(GOOGLE_APPS_SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors', // 使用 no-cors 避免 CORS 预检请求
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify(data)
+                }).then(function(response) {
+                    if (DEBUG_MODE) {
+                        console.log('📥 Request sent (no-cors mode, cannot read response):', {
+                            type: response.type,
+                            url: response.url || GOOGLE_APPS_SCRIPT_URL
+                        });
+                    }
+
+                    // 在 no-cors 模式下，我们无法读取响应
+                    // 但如果没有抛出错误，说明请求已经发送
+                    // 假设提交成功（如果 Google Apps Script 配置正确，数据应该已经写入）
+                    resolve({
+                        success: true,
+                        message: 'Data submitted successfully (no-cors mode - response not readable)',
+                        note: 'Request sent. Please verify data in Google Sheets.'
+                    });
+                }).catch(function(error) {
+                    if (DEBUG_MODE) {
+                        console.error('❌ Google Sheets submission error:', error);
+                        console.error('Error details:', {
+                            name: error.name,
+                            message: error.message,
+                            stack: error.stack,
+                            url: GOOGLE_APPS_SCRIPT_URL
+                        });
+                    }
+
+                    // 提供更详细的错误信息
+                    var errorMessage = 'Failed to submit to Google Sheets';
+                    if (error.message && error.message.indexOf('404') !== -1) {
+                        errorMessage += ': URL not found (404). Please check if the Google Apps Script Web App is deployed correctly.';
+                    } else if (error.message && (error.message.indexOf('Failed to fetch') !== -1 || error.message.indexOf('Load failed') !== -1)) {
+                        errorMessage += ': Network error or CORS issue. Please check: 1) Your internet connection, 2) The Google Apps Script URL is correct, 3) The Web App is deployed with "Who has access: Anyone".';
+                    } else {
+                        errorMessage += ': ' + error.message;
+                    }
+
+                    reject(new Error(errorMessage));
                 });
-
-                if (DEBUG_MODE) {
-                    console.log('📥 Request sent (no-cors mode, cannot read response):', {
-                        type: response.type,
-                        url: response.url || GOOGLE_APPS_SCRIPT_URL
-                    });
-                }
-
-                // 在 no-cors 模式下，我们无法读取响应
-                // 但如果没有抛出错误，说明请求已经发送
-                // 假设提交成功（如果 Google Apps Script 配置正确，数据应该已经写入）
-                return {
-                    success: true,
-                    message: 'Data submitted successfully (no-cors mode - response not readable)',
-                    note: 'Request sent. Please verify data in Google Sheets.'
-                };
-            } catch (error) {
-                if (DEBUG_MODE) {
-                    console.error('❌ Google Sheets submission error:', error);
-                    console.error('Error details:', {
-                        name: error.name,
-                        message: error.message,
-                        stack: error.stack,
-                        url: GOOGLE_APPS_SCRIPT_URL
-                    });
-                }
-
-                // 提供更详细的错误信息
-                let errorMessage = 'Failed to submit to Google Sheets';
-                if (error.message.includes('404')) {
-                    errorMessage += ': URL not found (404). Please check if the Google Apps Script Web App is deployed correctly.';
-                } else if (error.message.includes('Failed to fetch') || error.message.includes('Load failed')) {
-                    errorMessage += ': Network error or CORS issue. Please check: 1) Your internet connection, 2) The Google Apps Script URL is correct, 3) The Web App is deployed with "Who has access: Anyone".';
-                } else {
-                    errorMessage += ': ' + error.message;
-                }
-
-                throw new Error(errorMessage);
-            }
+            });
         }
 
         /**
          * 提交表单（支持 Google Sheets 和 localStorage）
          */
-        async function submitForm(event) {
+        function submitForm(event) {
             event.preventDefault();
 
             if (!validateForm()) {
@@ -2941,8 +3308,8 @@
                 return;
             }
 
-            const submitBtn = document.getElementById('submitBtn');
-            const originalText = submitBtn.textContent;
+            var submitBtn = document.getElementById('submitBtn');
+            var originalText = submitBtn.textContent;
             
             // 设置加载状态
             submitBtn.disabled = true;
@@ -2950,30 +3317,24 @@
             submitBtn.textContent = 'Submitting...';
 
             try {
-                const { responses, timestamp } = collectFormData();
+                var formData = collectFormData();
+                var responses = formData.responses;
+                var timestamp = formData.timestamp;
                 
                 if (DEBUG_MODE) {
-                    console.log('📋 Form data collected:', { responses, timestamp });
+                    console.log('📋 Form data collected:', { responses: responses, timestamp: timestamp });
                 }
                 
-                // 准备提交数据
-                const submitData = {
-                    timestamp: timestamp,
-                    ...responses
-                };
+                // 准备提交数据（使用Object.assign替代扩展运算符）
+                var submitData = Object.assign({}, { timestamp: timestamp }, responses);
 
-                let googleSheetsSuccess = false;
-                let localStorageSuccess = false;
-                let googleSheetsError = null;
+                var googleSheetsSuccess = false;
+                var localStorageSuccess = false;
+                var googleSheetsError = null;
 
                 // 如果启用了 Google Sheets，先提交到 Google Sheets
                 if (ENABLE_GOOGLE_SHEETS) {
-                    try {
-                        if (DEBUG_MODE) {
-                            console.log('🔄 Attempting to submit to Google Sheets...');
-                            console.log('📍 URL:', GOOGLE_APPS_SCRIPT_URL);
-                        }
-                        const result = await submitToGoogleSheets(submitData);
+                    submitToGoogleSheets(submitData).then(function(result) {
                         // 只有真正成功时才设置为 true
                         googleSheetsSuccess = result && result.success === true;
                         if (DEBUG_MODE) {
@@ -2983,7 +3344,71 @@
                                 console.warn('⚠️ Google Sheets submission returned unsuccessful result:', result);
                             }
                         }
-                    } catch (error) {
+                        
+                        // 保存到 localStorage（作为备份）
+                        try {
+                            if (DEBUG_MODE) {
+                                console.log('💾 Saving to localStorage...');
+                            }
+                            localStorageSuccess = saveResponseToLocalStorage(responses, timestamp);
+                            if (DEBUG_MODE && localStorageSuccess) {
+                                console.log('✅ Successfully saved to localStorage');
+                            }
+                        } catch (error) {
+                            if (DEBUG_MODE) {
+                                console.error('❌ localStorage save failed:', error);
+                            }
+                        }
+
+                        // 显示结果消息（基于真实的提交结果）
+                        if (googleSheetsSuccess) {
+                            // Google Sheets 提交成功（请求已发送，但需要验证数据是否写入）
+                            showSuccess('Thank you! Your response has been submitted. Please verify the data appears in your Google Sheets.');
+                            
+                            if (DEBUG_MODE) {
+                                console.log('✅ Request sent successfully. Please check Google Sheets to verify data was written.');
+                            }
+                            
+                            // 重置表单
+                            document.getElementById('surveyForm').reset();
+                            rankedFactors = [];
+                            rankedComfortZoneAmenities = [];
+                            updateRankedList();
+                            updateComfortZoneRankedList('comfort_zone_amenities_ranked_list');
+                            enforceRankingLimits();
+                            enforceComfortZoneRankingLimits('comfort_zone_amenities_ranked_container');
+                            selectRandomImage();
+                            showHideConditional();
+                            calculateProgress();
+                        } else if (localStorageSuccess) {
+                            // 只有 localStorage 成功（Google Sheets 失败）
+                            var errorMessage = 'Your response has been saved locally, but failed to submit to Google Sheets. ';
+                            if (googleSheetsError) {
+                                errorMessage += 'Error: ' + googleSheetsError.message;
+                            } else {
+                                errorMessage += 'Please check your Google Apps Script configuration.';
+                            }
+                            showError(errorMessage);
+                            
+                            if (DEBUG_MODE) {
+                                console.warn('⚠️ Data saved locally but Google Sheets submission failed');
+                                if (googleSheetsError) {
+                                    console.warn('⚠️ Google Sheets error:', googleSheetsError.message);
+                                }
+                            }
+                        } else {
+                            // 完全失败
+                            showError('Failed to save response. Please check the console for details and try again.');
+                            if (DEBUG_MODE) {
+                                console.error('❌ Both Google Sheets and localStorage save failed');
+                            }
+                        }
+                        
+                        // 恢复按钮状态
+                        submitBtn.disabled = false;
+                        submitBtn.classList.remove('loading');
+                        submitBtn.textContent = originalText;
+                    }).catch(function(error) {
                         googleSheetsError = error;
                         googleSheetsSuccess = false;
                         if (DEBUG_MODE) {
@@ -2995,66 +3420,89 @@
                             });
                         }
                         // 即使 Google Sheets 失败，也继续保存到 localStorage
-                    }
-                }
-
-                // 保存到 localStorage（作为备份）
-                try {
-                    if (DEBUG_MODE) {
-                        console.log('💾 Saving to localStorage...');
-                    }
-                    localStorageSuccess = saveResponseToLocalStorage(responses, timestamp);
-                    if (DEBUG_MODE && localStorageSuccess) {
-                        console.log('✅ Successfully saved to localStorage');
-                    }
-                } catch (error) {
-                    if (DEBUG_MODE) {
-                        console.error('❌ localStorage save failed:', error);
-                    }
-                }
-
-                // 显示结果消息（基于真实的提交结果）
-                if (googleSheetsSuccess) {
-                    // Google Sheets 提交成功（请求已发送，但需要验证数据是否写入）
-                    showSuccess('Thank you! Your response has been submitted. Please verify the data appears in your Google Sheets.');
-                    
-                    if (DEBUG_MODE) {
-                        console.log('✅ Request sent successfully. Please check Google Sheets to verify data was written.');
-                    }
-                    
-                    // 重置表单
-                    document.getElementById('surveyForm').reset();
-                    rankedFactors = [];
-                    rankedComfortZoneAmenities = [];
-                    updateRankedList();
-                    updateComfortZoneRankedList('comfort_zone_amenities_ranked_list');
-                    enforceRankingLimits();
-                    enforceComfortZoneRankingLimits('comfort_zone_amenities_ranked_container');
-                    selectRandomImage();
-                    showHideConditional();
-                    calculateProgress();
-                } else if (localStorageSuccess) {
-                    // 只有 localStorage 成功（Google Sheets 失败）
-                    let errorMessage = 'Your response has been saved locally, but failed to submit to Google Sheets. ';
-                    if (googleSheetsError) {
-                        errorMessage += 'Error: ' + googleSheetsError.message;
-                    } else {
-                        errorMessage += 'Please check your Google Apps Script configuration.';
-                    }
-                    showError(errorMessage);
-                    
-                    if (DEBUG_MODE) {
-                        console.warn('⚠️ Data saved locally but Google Sheets submission failed');
-                        if (googleSheetsError) {
-                            console.warn('⚠️ Google Sheets error:', googleSheetsError.message);
+                        
+                        // 保存到 localStorage（作为备份）
+                        try {
+                            if (DEBUG_MODE) {
+                                console.log('💾 Saving to localStorage...');
+                            }
+                            localStorageSuccess = saveResponseToLocalStorage(responses, timestamp);
+                            if (DEBUG_MODE && localStorageSuccess) {
+                                console.log('✅ Successfully saved to localStorage');
+                            }
+                        } catch (localError) {
+                            if (DEBUG_MODE) {
+                                console.error('❌ localStorage save failed:', localError);
+                            }
                         }
-                    }
+
+                        // 显示结果消息
+                        if (localStorageSuccess) {
+                            // 只有 localStorage 成功（Google Sheets 失败）
+                            var errorMessage = 'Your response has been saved locally, but failed to submit to Google Sheets. ';
+                            if (googleSheetsError) {
+                                errorMessage += 'Error: ' + googleSheetsError.message;
+                            } else {
+                                errorMessage += 'Please check your Google Apps Script configuration.';
+                            }
+                            showError(errorMessage);
+                            
+                            if (DEBUG_MODE) {
+                                console.warn('⚠️ Data saved locally but Google Sheets submission failed');
+                                if (googleSheetsError) {
+                                    console.warn('⚠️ Google Sheets error:', googleSheetsError.message);
+                                }
+                            }
+                        } else {
+                            // 完全失败
+                            showError('Failed to save response. Please check the console for details and try again.');
+                            if (DEBUG_MODE) {
+                                console.error('❌ Both Google Sheets and localStorage save failed');
+                            }
+                        }
+                        
+                        // 恢复按钮状态
+                        submitBtn.disabled = false;
+                        submitBtn.classList.remove('loading');
+                        submitBtn.textContent = originalText;
+                    });
                 } else {
-                    // 完全失败
-                    showError('Failed to save response. Please check the console for details and try again.');
-                    if (DEBUG_MODE) {
-                        console.error('❌ Both Google Sheets and localStorage save failed');
+                    // 没有启用 Google Sheets，只保存到 localStorage
+                    try {
+                        if (DEBUG_MODE) {
+                            console.log('💾 Saving to localStorage...');
+                        }
+                        localStorageSuccess = saveResponseToLocalStorage(responses, timestamp);
+                        if (DEBUG_MODE && localStorageSuccess) {
+                            console.log('✅ Successfully saved to localStorage');
+                        }
+                        
+                        if (localStorageSuccess) {
+                            showSuccess('Thank you! Your response has been saved.');
+                            document.getElementById('surveyForm').reset();
+                            rankedFactors = [];
+                            rankedComfortZoneAmenities = [];
+                            updateRankedList();
+                            updateComfortZoneRankedList('comfort_zone_amenities_ranked_list');
+                            enforceRankingLimits();
+                            enforceComfortZoneRankingLimits('comfort_zone_amenities_ranked_container');
+                            selectRandomImage();
+                            showHideConditional();
+                            calculateProgress();
+                        } else {
+                            showError('Failed to save response. Please try again.');
+                        }
+                    } catch (error) {
+                        if (DEBUG_MODE) {
+                            console.error('❌ localStorage save failed:', error);
+                        }
+                        showError('An error occurred. Please try again.');
                     }
+                    
+                    // 恢复按钮状态
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('loading');
+                    submitBtn.textContent = originalText;
                 }
             } catch (error) {
                 if (DEBUG_MODE) {
@@ -3062,7 +3510,7 @@
                     console.error('Error stack:', error.stack);
                 }
                 showError('An error occurred. Please try again. Check the console for details.');
-            } finally {
+                
                 // 恢复按钮状态
                 submitBtn.disabled = false;
                 submitBtn.classList.remove('loading');
@@ -3244,7 +3692,7 @@
                 showDebugInfo();
                 
                 // 检查必要的元素是否存在
-                const form = document.getElementById('surveyForm');
+                var form = document.getElementById('surveyForm');
                 if (!form) {
                     console.error('❌ Form element not found!');
                     return;
@@ -3293,11 +3741,11 @@
                 
                 // 验证渲染结果
                 setTimeout(() => {
-                    const firstRadioGroup = document.getElementById('overall_satisfaction_group');
-                    const firstCheckboxGroup = document.getElementById('ranked_factors_group');
+                    var firstRadioGroup = document.getElementById('overall_satisfaction_group');
+                    var firstCheckboxGroup = document.getElementById('ranked_factors_group');
                     
                     if (firstRadioGroup) {
-                        const options = firstRadioGroup.querySelectorAll('.radio-option');
+                        var options = firstRadioGroup.querySelectorAll('.radio-option');
                         console.log('✅ First radio group rendered with', options.length, 'options');
                         if (options.length === 0) {
                             console.error('❌ Radio group is empty!');
@@ -3312,7 +3760,7 @@
                     }
                     
                     if (firstCheckboxGroup) {
-                        const options = firstCheckboxGroup.querySelectorAll('.checkbox-option');
+                        var options = firstCheckboxGroup.querySelectorAll('.checkbox-option');
                         console.log('✅ First checkbox group rendered with', options.length, 'options');
                         if (options.length === 0) {
                             console.error('❌ Checkbox group is empty!');
@@ -3355,9 +3803,9 @@
                 }
                 
                 // 检查 URL 参数，如果是管理员模式，显示导出按钮
-                const urlParams = new URLSearchParams(window.location.search);
+                var urlParams = new URLSearchParams(window.location.search);
                 if (urlParams.get('admin') === '1') {
-                    const exportBtn = document.getElementById('exportBtn');
+                    var exportBtn = document.getElementById('exportBtn');
                     if (exportBtn) {
                         exportBtn.style.display = 'block';
                     }
@@ -3365,7 +3813,7 @@
                 
                 // 确保所有 section 在移动设备上可见（额外保险）
                 setTimeout(() => {
-                    const sections = document.querySelectorAll('.section');
+                    var sections = document.querySelectorAll('.section');
                     sections.forEach(section => {
                         section.classList.add('visible');
                     });
@@ -3381,7 +3829,7 @@
                 console.error('❌ Initialization error:', error);
                 console.error('Error stack:', error.stack);
                 // 即使出错，也尝试显示内容
-                const sections = document.querySelectorAll('.section');
+                var sections = document.querySelectorAll('.section');
                 sections.forEach(section => {
                     section.classList.add('visible');
                 });
@@ -3436,7 +3884,7 @@
         
         // 额外的保险：如果上面的都没执行，在 window.onload 时再试一次
         window.addEventListener('load', () => {
-            const sections = document.querySelectorAll('.section');
+            var sections = document.querySelectorAll('.section');
             if (sections.length > 0 && !sections[0].classList.contains('visible')) {
                 if (DEBUG_MODE) {
                     console.warn('⚠️ Sections not visible on load, forcing visibility');
