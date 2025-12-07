@@ -997,9 +997,32 @@
         // Select random image
         function selectRandomImage() {
             var random = Math.random();
+            // Use relative path - works both locally and on GitHub Pages
+            // When deployed from /tablet-version folder, images/ is relative to that folder
             var imagePath = random < 0.5 ? 'images/comfort-zone-v1.jpg' : 'images/comfort-zone-v2.jpg';
             imageVersion = random < 0.5 ? 'v1' : 'v2';
-            document.getElementById('rendering_image').src = imagePath;
+            var imgElement = document.getElementById('rendering_image');
+            if (imgElement) {
+                imgElement.src = imagePath;
+                // Add error handler to debug image loading
+                imgElement.onerror = function() {
+                    console.error('Image failed to load: ' + imagePath);
+                    console.error('Current pathname: ' + window.location.pathname);
+                    console.error('Current href: ' + window.location.href);
+                    // Try alternative paths
+                    var altPath1 = './images/' + (random < 0.5 ? 'comfort-zone-v1.jpg' : 'comfort-zone-v2.jpg');
+                    var altPath2 = '/images/' + (random < 0.5 ? 'comfort-zone-v1.jpg' : 'comfort-zone-v2.jpg');
+                    console.log('Trying alternative path 1: ' + altPath1);
+                    this.src = altPath1;
+                    this.onerror = function() {
+                        console.log('Trying alternative path 2: ' + altPath2);
+                        this.src = altPath2;
+                    };
+                };
+                imgElement.onload = function() {
+                    console.log('Image loaded successfully: ' + imagePath);
+                };
+            }
         }
         
         // Setup checkbox limits (max 3 selections)

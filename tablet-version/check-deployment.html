@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deployment Check - Tablet Version</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .check-item {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+        .success {
+            border-color: green;
+            background-color: #d4edda;
+        }
+        .error {
+            border-color: red;
+            background-color: #f8d7da;
+        }
+        .warning {
+            border-color: orange;
+            background-color: #fff3cd;
+        }
+        h1 {
+            color: #008B8B;
+        }
+        code {
+            background: #f0f0f0;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔍 Tablet Version Deployment Check</h1>
+    <p>This page helps diagnose deployment issues on GitHub Pages.</p>
+    
+    <div id="checks"></div>
+    
+    <script>
+        var checks = [];
+        
+        // Check 1: Current URL
+        var currentUrl = window.location.href;
+        var currentPath = window.location.pathname;
+        checks.push({
+            title: 'Current URL',
+            status: 'info',
+            message: 'URL: ' + currentUrl + '<br>Pathname: ' + currentPath
+        });
+        
+        // Check 2: Image files
+        var img1 = new Image();
+        var img2 = new Image();
+        var img1Loaded = false;
+        var img2Loaded = false;
+        
+        img1.onload = function() {
+            img1Loaded = true;
+            updateImageCheck();
+        };
+        img1.onerror = function() {
+            updateImageCheck();
+        };
+        img2.onload = function() {
+            img2Loaded = true;
+            updateImageCheck();
+        };
+        img2.onerror = function() {
+            updateImageCheck();
+        };
+        
+        img1.src = 'images/comfort-zone-v1.jpg';
+        img2.src = 'images/comfort-zone-v2.jpg';
+        
+        function updateImageCheck() {
+            if (img1Loaded && img2Loaded) {
+                checks.push({
+                    title: 'Image Files',
+                    status: 'success',
+                    message: 'Both images loaded successfully!<br>✓ images/comfort-zone-v1.jpg<br>✓ images/comfort-zone-v2.jpg'
+                });
+            } else if (!img1Loaded && !img2Loaded) {
+                checks.push({
+                    title: 'Image Files',
+                    status: 'error',
+                    message: 'Images failed to load!<br>✗ images/comfort-zone-v1.jpg<br>✗ images/comfort-zone-v2.jpg<br><br>Possible issues:<br>1. Images folder not uploaded to GitHub<br>2. Wrong path in GitHub Pages settings<br>3. Check Network tab in browser DevTools'
+                });
+            } else {
+                checks.push({
+                    title: 'Image Files',
+                    status: 'warning',
+                    message: 'One image loaded, one failed. Check paths.'
+                });
+            }
+            renderChecks();
+        }
+        
+        // Check 3: JavaScript
+        checks.push({
+            title: 'JavaScript',
+            status: 'success',
+            message: 'JavaScript is working!'
+        });
+        
+        // Check 4: Form elements
+        window.addEventListener('load', function() {
+            var radios = document.querySelectorAll('input[type="radio"]');
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            var tables = document.querySelectorAll('table');
+            
+            // Try to find form elements (if main page is loaded in iframe or we're on main page)
+            setTimeout(function() {
+                var mainRadios = document.querySelectorAll('input[type="radio"]');
+                var mainCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+                var mainTables = document.querySelectorAll('table');
+                
+                if (mainRadios.length > 0 || mainCheckboxes.length > 0) {
+                    checks.push({
+                        title: 'Form Elements',
+                        status: 'success',
+                        message: 'Found form elements:<br>✓ Radio buttons: ' + mainRadios.length + '<br>✓ Checkboxes: ' + mainCheckboxes.length + '<br>✓ Tables: ' + mainTables.length
+                    });
+                } else {
+                    checks.push({
+                        title: 'Form Elements',
+                        status: 'warning',
+                        message: 'No form elements found on this page. This is the check page, not the main survey page.'
+                    });
+                }
+                renderChecks();
+            }, 1000);
+        });
+        
+        // Check 5: GitHub Pages detection
+        var isGitHubPages = currentUrl.indexOf('github.io') !== -1;
+        checks.push({
+            title: 'GitHub Pages',
+            status: isGitHubPages ? 'success' : 'warning',
+            message: isGitHubPages ? 
+                '✓ Running on GitHub Pages' : 
+                '⚠ Not on GitHub Pages (local or other host)'
+        });
+        
+        // Render checks
+        function renderChecks() {
+            var container = document.getElementById('checks');
+            var html = '';
+            for (var i = 0; i < checks.length; i++) {
+                var check = checks[i];
+                var statusClass = check.status === 'success' ? 'success' : 
+                                 check.status === 'error' ? 'error' : 
+                                 check.status === 'warning' ? 'warning' : '';
+                html += '<div class="check-item ' + statusClass + '">';
+                html += '<h3>' + check.title + '</h3>';
+                html += '<p>' + check.message + '</p>';
+                html += '</div>';
+            }
+            container.innerHTML = html;
+        }
+        
+        // Initial render
+        renderChecks();
+        
+        // Update after images load
+        setTimeout(function() {
+            if (checks.length < 5) {
+                updateImageCheck();
+            }
+        }, 2000);
+    </script>
+</body>
+</html>
+
