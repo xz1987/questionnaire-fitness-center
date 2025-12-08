@@ -972,11 +972,14 @@
         var allResponses = [];
         
         // Google Sheets configuration
-        // Replace with your Google Apps Script Web App URL
+        // Google Apps Script Web App URL - configured for your Google Sheets
         var GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyJoQ3FQE-XzU3X-Lp3-XEBuyfj6E5GljvP_j3-geymMcxzTfTKIuLOQ-daGrQ_ub9rlw/exec';
         
         // Enable/disable Google Sheets submission
         var ENABLE_GOOGLE_SHEETS = GOOGLE_APPS_SCRIPT_URL && GOOGLE_APPS_SCRIPT_URL.length > 0;
+        
+        // Debug mode for Google Sheets submission
+        var DEBUG_GOOGLE_SHEETS = true;
         
         // Initialize on page load
         window.addEventListener('load', function() {
@@ -1537,21 +1540,44 @@
                 // For Google Apps Script, we need to handle CORS properly
                 var xhr = new XMLHttpRequest();
                 
+                // Debug: Log submission attempt
+                if (DEBUG_GOOGLE_SHEETS) {
+                    console.log('📤 Submitting to Google Sheets:', {
+                        url: GOOGLE_APPS_SCRIPT_URL,
+                        data: data,
+                        timestamp: new Date().toISOString()
+                    });
+                }
+                
                 // Try to open connection
                 try {
                     xhr.open('POST', GOOGLE_APPS_SCRIPT_URL, true);
                     xhr.setRequestHeader('Content-Type', 'application/json');
                 } catch (e) {
+                    if (DEBUG_GOOGLE_SHEETS) {
+                        console.error('❌ Failed to open connection:', e);
+                    }
                     reject(new Error('Failed to open connection: ' + e.message));
                     return;
                 }
                 
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === 4) {
+                        if (DEBUG_GOOGLE_SHEETS) {
+                            console.log('📥 Google Sheets response:', {
+                                status: xhr.status,
+                                statusText: xhr.statusText,
+                                responseText: xhr.responseText.substring(0, 200)
+                            });
+                        }
+                        
                         // Google Apps Script may return status 0 for CORS, but request might still succeed
                         if (xhr.status >= 200 && xhr.status < 300) {
                             try {
                                 var response = JSON.parse(xhr.responseText);
+                                if (DEBUG_GOOGLE_SHEETS) {
+                                    console.log('✅ Google Sheets submission successful:', response);
+                                }
                                 resolve({
                                     success: true,
                                     message: 'Data submitted successfully',
@@ -1559,6 +1585,9 @@
                                 });
                             } catch (e) {
                                 // If response is not JSON, still consider it successful if status is OK
+                                if (DEBUG_GOOGLE_SHEETS) {
+                                    console.log('⚠️ Response not JSON, but status OK:', xhr.status);
+                                }
                                 resolve({
                                     success: true,
                                     message: 'Data submitted successfully (response not JSON)',
@@ -1569,6 +1598,9 @@
                             // Status 0 often means CORS issue, but request may have been sent
                             // Google Apps Script with proper CORS headers should work
                             // We'll assume success if we got to readyState 4
+                            if (DEBUG_GOOGLE_SHEETS) {
+                                console.log('⚠️ Status 0 (CORS), but request may have succeeded');
+                            }
                             resolve({
                                 success: true,
                                 message: 'Request sent (CORS mode - cannot verify response)',
@@ -1581,6 +1613,9 @@
                             } else {
                                 errorMsg += ': HTTP ' + xhr.status;
                             }
+                            if (DEBUG_GOOGLE_SHEETS) {
+                                console.error('❌ Google Sheets submission failed:', errorMsg);
+                            }
                             reject(new Error(errorMsg));
                         }
                     }
@@ -1589,6 +1624,9 @@
                 xhr.onerror = function() {
                     // Even on error, the request might have been sent (CORS)
                     // We'll resolve with a warning message
+                    if (DEBUG_GOOGLE_SHEETS) {
+                        console.warn('⚠️ Network error, but request may have succeeded:', xhr.statusText || 'Unknown error');
+                    }
                     resolve({
                         success: true,
                         message: 'Request sent (network error detected but may have succeeded)',
@@ -1646,8 +1684,20 @@
             
             // Try to submit to Google Sheets first
             if (ENABLE_GOOGLE_SHEETS) {
+                if (DEBUG_GOOGLE_SHEETS) {
+                    console.log('📋 Form data prepared for submission:', submitData);
+                }
+                
                 submitToGoogleSheets(submitData).then(function(result) {
                     googleSheetsSuccess = result && result.success === true;
+                    
+                    if (DEBUG_GOOGLE_SHEETS) {
+                        if (googleSheetsSuccess) {
+                            console.log('✅ Google Sheets submission successful');
+                        } else {
+                            console.warn('⚠️ Google Sheets submission returned unsuccessful result');
+                        }
+                    }
                     
                     // Save to localStorage as backup
                     try {
@@ -1660,6 +1710,9 @@
                     var successMsg = document.getElementById('successMessage');
                     if (googleSheetsSuccess) {
                         successMsg.textContent = 'Thank you! Your response has been submitted to Google Sheets.';
+                        if (DEBUG_GOOGLE_SHEETS) {
+                            console.log('✅ Success message displayed to user');
+                        }
                     } else {
                         successMsg.textContent = 'Thank you! Your response has been saved locally.';
                     }
