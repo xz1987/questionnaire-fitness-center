@@ -59,6 +59,13 @@ const CSV_COLUMNS = [
  * @returns {Object} - 返回 JSON 响应
  */
 function doPost(e) {
+  // CORS 头设置（所有响应都需要）
+  const corsHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type'
+  };
+  
   try {
     // 解析 JSON 数据
     let data;
@@ -76,7 +83,8 @@ function doPost(e) {
           success: false,
           error: 'Invalid data format'
         }))
-        .setMimeType(ContentService.MimeType.JSON);
+        .setMimeType(ContentService.MimeType.JSON)
+        .setHeaders(corsHeaders);
     }
 
     // 获取或创建 Sheet
@@ -91,14 +99,15 @@ function doPost(e) {
     // 追加数据到 Sheet
     sheet.appendRow(row);
 
-    // 返回成功响应
+    // 返回成功响应（添加 CORS 头）
     return ContentService
       .createTextOutput(JSON.stringify({
         success: true,
         message: 'Data saved successfully',
         timestamp: new Date().toISOString()
       }))
-      .setMimeType(ContentService.MimeType.JSON);
+      .setMimeType(ContentService.MimeType.JSON)
+      .setHeaders(corsHeaders);
 
   } catch (error) {
     // 返回错误响应（添加 CORS 头）
@@ -117,6 +126,23 @@ function doPost(e) {
 }
 
 /**
+ * 处理 OPTIONS 请求（CORS 预检请求）
+ * @param {Object} e - 事件对象
+ * @returns {Object} - 返回空响应，包含 CORS 头
+ */
+function doOptions(e) {
+  return ContentService
+    .createTextOutput('')
+    .setMimeType(ContentService.MimeType.TEXT)
+    .setHeaders({
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Max-Age': '3600'
+    });
+}
+
+/**
  * 处理 GET 请求（用于测试）
  * @param {Object} e - 事件对象
  * @returns {Object} - 返回 JSON 响应
@@ -128,7 +154,12 @@ function doGet(e) {
       message: 'Google Apps Script is running',
       timestamp: new Date().toISOString()
     }))
-    .setMimeType(ContentService.MimeType.JSON);
+    .setMimeType(ContentService.MimeType.JSON)
+    .setHeaders({
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type'
+    });
 }
 
 /**
