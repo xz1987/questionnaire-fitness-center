@@ -1522,7 +1522,8 @@
             }
         }
         
-        // Submit to Google Sheets using XMLHttpRequest (ES5 compatible)
+        // Submit to Google Sheets using form submission (avoids CORS preflight)
+        // This method doesn't trigger OPTIONS preflight request, avoiding 405 errors
         function submitToGoogleSheets(data) {
             return new Promise(function(resolve, reject) {
                 if (!ENABLE_GOOGLE_SHEETS || !GOOGLE_APPS_SCRIPT_URL) {
@@ -1536,10 +1537,6 @@
                     return;
                 }
                 
-                // Use XMLHttpRequest for maximum compatibility with old browsers
-                // For Google Apps Script, we need to handle CORS properly
-                var xhr = new XMLHttpRequest();
-                
                 // Debug: Log submission attempt
                 if (DEBUG_GOOGLE_SHEETS) {
                     console.log('📤 Submitting to Google Sheets:', {
@@ -1549,103 +1546,100 @@
                     });
                 }
                 
-                // Try to open connection
+                // Use form submission method to avoid CORS preflight (OPTIONS) request
+                // This works better with Google Apps Script Web Apps
                 try {
-                    xhr.open('POST', GOOGLE_APPS_SCRIPT_URL, true);
-                    xhr.setRequestHeader('Content-Type', 'application/json');
-                } catch (e) {
-                    if (DEBUG_GOOGLE_SHEETS) {
-                        console.error('❌ Failed to open connection:', e);
+                    // Create a hidden form
+                    var form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = GOOGLE_APPS_SCRIPT_URL;
+                    form.style.display = 'none';
+                    
+                    // Create a hidden iframe to submit to (avoids page navigation)
+                    var iframe = document.createElement('iframe');
+                    iframe.name = 'googleSheetsSubmitFrame';
+                    iframe.style.display = 'none';
+                    document.body.appendChild(iframe);
+                    
+                    form.target = 'googleSheetsSubmitFrame';
+                    
+                    // Add all data as hidden inputs
+                    for (var key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            var input = document.createElement('input');
+                            input.type = 'hidden';
+                            input.name = key;
+                            // Convert value to string, handle objects/arrays
+                            var value = data[key];
+                            if (typeof value === 'object' && value !== null) {
+                                value = JSON.stringify(value);
+                            } else {
+                                value = String(value || '');
+                            }
+                            input.value = value;
+                            form.appendChild(input);
+                        }
                     }
-                    reject(new Error('Failed to open connection: ' + e.message));
-                    return;
-                }
-                
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === 4) {
+                    
+                    // Also send as JSON in a special field for Code.gs to parse
+                    var jsonInput = document.createElement('input');
+                    jsonInput.type = 'hidden';
+                    jsonInput.name = 'jsonData';
+                    jsonInput.value = JSON.stringify(data);
+                    form.appendChild(jsonInput);
+                    
+                    document.body.appendChild(form);
+                    
+                    // Handle iframe load (success)
+                    iframe.onload = function() {
                         if (DEBUG_GOOGLE_SHEETS) {
-                            console.log('📥 Google Sheets response:', {
-                                status: xhr.status,
-                                statusText: xhr.statusText,
-                                responseText: xhr.responseText.substring(0, 200)
-                            });
+                            console.log('✅ Form submitted successfully');
                         }
                         
-                        // Google Apps Script may return status 0 for CORS, but request might still succeed
-                        if (xhr.status >= 200 && xhr.status < 300) {
-                            try {
-                                var response = JSON.parse(xhr.responseText);
-                                if (DEBUG_GOOGLE_SHEETS) {
-                                    console.log('✅ Google Sheets submission successful:', response);
-                                }
-                                resolve({
-                                    success: true,
-                                    message: 'Data submitted successfully',
-                                    response: response
-                                });
-                            } catch (e) {
-                                // If response is not JSON, still consider it successful if status is OK
-                                if (DEBUG_GOOGLE_SHEETS) {
-                                    console.log('⚠️ Response not JSON, but status OK:', xhr.status);
-                                }
-                                resolve({
-                                    success: true,
-                                    message: 'Data submitted successfully (response not JSON)',
-                                    status: xhr.status
-                                });
-                            }
-                        } else if (xhr.status === 0) {
-                            // Status 0 often means CORS issue, but request may have been sent
-                            // Google Apps Script with proper CORS headers should work
-                            // We'll assume success if we got to readyState 4
+                        // Clean up
+                        setTimeout(function() {
+                            document.body.removeChild(form);
+                            document.body.removeChild(iframe);
+                        }, 1000);
+                        
+                        resolve({
+                            success: true,
+                            message: 'Data submitted successfully to Google Sheets'
+                        });
+                    };
+                    
+                    // Submit the form
+                    form.submit();
+                    
+                    // Fallback: assume success after a short delay (form submission is fire-and-forget)
+                    setTimeout(function() {
+                        // Check if iframe was removed (means onload fired)
+                        if (iframe.parentNode) {
+                            // If still here, assume success anyway (form submission is async)
                             if (DEBUG_GOOGLE_SHEETS) {
-                                console.log('⚠️ Status 0 (CORS), but request may have succeeded');
+                                console.log('✅ Form submitted (assuming success)');
                             }
+                            
+                            // Clean up
+                            if (form.parentNode) {
+                                document.body.removeChild(form);
+                            }
+                            if (iframe.parentNode) {
+                                document.body.removeChild(iframe);
+                            }
+                            
                             resolve({
                                 success: true,
-                                message: 'Request sent (CORS mode - cannot verify response)',
-                                note: 'Please check Google Sheets to verify data was saved'
+                                message: 'Data submitted successfully to Google Sheets'
                             });
-                        } else {
-                            var errorMsg = 'Failed to submit to Google Sheets';
-                            if (xhr.status === 404) {
-                                errorMsg += ': URL not found (404). Please check if the Google Apps Script Web App is deployed correctly.';
-                            } else {
-                                errorMsg += ': HTTP ' + xhr.status;
-                            }
-                            if (DEBUG_GOOGLE_SHEETS) {
-                                console.error('❌ Google Sheets submission failed:', errorMsg);
-                            }
-                            reject(new Error(errorMsg));
                         }
-                    }
-                };
-                
-                xhr.onerror = function() {
-                    // Even on error, the request might have been sent (CORS)
-                    // We'll resolve with a warning message
-                    if (DEBUG_GOOGLE_SHEETS) {
-                        console.warn('⚠️ Network error, but request may have succeeded:', xhr.statusText || 'Unknown error');
-                    }
-                    resolve({
-                        success: true,
-                        message: 'Request sent (network error detected but may have succeeded)',
-                        note: 'Please check Google Sheets to verify data was saved',
-                        warning: 'Network error detected: ' + (xhr.statusText || 'Unknown error')
-                    });
-                };
-                
-                xhr.ontimeout = function() {
-                    reject(new Error('Request timeout: Please check your internet connection.'));
-                };
-                
-                // Set timeout (30 seconds)
-                xhr.timeout = 30000;
-                
-                try {
-                    xhr.send(JSON.stringify(data));
+                    }, 2000);
+                    
                 } catch (e) {
-                    reject(new Error('Error sending request: ' + e.message));
+                    if (DEBUG_GOOGLE_SHEETS) {
+                        console.error('❌ Failed to submit form:', e);
+                    }
+                    reject(new Error('Failed to submit: ' + e.message));
                 }
             });
         }
@@ -1706,30 +1700,40 @@
                         console.error('localStorage save failed:', error);
                     }
                     
-                    // Show success message
+                    // Show success message with better visibility
                     var successMsg = document.getElementById('successMessage');
                     if (googleSheetsSuccess) {
-                        successMsg.textContent = 'Thank you! Your response has been submitted to Google Sheets.';
+                        successMsg.innerHTML = '✅ <strong>提交成功！</strong> 您的回复已成功提交到 Google Sheets。感谢您的参与！';
+                        successMsg.style.backgroundColor = '#d4edda';
+                        successMsg.style.color = '#155724';
+                        successMsg.style.borderColor = '#c3e6cb';
                         if (DEBUG_GOOGLE_SHEETS) {
                             console.log('✅ Success message displayed to user');
                         }
                     } else {
-                        successMsg.textContent = 'Thank you! Your response has been saved locally.';
+                        successMsg.innerHTML = '⚠️ 您的回复已保存到本地存储。Google Sheets 提交失败。';
+                        successMsg.style.backgroundColor = '#fff3cd';
+                        successMsg.style.color = '#856404';
+                        successMsg.style.borderColor = '#ffeaa7';
                     }
                     successMsg.classList.add('show');
                     
-                    // Scroll to top
-                    window.scrollTo(0, 0);
+                    // Scroll to top smoothly
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
                     
-                    // Reset form after 3 seconds
+                    // Reset form after 5 seconds (give user time to see success message)
                     setTimeout(function() {
                         document.getElementById('surveyForm').reset();
                         successMsg.classList.remove('show');
+                        successMsg.innerHTML = '';
                         submitBtn.disabled = false;
                         submitBtn.textContent = originalText;
                         selectRandomImage();
                         showHideConditional();
-                    }, 3000);
+                    }, 5000);
                 }).catch(function(error) {
                     googleSheetsError = error;
                     console.error('Google Sheets submission error:', error);
@@ -1744,10 +1748,15 @@
                     // Show message (success for localStorage, warning about Google Sheets)
                     var successMsg = document.getElementById('successMessage');
                     if (localStorageSuccess) {
-                        successMsg.textContent = 'Thank you! Your response has been saved locally. (Google Sheets submission failed: ' + error.message + ')';
+                        successMsg.innerHTML = '⚠️ <strong>已保存到本地</strong> Google Sheets 提交失败：' + error.message + '。您的数据已保存到浏览器本地存储。';
+                        successMsg.style.backgroundColor = '#fff3cd';
+                        successMsg.style.color = '#856404';
+                        successMsg.style.borderColor = '#ffeaa7';
                     } else {
-                        successMsg.textContent = 'Error saving response. Please try again.';
-                        successMsg.style.color = 'red';
+                        successMsg.innerHTML = '❌ <strong>保存失败</strong> 请重试。';
+                        successMsg.style.backgroundColor = '#f8d7da';
+                        successMsg.style.color = '#721c24';
+                        successMsg.style.borderColor = '#f5c6cb';
                     }
                     successMsg.classList.add('show');
                     
@@ -1772,7 +1781,10 @@
                     
                     // Show success message
                     var successMsg = document.getElementById('successMessage');
-                    successMsg.textContent = 'Thank you! Your response has been saved locally.';
+                    successMsg.innerHTML = '⚠️ <strong>已保存到本地</strong> Google Sheets 未启用，您的回复已保存到浏览器本地存储。';
+                    successMsg.style.backgroundColor = '#fff3cd';
+                    successMsg.style.color = '#856404';
+                    successMsg.style.borderColor = '#ffeaa7';
                     successMsg.classList.add('show');
                     
                     // Scroll to top

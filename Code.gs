@@ -76,21 +76,38 @@ const CSV_COLUMNS = [
  */
 function doPost(e) {
   try {
-    // 解析 JSON 数据
+    // 解析数据 - 支持 JSON 和表单提交两种方式
     var data;
     try {
-      // 尝试解析 JSON
+      // 方式1: 尝试解析 JSON (如果前端发送 JSON)
       if (e.postData && e.postData.contents) {
-        data = JSON.parse(e.postData.contents);
-      } else if (e.parameter) {
-        // 如果不是 JSON，尝试使用参数
-        data = e.parameter;
+        try {
+          data = JSON.parse(e.postData.contents);
+        } catch (jsonError) {
+          // 如果不是 JSON，尝试作为表单数据
+          data = e.parameter || {};
+        }
+      } 
+      // 方式2: 表单提交 (前端使用 form POST)
+      else if (e.parameter) {
+        // 如果表单中有 jsonData 字段，优先使用它
+        if (e.parameter.jsonData) {
+          try {
+            data = JSON.parse(e.parameter.jsonData);
+          } catch (parseError) {
+            // 如果解析失败，使用所有参数
+            data = e.parameter;
+          }
+        } else {
+          // 直接使用表单参数
+          data = e.parameter;
+        }
       } else {
         throw new Error('No data received');
       }
     } catch (parseError) {
       // 解析失败
-      return createErrorResponse('Failed to parse JSON data: ' + parseError.toString());
+      return createErrorResponse('Failed to parse data: ' + parseError.toString());
     }
 
     // 验证数据
