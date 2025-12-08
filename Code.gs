@@ -23,7 +23,7 @@
 // 你的 Google Sheets ID（从 URL 中获取）
 // 例如：https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit
 // 将 YOUR_SPREADSHEET_ID_HERE 替换为你的实际 Sheet ID
-const SPREADSHEET_ID = 'YOUR_SPREADSHEET_ID_HERE';
+const SPREADSHEET_ID = '1ZKm-x6_PXkkt3_lN62FRvM2PLTWeUu0D9_XvUrPb1Cc';
 
 // Sheet 名称（通常是 "Sheet1"）
 // 如果你的 Sheet 有不同名称，修改这里
@@ -78,56 +78,109 @@ function doPost(e) {
   try {
     // 解析数据 - 支持 JSON 和表单提交两种方式
     var data;
+    
+    // 记录接收到的原始数据（用于调试）
+    Logger.log('=== Data Receiving Debug ===');
+    Logger.log('e.postData exists: ' + (e.postData ? 'yes' : 'no'));
+    Logger.log('e.parameter exists: ' + (e.parameter ? 'yes' : 'no'));
+    if (e.postData && e.postData.contents) {
+      Logger.log('postData.contents length: ' + e.postData.contents.length);
+      Logger.log('postData.contents preview: ' + e.postData.contents.substring(0, 200));
+    }
+    if (e.parameter) {
+      Logger.log('parameter keys: ' + Object.keys(e.parameter).join(', '));
+      if (e.parameter.jsonData) {
+        Logger.log('jsonData exists, length: ' + e.parameter.jsonData.length);
+      }
+    }
+    
     try {
-      // 方式1: 尝试解析 JSON (如果前端发送 JSON)
-      if (e.postData && e.postData.contents) {
+      // 优先检查 e.parameter（URL-encoded 表单数据会在这里）
+      if (e.parameter && e.parameter.jsonData) {
+        // 方式1: URL-encoded 表单数据，jsonData 字段存在（最可靠）
         try {
-          // 尝试解析为 JSON
-          var postContent = e.postData.contents;
-          // 检查是否是 URL-encoded 格式
-          if (postContent.indexOf('jsonData=') === 0 || postContent.indexOf('&jsonData=') !== -1) {
-            // 这是 URL-encoded 格式，提取 jsonData
-            var jsonDataMatch = postContent.match(/jsonData=([^&]*)/);
-            if (jsonDataMatch && jsonDataMatch[1]) {
+          Logger.log('Trying to parse jsonData from e.parameter');
+          data = JSON.parse(e.parameter.jsonData);
+          Logger.log('Successfully parsed jsonData from e.parameter');
+        } catch (parseError) {
+          Logger.log('Failed to parse jsonData: ' + parseError.toString());
+          // 如果解析失败，尝试使用所有参数
+          data = e.parameter;
+          Logger.log('Using e.parameter directly');
+        }
+      }
+      // 方式2: 检查 postData.contents（可能是 URL-encoded 字符串或 JSON）
+      else if (e.postData && e.postData.contents) {
+        var postContent = e.postData.contents;
+        Logger.log('Processing postData.contents');
+        
+        // 检查是否是 URL-encoded 格式（包含 jsonData=）
+        if (postContent.indexOf('jsonData=') !== -1) {
+          Logger.log('Detected URL-encoded format with jsonData');
+          // 提取 jsonData 参数
+          var jsonDataMatch = postContent.match(/jsonData=([^&]*)/);
+          if (jsonDataMatch && jsonDataMatch[1]) {
+            try {
               data = JSON.parse(decodeURIComponent(jsonDataMatch[1]));
-            } else {
-              // 解析失败，尝试解析整个内容
-              data = JSON.parse(postContent);
+              Logger.log('Successfully parsed jsonData from postData.contents');
+            } catch (parseError) {
+              Logger.log('Failed to parse jsonData from postData: ' + parseError.toString());
+              // 尝试解析整个 postContent 作为 JSON
+              try {
+                data = JSON.parse(postContent);
+                Logger.log('Parsed entire postContent as JSON');
+              } catch (e) {
+                throw new Error('Failed to parse postData.contents');
+              }
             }
           } else {
-            // 直接解析 JSON
-            data = JSON.parse(postContent);
-          }
-        } catch (jsonError) {
-          // 如果不是 JSON，尝试作为表单数据
-          data = e.parameter || {};
-        }
-      } 
-      // 方式2: 表单提交 (前端使用 form POST 或 URL-encoded)
-      else if (e.parameter) {
-        // 如果表单中有 jsonData 字段，优先使用它（这是最可靠的方式）
-        if (e.parameter.jsonData) {
-          try {
-            data = JSON.parse(e.parameter.jsonData);
-          } catch (parseError) {
-            // 如果解析失败，使用所有参数
-            Logger.log('Failed to parse jsonData, using parameters directly');
-            data = e.parameter;
+            throw new Error('jsonData parameter not found in postData.contents');
           }
         } else {
-          // 直接使用表单参数
-          data = e.parameter;
+          // 尝试直接解析为 JSON
+          try {
+            Logger.log('Trying to parse postData.contents as JSON');
+            data = JSON.parse(postContent);
+            Logger.log('Successfully parsed postData.contents as JSON');
+          } catch (jsonError) {
+            Logger.log('Failed to parse as JSON: ' + jsonError.toString());
+            // 如果不是 JSON，尝试使用 parameter
+            if (e.parameter) {
+              data = e.parameter;
+              Logger.log('Using e.parameter as fallback');
+            } else {
+              throw new Error('Cannot parse postData.contents and no e.parameter available');
+            }
+          }
         }
+      }
+      // 方式3: 只有 e.parameter（没有 jsonData 字段）
+      else if (e.parameter) {
+        Logger.log('Using e.parameter directly (no jsonData field)');
+        data = e.parameter;
       } else {
-        throw new Error('No data received');
+        throw new Error('No data received - both e.postData and e.parameter are empty');
+      }
+      
+      // 验证数据
+      if (!data || typeof data !== 'object') {
+        throw new Error('Invalid data format: data must be an object');
       }
       
       // 记录接收到的数据（用于调试）
-      Logger.log('Received data keys: ' + Object.keys(data).join(', '));
+      Logger.log('=== Data Parsed Successfully ===');
+      Logger.log('Data keys: ' + Object.keys(data).join(', '));
+      Logger.log('Data sample (first 3 keys):');
+      var keys = Object.keys(data);
+      for (var i = 0; i < Math.min(3, keys.length); i++) {
+        Logger.log('  ' + keys[i] + ': ' + String(data[keys[i]]).substring(0, 50));
+      }
       
     } catch (parseError) {
       // 解析失败
-      Logger.log('Parse error: ' + parseError.toString());
+      Logger.log('=== Parse Error ===');
+      Logger.log('Error: ' + parseError.toString());
+      Logger.log('Stack: ' + parseError.stack);
       return createErrorResponse('Failed to parse data: ' + parseError.toString());
     }
 
