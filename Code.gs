@@ -82,20 +82,36 @@ function doPost(e) {
       // 方式1: 尝试解析 JSON (如果前端发送 JSON)
       if (e.postData && e.postData.contents) {
         try {
-          data = JSON.parse(e.postData.contents);
+          // 尝试解析为 JSON
+          var postContent = e.postData.contents;
+          // 检查是否是 URL-encoded 格式
+          if (postContent.indexOf('jsonData=') === 0 || postContent.indexOf('&jsonData=') !== -1) {
+            // 这是 URL-encoded 格式，提取 jsonData
+            var jsonDataMatch = postContent.match(/jsonData=([^&]*)/);
+            if (jsonDataMatch && jsonDataMatch[1]) {
+              data = JSON.parse(decodeURIComponent(jsonDataMatch[1]));
+            } else {
+              // 解析失败，尝试解析整个内容
+              data = JSON.parse(postContent);
+            }
+          } else {
+            // 直接解析 JSON
+            data = JSON.parse(postContent);
+          }
         } catch (jsonError) {
           // 如果不是 JSON，尝试作为表单数据
           data = e.parameter || {};
         }
       } 
-      // 方式2: 表单提交 (前端使用 form POST)
+      // 方式2: 表单提交 (前端使用 form POST 或 URL-encoded)
       else if (e.parameter) {
-        // 如果表单中有 jsonData 字段，优先使用它
+        // 如果表单中有 jsonData 字段，优先使用它（这是最可靠的方式）
         if (e.parameter.jsonData) {
           try {
             data = JSON.parse(e.parameter.jsonData);
           } catch (parseError) {
             // 如果解析失败，使用所有参数
+            Logger.log('Failed to parse jsonData, using parameters directly');
             data = e.parameter;
           }
         } else {
@@ -105,8 +121,13 @@ function doPost(e) {
       } else {
         throw new Error('No data received');
       }
+      
+      // 记录接收到的数据（用于调试）
+      Logger.log('Received data keys: ' + Object.keys(data).join(', '));
+      
     } catch (parseError) {
       // 解析失败
+      Logger.log('Parse error: ' + parseError.toString());
       return createErrorResponse('Failed to parse data: ' + parseError.toString());
     }
 

@@ -1522,8 +1522,8 @@
             }
         }
         
-        // Submit to Google Sheets using form submission (avoids CORS preflight)
-        // This method doesn't trigger OPTIONS preflight request, avoiding 405 errors
+        // Submit to Google Sheets using URL-encoded form data (avoids CORS preflight)
+        // Using application/x-www-form-urlencoded doesn't trigger OPTIONS preflight request
         function submitToGoogleSheets(data) {
             return new Promise(function(resolve, reject) {
                 if (!ENABLE_GOOGLE_SHEETS || !GOOGLE_APPS_SCRIPT_URL) {
@@ -1546,100 +1546,133 @@
                     });
                 }
                 
-                // Use form submission method to avoid CORS preflight (OPTIONS) request
-                // This works better with Google Apps Script Web Apps
+                // Use XMLHttpRequest with URL-encoded form data
+                // This avoids CORS preflight (OPTIONS) request
+                var xhr = new XMLHttpRequest();
+                
                 try {
-                    // Create a hidden form
-                    var form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = GOOGLE_APPS_SCRIPT_URL;
-                    form.style.display = 'none';
-                    
-                    // Create a hidden iframe to submit to (avoids page navigation)
-                    var iframe = document.createElement('iframe');
-                    iframe.name = 'googleSheetsSubmitFrame';
-                    iframe.style.display = 'none';
-                    document.body.appendChild(iframe);
-                    
-                    form.target = 'googleSheetsSubmitFrame';
-                    
-                    // Add all data as hidden inputs
-                    for (var key in data) {
-                        if (data.hasOwnProperty(key)) {
-                            var input = document.createElement('input');
-                            input.type = 'hidden';
-                            input.name = key;
-                            // Convert value to string, handle objects/arrays
-                            var value = data[key];
-                            if (typeof value === 'object' && value !== null) {
-                                value = JSON.stringify(value);
-                            } else {
-                                value = String(value || '');
-                            }
-                            input.value = value;
-                            form.appendChild(input);
-                        }
-                    }
-                    
-                    // Also send as JSON in a special field for Code.gs to parse
-                    var jsonInput = document.createElement('input');
-                    jsonInput.type = 'hidden';
-                    jsonInput.name = 'jsonData';
-                    jsonInput.value = JSON.stringify(data);
-                    form.appendChild(jsonInput);
-                    
-                    document.body.appendChild(form);
-                    
-                    // Handle iframe load (success)
-                    iframe.onload = function() {
-                        if (DEBUG_GOOGLE_SHEETS) {
-                            console.log('✅ Form submitted successfully');
-                        }
-                        
-                        // Clean up
-                        setTimeout(function() {
-                            document.body.removeChild(form);
-                            document.body.removeChild(iframe);
-                        }, 1000);
-                        
-                        resolve({
-                            success: true,
-                            message: 'Data submitted successfully to Google Sheets'
-                        });
-                    };
-                    
-                    // Submit the form
-                    form.submit();
-                    
-                    // Fallback: assume success after a short delay (form submission is fire-and-forget)
-                    setTimeout(function() {
-                        // Check if iframe was removed (means onload fired)
-                        if (iframe.parentNode) {
-                            // If still here, assume success anyway (form submission is async)
-                            if (DEBUG_GOOGLE_SHEETS) {
-                                console.log('✅ Form submitted (assuming success)');
-                            }
-                            
-                            // Clean up
-                            if (form.parentNode) {
-                                document.body.removeChild(form);
-                            }
-                            if (iframe.parentNode) {
-                                document.body.removeChild(iframe);
-                            }
-                            
-                            resolve({
-                                success: true,
-                                message: 'Data submitted successfully to Google Sheets'
-                            });
-                        }
-                    }, 2000);
-                    
+                    xhr.open('POST', GOOGLE_APPS_SCRIPT_URL, true);
+                    // Use URL-encoded format instead of JSON to avoid CORS preflight
+                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                 } catch (e) {
                     if (DEBUG_GOOGLE_SHEETS) {
-                        console.error('❌ Failed to submit form:', e);
+                        console.error('❌ Failed to open connection:', e);
                     }
-                    reject(new Error('Failed to submit: ' + e.message));
+                    reject(new Error('Failed to open connection: ' + e.message));
+                    return;
+                }
+                
+                // Build URL-encoded form data
+                var formData = [];
+                // Add JSON data as a single parameter
+                formData.push('jsonData=' + encodeURIComponent(JSON.stringify(data)));
+                // Also add individual fields for compatibility
+                for (var key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        var value = data[key];
+                        if (typeof value === 'object' && value !== null) {
+                            value = JSON.stringify(value);
+                        } else {
+                            value = String(value || '');
+                        }
+                        formData.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+                    }
+                }
+                var formDataString = formData.join('&');
+                
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4) {
+                        if (DEBUG_GOOGLE_SHEETS) {
+                            console.log('📥 Google Sheets response:', {
+                                status: xhr.status,
+                                statusText: xhr.statusText,
+                                responseText: xhr.responseText ? xhr.responseText.substring(0, 200) : 'No response'
+                            });
+                        }
+                        
+                        // Google Apps Script may return various status codes
+                        // 200-299: Success
+                        // 0: Often means CORS, but request may have succeeded
+                        // 403: Permission denied (check Web App deployment settings)
+                        if (xhr.status >= 200 && xhr.status < 300) {
+                            try {
+                                var response = JSON.parse(xhr.responseText);
+                                if (DEBUG_GOOGLE_SHEETS) {
+                                    console.log('✅ Google Sheets submission successful:', response);
+                                }
+                                resolve({
+                                    success: true,
+                                    message: 'Data submitted successfully',
+                                    response: response
+                                });
+                            } catch (e) {
+                                // If response is not JSON, still consider it successful if status is OK
+                                if (DEBUG_GOOGLE_SHEETS) {
+                                    console.log('⚠️ Response not JSON, but status OK:', xhr.status);
+                                }
+                                resolve({
+                                    success: true,
+                                    message: 'Data submitted successfully (response not JSON)',
+                                    status: xhr.status
+                                });
+                            }
+                        } else if (xhr.status === 0) {
+                            // Status 0 often means CORS issue, but request may have been sent
+                            if (DEBUG_GOOGLE_SHEETS) {
+                                console.log('⚠️ Status 0 (CORS), but request may have succeeded');
+                            }
+                            resolve({
+                                success: true,
+                                message: 'Request sent (CORS mode - cannot verify response)',
+                                note: 'Please check Google Sheets to verify data was saved'
+                            });
+                        } else if (xhr.status === 403) {
+                            // 403 Forbidden - usually means Web App deployment settings issue
+                            var errorMsg = 'Permission denied (403). Please check that the Web App is deployed with "Anyone" access.';
+                            if (DEBUG_GOOGLE_SHEETS) {
+                                console.error('❌ 403 Forbidden:', errorMsg);
+                            }
+                            reject(new Error(errorMsg));
+                        } else {
+                            var errorMsg = 'Failed to submit to Google Sheets';
+                            if (xhr.status === 404) {
+                                errorMsg += ': URL not found (404). Please check if the Google Apps Script Web App is deployed correctly.';
+                            } else {
+                                errorMsg += ': HTTP ' + xhr.status;
+                            }
+                            if (DEBUG_GOOGLE_SHEETS) {
+                                console.error('❌ Google Sheets submission failed:', errorMsg);
+                            }
+                            reject(new Error(errorMsg));
+                        }
+                    }
+                };
+                
+                xhr.onerror = function() {
+                    // Network error
+                    if (DEBUG_GOOGLE_SHEETS) {
+                        console.warn('⚠️ Network error, but request may have succeeded');
+                    }
+                    // For form data submission, we'll assume it might have succeeded
+                    resolve({
+                        success: true,
+                        message: 'Request sent (network error detected but may have succeeded)',
+                        note: 'Please check Google Sheets to verify data was saved',
+                        warning: 'Network error detected'
+                    });
+                };
+                
+                xhr.ontimeout = function() {
+                    reject(new Error('Request timeout: Please check your internet connection.'));
+                };
+                
+                // Set timeout (30 seconds)
+                xhr.timeout = 30000;
+                
+                try {
+                    xhr.send(formDataString);
+                } catch (e) {
+                    reject(new Error('Error sending request: ' + e.message));
                 }
             });
         }
