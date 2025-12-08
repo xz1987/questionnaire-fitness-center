@@ -1009,32 +1009,52 @@
         // Select random image
         function selectRandomImage() {
             var random = Math.random();
-            // Use relative path - works both locally and on GitHub Pages
-            // Images are in the root images/ folder
-            var imagePath = random < 0.5 ? 'images/comfort-zone-v1.jpg' : 'images/comfort-zone-v2.jpg';
             imageVersion = random < 0.5 ? 'v1' : 'v2';
             var imgElement = document.getElementById('rendering_image');
-            if (imgElement) {
-                imgElement.src = imagePath;
-                // Add error handler to debug image loading
-                imgElement.onerror = function() {
-                    console.error('Image failed to load: ' + imagePath);
-                    console.error('Current pathname: ' + window.location.pathname);
-                    console.error('Current href: ' + window.location.href);
-                    // Try alternative paths
-                    var altPath1 = './images/' + (random < 0.5 ? 'comfort-zone-v1.jpg' : 'comfort-zone-v2.jpg');
-                    var altPath2 = '/images/' + (random < 0.5 ? 'comfort-zone-v1.jpg' : 'comfort-zone-v2.jpg');
-                    console.log('Trying alternative path 1: ' + altPath1);
-                    this.src = altPath1;
-                    this.onerror = function() {
-                        console.log('Trying alternative path 2: ' + altPath2);
-                        this.src = altPath2;
-                    };
-                };
-                imgElement.onload = function() {
-                    console.log('Image loaded successfully: ' + imagePath);
-                };
+            if (!imgElement) {
+                return; // Image element doesn't exist, skip (won't affect form submission)
             }
+            
+            // Try multiple paths to handle different deployment scenarios
+            var imageName = random < 0.5 ? 'comfort-zone-v1.jpg' : 'comfort-zone-v2.jpg';
+            var pathsToTry = [
+                'images/' + imageName,        // Simple relative (most common)
+                './images/' + imageName,      // Current directory
+                '/images/' + imageName        // Root directory
+            ];
+            
+            var currentPathIndex = 0;
+            
+            function tryNextPath() {
+                if (currentPathIndex >= pathsToTry.length) {
+                    // All paths failed, hide image but don't show error (won't affect form submission)
+                    imgElement.style.display = 'none';
+                    if (DEBUG_GOOGLE_SHEETS) {
+                        console.warn('⚠️ Image not found (404), but this does not affect form submission');
+                    }
+                    return;
+                }
+                
+                var pathToTry = pathsToTry[currentPathIndex];
+                
+                imgElement.onerror = function() {
+                    // Silently try next path (404 errors are expected if image doesn't exist)
+                    currentPathIndex++;
+                    tryNextPath();
+                };
+                
+                imgElement.onload = function() {
+                    // Image loaded successfully
+                    imgElement.style.display = 'block';
+                    if (DEBUG_GOOGLE_SHEETS) {
+                        console.log('✅ Image loaded: ' + pathToTry);
+                    }
+                };
+                
+                imgElement.src = pathToTry;
+            }
+            
+            tryNextPath();
         }
         
         // Setup checkbox limits (max 3 selections)
