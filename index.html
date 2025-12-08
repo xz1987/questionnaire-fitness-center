@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Finger Lakes Fitness Center - Renovation Survey (Tablet Version)</title>
     <!-- This is the tablet-optimized version - if you see this, GitHub Pages is using the correct file -->
+    <!-- Version: 2024-12-07 - Fixed CORS and form submission -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <!-- Version: 2024-12-07 - Fixed CORS and form submission -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <style>
         /* Minimal CSS - only for basic layout, all form elements use inline styles */
         body {
@@ -1516,7 +1524,25 @@
                 link.style.display = 'none';
                 document.body.appendChild(link);
                 link.click();
-                document.body.removeChild(link);
+                // Safely remove the link after a short delay
+                setTimeout(function() {
+                    if (link && link.parentNode) {
+                        try {
+                            document.body.removeChild(link);
+                        } catch (e) {
+                            // Ignore if already removed
+                            if (DEBUG_GOOGLE_SHEETS) {
+                                console.log('Link already removed:', e);
+                            }
+                        }
+                    }
+                    // Clean up the object URL
+                    try {
+                        URL.revokeObjectURL(url);
+                    } catch (e) {
+                        // Ignore
+                    }
+                }, 100);
             } catch (e) {
                 alert('Error exporting CSV: ' + e.message);
             }
